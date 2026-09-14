@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bradley Company × Salesforce — Your Account Team</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; margin: 0; min-height: 100vh; background: linear-gradient(160deg, #EEF5FB 0%, #DBEAFE 50%, #EEF5FB 100%); }
+    :root { --brand-primary: #0274BE; --brand-secondary: #013F75; --brand-accent: #FF6900; --brand-light: #EEF5FB; }
+
+    .person-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .person-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    .card-header {
+      height: 140px;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      position: relative;
+    }
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      object-fit: cover;
+      position: absolute;
+      bottom: -30px;
+      left: 24px;
+      background: white;
+    }
+    .avatar-initial {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      position: absolute;
+      bottom: -30px;
+      left: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 900;
+      color: white;
+    }
+    .card-body {
+      padding: 44px 24px 28px;
+    }
+    .email-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .animate-in { animation: fadeInUp 0.6s ease both; }
+    .d-1 { animation-delay: 0.1s; }
+    .d-2 { animation-delay: 0.25s; }
+    .d-3 { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+  <div style="max-width: 1100px; margin: 0 auto; padding: 60px 24px 80px;">
+
+    <!-- Header -->
+    <div class="text-center mb-14 animate-in">
+      <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:24px;">
+        <img src="https://www.bradleyco.com/wp-content/uploads/2021/03/Asset-2733.svg" alt="Bradley Company" style="height:38px;" onerror="this.style.display='none'"/>
+        <div style="width:1px;height:32px;background:#CBD5E1;"></div>
+        <img src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/11/logo-salesforce.svg" alt="Salesforce" style="height:30px;"/>
+      </div>
+      <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#0B2545;letter-spacing:-0.025em;line-height:1.1;margin-bottom:12px;">Your Salesforce Account Team</h1>
+      <p style="font-size:1rem;color:#64748B;max-width:480px;margin:0 auto;line-height:1.7;">Dedicated to Bradley Company — reach out to any member of the team to move the conversation forward.</p>
+    </div>
+
+    <!-- Team cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+
+      <!-- Justin Earls — AE -->
+      <div class="person-card animate-in d-1">
+        <div class="card-header" style="background:linear-gradient(135deg,#013F75,#0274BE);">
+          <div style="position:absolute;top:16px;right:16px;"><span style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);padding:3px 10px;border-radius:4px;letter-spacing:0.06em;text-transform:uppercase;">Account Executive</span></div>
+          <img src="photo-ae.png" alt="Justin Earls" class="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="avatar-initial" style="background:linear-gradient(135deg,#0274BE,#015A9E);display:none;">J</div>
+        </div>
+        <div class="card-body">
+          <h2 style="font-size:1.2rem;font-weight:800;color:#0B2545;margin-bottom:4px;">Justin Earls</h2>
+          <p style="font-size:0.85rem;color:#64748B;margin-bottom:4px;">Account Executive — New Logo</p>
+          <p style="font-size:0.78rem;color:#94A3B8;margin-bottom:16px;">Atlanta, GA · Salesforce 6+ years</p>
+          <p style="font-size:0.82rem;color:#374151;line-height:1.65;margin-bottom:18px;">Justin leads the Bradley relationship and specializes in helping companies discover the full value of Salesforce's platform — from first conversation through transformation. He has led this engagement from discovery through today's demo cycle.</p>
+          <a href="mailto:jearls@salesforce.com" class="email-btn" style="background:linear-gradient(135deg,#013F75,#0274BE);color:white;width:100%;justify-content:center;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            jearls@salesforce.com
+          </a>
+        </div>
+      </div>
+
+      <!-- Eric Dalton — SE -->
+      <div class="person-card animate-in d-2">
+        <div class="card-header" style="background:linear-gradient(135deg,#1A5C2A,#22C55E);">
+          <div style="position:absolute;top:16px;right:16px;"><span style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);padding:3px 10px;border-radius:4px;letter-spacing:0.06em;text-transform:uppercase;">Lead Solutions Engineer</span></div>
+          <img src="photo-se.jpg" alt="Eric Dalton" class="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="avatar-initial" style="background:linear-gradient(135deg,#16A34A,#15803D);display:none;">E</div>
+        </div>
+        <div class="card-body">
+          <h2 style="font-size:1.2rem;font-weight:800;color:#0B2545;margin-bottom:4px;">Eric Dalton</h2>
+          <p style="font-size:0.85rem;color:#64748B;margin-bottom:4px;">Lead Solutions Engineer</p>
+          <p style="font-size:0.78rem;color:#94A3B8;margin-bottom:16px;">Salesforce 7+ years · Core Platform</p>
+          <p style="font-size:0.82rem;color:#374151;line-height:1.65;margin-bottom:18px;">Eric is Justin's technical counterpart — he built and delivered the live Agentforce and Sales Cloud demos for Bradley's team. He specializes in mobile-first AI architecture, CRM design, and connecting Salesforce to back-office systems like Yardi and DLAS.</p>
+          <a href="mailto:edalton@salesforce.com" class="email-btn" style="background:linear-gradient(135deg,#15803D,#16A34A);color:white;width:100%;justify-content:center;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            edalton@salesforce.com
+          </a>
+        </div>
+      </div>
+
+      <!-- Grant Stephens — RVP -->
+      <div class="person-card animate-in d-3">
+        <div class="card-header" style="background:linear-gradient(135deg,#7C2D12,#FF6900);">
+          <div style="position:absolute;top:16px;right:16px;"><span style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);padding:3px 10px;border-radius:4px;letter-spacing:0.06em;text-transform:uppercase;">RVP Sales</span></div>
+          <img src="photo-rvp.png" alt="Grant Stephens" class="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="avatar-initial" style="background:linear-gradient(135deg,#FF6900,#C44E00);display:none;">G</div>
+        </div>
+        <div class="card-body">
+          <h2 style="font-size:1.2rem;font-weight:800;color:#0B2545;margin-bottom:4px;">Grant Stephens</h2>
+          <p style="font-size:0.85rem;color:#64748B;margin-bottom:4px;">Regional Vice President, Sales</p>
+          <p style="font-size:0.78rem;color:#94A3B8;margin-bottom:16px;">VP New Logos · Salesforce</p>
+          <p style="font-size:0.82rem;color:#374151;line-height:1.65;margin-bottom:18px;">Grant runs the New Logos division and brings the full power of Salesforce's executive relationships to Bradley. He joined the Aug 31 demo personally and is committed to ensuring Bradley has every resource they need to make the right decision — and an exceptional implementation if they move forward.</p>
+          <a href="mailto:gstephens@salesforce.com" class="email-btn" style="background:linear-gradient(135deg,#C44E00,#FF6900);color:white;width:100%;justify-content:center;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            gstephens@salesforce.com
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Fortimize partner note -->
+    <div class="animate-in" style="background:white;border-radius:20px;padding:28px 32px;box-shadow:0 2px 16px rgba(0,0,0,0.06);margin-bottom:32px;display:flex;align-items:center;gap:20px;">
+      <div style="width:50px;height:50px;border-radius:13px;background:linear-gradient(135deg,#013F75,#0274BE);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <h3 style="font-size:0.95rem;font-weight:800;color:#0B2545;margin-bottom:4px;">Implementation Partner: Fortimize</h3>
+        <p style="font-size:0.83rem;color:#64748B;line-height:1.65;">Josh Pinton and Brendan Conniff at Fortimize lead the CRE-specific implementation. They've built Salesforce solutions for brokerages just like Bradley — investment sales, tenant rep, landlord rep — and their accelerator gets you 60–70% of the way there on day one. The Fortimize team is part of every conversation from scoping through go-live.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center animate-in" style="border-top:1px solid #E5E7EB;padding-top:24px;">
+      <p style="font-size:0.82rem;color:#94A3B8;margin-bottom:8px;">Ready to explore how Salesforce can unify Bradley's revenue engine?</p>
+      <p style="font-size:0.82rem;color:#64748B;">Reach out to any member of the team — we'll get the right conversation on the calendar.</p>
+      <a href="index.html" style="display:inline-block;margin-top:16px;font-size:12px;font-weight:700;color:#0274BE;text-decoration:none;">← Back to Full Deck</a>
+    </div>
+
+  </div>
+</body>
+</html>

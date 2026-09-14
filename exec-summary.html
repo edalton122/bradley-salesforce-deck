@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bradley Company × Salesforce — Executive Summary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; margin: 0; background: white; color: #1E293B; }
+    :root { --brand-primary: #0274BE; --brand-secondary: #013F75; --brand-accent: #FF6900; --brand-green: #72BF44; }
+
+    /* Print bar */
+    .print-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: white;
+      border-bottom: 1px solid #E5E7EB;
+      padding: 10px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .print-bar-title { font-size: 13px; font-weight: 700; color: #374151; }
+    .print-btn {
+      padding: 8px 18px; background: linear-gradient(135deg,var(--brand-secondary),var(--brand-primary));
+      color: white; border: none; border-radius: 8px;
+      font-size: 12px; font-weight: 800; cursor: pointer; transition: opacity 0.2s;
+    }
+    .print-btn:hover { opacity: 0.88; }
+    .back-link { font-size: 12px; font-weight: 600; color: var(--brand-primary); text-decoration: none; }
+
+    /* Page layout */
+    .page { max-width: 860px; margin: 0 auto; padding: 0 24px 60px; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--brand-secondary) 0%, #012D5A 60%, var(--brand-primary) 100%);
+      border-radius: 16px;
+      padding: 48px 40px;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(2,116,190,0.12) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    /* Stats strip */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .stat-box {
+      background: white;
+      border: 1px solid #E5E7EB;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-val { font-size: 1.6rem; font-weight: 900; color: var(--brand-secondary); letter-spacing: -0.025em; }
+    .stat-lbl { font-size: 10px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+
+    /* Pillar grid */
+    .pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .pillar {
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #E5E7EB;
+    }
+    .pillar-num { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .pillar h3 { font-size: 0.9rem; font-weight: 800; color: #0B2545; margin-bottom: 8px; }
+    .pillar ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 5px; }
+    .pillar li { font-size: 0.78rem; color: #374151; line-height: 1.55; display: flex; gap: 6px; }
+    .pillar li::before { content: '✓'; font-weight: 800; flex-shrink: 0; }
+
+    /* Timeline */
+    .timeline { display: flex; gap: 12px; margin: 20px 0; }
+    .phase { flex: 1; background: #F8FAFC; border-radius: 10px; padding: 14px; border: 1px solid #E5E7EB; }
+    .phase-num { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .phase h4 { font-size: 0.82rem; font-weight: 800; color: #0B2545; margin-bottom: 4px; }
+    .phase p { font-size: 0.75rem; color: #64748B; line-height: 1.55; margin: 0; }
+
+    /* Print styles */
+    @media print {
+      .print-bar { display: none !important; }
+      .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .pillar, .stat-box, .phase { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body { background: white; }
+      .page { padding: 0 16px 30px; }
+    }
+    @media (max-width: 640px) {
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .pillars { grid-template-columns: 1fr; }
+      .timeline { flex-direction: column; }
+      .hero { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Print bar -->
+  <div class="print-bar">
+    <a href="index.html" class="back-link">← Back to Full Deck</a>
+    <span class="print-bar-title">Bradley Company × Salesforce — Executive Summary</span>
+    <button class="print-btn" onclick="window.print()">Print / Save PDF ↓</button>
+  </div>
+
+  <div class="page">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div style="position:relative;z-index:1;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+          <img src="https://www.bradleyco.com/wp-content/uploads/2021/03/Asset-2733.svg" alt="Bradley Company" style="height:34px;filter:brightness(0) invert(1);opacity:0.85;" onerror="this.style.display='none'"/>
+          <div style="width:1px;height:28px;background:rgba(255,255,255,0.25);"></div>
+          <img src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/11/logo-salesforce.svg" alt="Salesforce" style="height:26px;"/>
+        </div>
+        <h1 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:900;color:white;line-height:1.1;letter-spacing:-0.025em;margin-bottom:12px;">Unified AI & Growth Revenue Engine</h1>
+        <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;max-width:520px;line-height:1.7;margin-bottom:16px;">How Salesforce Sales Cloud, Agentforce, and Tableau unify Bradley's 63 brokers, eliminate manual reporting, connect DLAS and Yardi, and put a mobile-first AI easy button in every broker's pocket.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);padding:3px 12px;border-radius:99px;border:1px solid rgba(255,255,255,0.15);">Prepared September 2026</span>
+          <span style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);padding:3px 12px;border-radius:99px;border:1px solid rgba(255,255,255,0.15);">Confidential</span>
+          <span style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);padding:3px 12px;border-radius:99px;border:1px solid rgba(255,255,255,0.15);">Bradley Company</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="stats-strip">
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--brand-primary);">$540M</div>
+        <div class="stat-lbl">Annual Revenue</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--brand-accent);">63</div>
+        <div class="stat-lbl">Active Brokers</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:#7C3AED;">6-8hrs</div>
+        <div class="stat-lbl">Weekly Manual Reports</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--brand-secondary);">8yrs</div>
+        <div class="stat-lbl">Salesforce Partnership</div>
+      </div>
+    </div>
+
+    <!-- Situation -->
+    <div style="background:#F8FAFC;border-radius:12px;padding:20px 24px;margin:16px 0;border:1px solid #E5E7EB;">
+      <h2 style="font-size:0.95rem;font-weight:800;color:#0B2545;margin-bottom:10px;">The Situation</h2>
+      <p style="font-size:0.83rem;color:#374151;line-height:1.75;margin-bottom:10px;">Bradley Company is the Midwest's largest independently owned commercial real estate firm — 63 brokers across Michigan and Indiana, generating $540M+ in annual revenue. But today those brokers work in 3+ separate tools (Excel, Pipe Drive, DLAS), Brianna's team spends 6–8 hours per week manually stitching DLAS and Yardi reports, and closed deals are manually emailed to accounting — who re-enters them into Yardi — which sends payments back to DLAS for broker payroll. Every week.</p>
+      <p style="font-size:0.83rem;color:#374151;line-height:1.75;">This is not a rip-and-replace. Salesforce connects to Yardi Voyager, DLAS, ClickUp, and Outlook through open APIs — keeping every system that works while filling the gaps. Fortimize's proven CRE brokerage accelerator delivers 60–70% of tenant rep and investment sales workflows ready on day one, and bi-weekly sprints with broker feedback built in mean brokers shape the tool before it ships. Agentforce — the mobile-first AI assistant — is the easy button brokers have been asking for, and the reason this moment is different from every prior evaluation.</p>
+    </div>
+
+    <!-- Four pillars -->
+    <h2 style="font-size:0.95rem;font-weight:800;color:#0B2545;margin:20px 0 12px;">Four Value Pillars</h2>
+    <div class="pillars">
+
+      <div class="pillar" style="background:#F0F6FC;border-color:#BFDBFE;">
+        <div class="pillar-num" style="color:var(--brand-primary);">Pillar 1</div>
+        <h3>Siloed Broker Intelligence → Unified Command Center</h3>
+        <ul>
+          <li style="color:#374151;">Unified broker command center replaces Excel, Pipe Drive, DLAS's CRM layer</li>
+          <li style="color:#374151;">Mobile Agentforce logs calls, notes, and tasks by voice — no typing required</li>
+          <li style="color:#374151;">Market leaders see every broker's pipeline, calls, and deal velocity in real time</li>
+        </ul>
+        <div style="margin-top:10px;padding:7px 10px;background:rgba(2,116,190,0.08);border-radius:7px;">
+          <span style="font-size:10px;font-weight:800;color:var(--brand-primary);">Outcome: </span>
+          <span style="font-size:10px;color:#374151;">No more weekly pipeline extraction meetings — leaders act in real time</span>
+        </div>
+      </div>
+
+      <div class="pillar" style="background:#FDF4FF;border-color:#E9D5FF;">
+        <div class="pillar-num" style="color:#7C3AED;">Pillar 2</div>
+        <h3>Manual Reporting Bottleneck → Live Board Intelligence</h3>
+        <ul>
+          <li style="color:#374151;">Live Tableau dashboards replace 6–8 hrs/week of manual DLAS + Yardi stitching</li>
+          <li style="color:#374151;">Mobile access — CEO pulls pipeline by market from a phone before any meeting</li>
+          <li style="color:#374151;">Board prep drops from exhaustive to automatic — metrics always current</li>
+        </ul>
+        <div style="margin-top:10px;padding:7px 10px;background:rgba(124,58,237,0.08);border-radius:7px;">
+          <span style="font-size:10px;font-weight:800;color:#7C3AED;">Outcome: </span>
+          <span style="font-size:10px;color:#374151;">300+ hours per year reclaimed from manual reporting — redirect to brokerage</span>
+        </div>
+      </div>
+
+      <div class="pillar" style="background:#FFF7ED;border-color:#FED7AA;">
+        <div class="pillar-num" style="color:var(--brand-accent);">Pillar 3</div>
+        <h3>DLAS ↔ Yardi Gap → Connected Operations</h3>
+        <ul>
+          <li style="color:#374151;">Automated deal closure → Yardi accounting flow, no email handoff required</li>
+          <li style="color:#374151;">Broker payroll data flows back from Yardi automatically — no re-keying</li>
+          <li style="color:#374151;">ClickUp and Outlook sync give coordinators and brokers one connected view</li>
+        </ul>
+        <div style="margin-top:10px;padding:7px 10px;background:rgba(255,105,0,0.08);border-radius:7px;">
+          <span style="font-size:10px;font-weight:800;color:var(--brand-accent);">Outcome: </span>
+          <span style="font-size:10px;color:#374151;">Eliminate the most painful operational workflow — completely automated</span>
+        </div>
+      </div>
+
+      <div class="pillar" style="background:#F0FDF4;border-color:#A7F3D0;">
+        <div class="pillar-num" style="color:#059669;">Pillar 4</div>
+        <h3>Change Management Risk → Broker-Shaped Adoption</h3>
+        <ul>
+          <li style="color:#374151;">Fortimize CRE accelerator: 60–70% of workflows pre-built, not blank-slate</li>
+          <li style="color:#374151;">Bi-weekly sprints with broker feedback — brokers own the outcome before go-live</li>
+          <li style="color:#374151;">Agentforce's voice-first UX is so intuitive it gets adopted by choice, not mandate</li>
+        </ul>
+        <div style="margin-top:10px;padding:7px 10px;background:rgba(5,150,105,0.08);border-radius:7px;">
+          <span style="font-size:10px;font-weight:800;color:#059669;">Outcome: </span>
+          <span style="font-size:10px;color:#374151;">Different from every prior evaluation — the tool and the process are both proven</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Why now callout -->
+    <div style="background:linear-gradient(135deg,var(--brand-secondary),#012D5A);border-radius:12px;padding:20px 24px;margin:16px 0;">
+      <h3 style="color:var(--brand-accent);font-size:0.88rem;font-weight:800;margin-bottom:8px;">⚡ Why Now — After 8 Years?</h3>
+      <p style="color:rgba(255,255,255,0.8);font-size:0.82rem;line-height:1.7;margin:0;">Agentforce didn't exist in 2018. The mobile-first AI assistant that makes brokers <em>want</em> to use a CRM — surfacing ranked leads by location, logging meetings by voice, drafting personalized emails in seconds — is genuinely new. The Aug 31 demo showed John Jessen exactly this capability live, and his reaction was immediate: <em>"The more AI the better as far as I'm concerned."</em> The moment is different because the tool is different.</p>
+    </div>
+
+    <!-- 30/60/90 timeline -->
+    <h2 style="font-size:0.95rem;font-weight:800;color:#0B2545;margin:20px 0 12px;">90-Day Path Forward</h2>
+    <div class="timeline">
+      <div class="phase" style="border-top:3px solid var(--brand-primary);">
+        <div class="phase-num" style="color:var(--brand-primary);">Now → October 2026</div>
+        <h4>Phase 1: Architecture & Scoping</h4>
+        <p>DLAS + Yardi integration architecture confirmed. Fortimize accelerator configured. Pilot broker group of 5–6 selected from John's team.</p>
+      </div>
+      <div class="phase" style="border-top:3px solid var(--brand-green);">
+        <div class="phase-num" style="color:var(--brand-green);">Oct → Nov 2026</div>
+        <h4>Phase 2: Pilot with Broker Feedback</h4>
+        <p>Mobile Agentforce live for pilot group. Bi-weekly sprints. Outlook sync active. Tableau dashboard for John and Brianna.</p>
+      </div>
+      <div class="phase" style="border-top:3px solid var(--brand-accent);">
+        <div class="phase-num" style="color:var(--brand-accent);">Dec 2026 → Q1 2027</div>
+        <h4>Phase 3: Full Brokerage Rollout</h4>
+        <p>All 63 brokers live. DLAS ↔ Yardi integration complete. Full board dashboards. AI-powered brokerage operation running.</p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div style="text-align:center;padding:28px;background:#F8FAFC;border-radius:12px;border:1px solid #E5E7EB;margin-top:20px;">
+      <h3 style="font-size:1rem;font-weight:800;color:#0B2545;margin-bottom:8px;">Ready to Schedule the Q4 2026 Review?</h3>
+      <p style="font-size:0.83rem;color:#64748B;margin-bottom:16px;line-height:1.65;">Reach out to Justin Earls, Eric Dalton, or Grant Stephens to move the conversation forward.</p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+        <a href="mailto:jearls@salesforce.com" style="padding:9px 18px;background:linear-gradient(135deg,var(--brand-secondary),var(--brand-primary));color:white;font-size:12px;font-weight:800;border-radius:8px;text-decoration:none;">Justin Earls — jearls@salesforce.com</a>
+        <a href="mailto:edalton@salesforce.com" style="padding:9px 18px;background:linear-gradient(135deg,#15803D,#16A34A);color:white;font-size:12px;font-weight:800;border-radius:8px;text-decoration:none;">Eric Dalton — edalton@salesforce.com</a>
+        <a href="mailto:gstephens@salesforce.com" style="padding:9px 18px;background:linear-gradient(135deg,#C44E00,#FF6900);color:white;font-size:12px;font-weight:800;border-radius:8px;text-decoration:none;">Grant Stephens — gstephens@salesforce.com</a>
+      </div>
+      <a href="index.html" style="display:inline-block;margin-top:16px;font-size:12px;font-weight:600;color:var(--brand-primary);text-decoration:none;">← Back to Full Deck</a>
+    </div>
+
+    <!-- Compliance footer -->
+    <div style="margin-top:24px;padding-top:16px;border-top:1px solid #E5E7EB;text-align:center;">
+      <p style="font-size:10px;color:#94A3B8;line-height:1.7;">This document is prepared exclusively for Bradley Company. All projections are estimates based on industry benchmarks and inputs provided — they are not a formal commitment from Salesforce, Inc. Architecture and product details are presented as evaluation-stage for Q4 2026 review and are subject to Salesforce product roadmap confirmation. Salesforce, Einstein, Agentforce, Tableau, and Data Cloud are registered trademarks of Salesforce, Inc. © 2026 Salesforce, Inc. All rights reserved.</p>
+    </div>
+
+  </div>
+</body>
+</html>
