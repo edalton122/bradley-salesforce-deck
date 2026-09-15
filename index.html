@@ -831,89 +831,142 @@
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!--  SLIDE 5 — CONNECTED OPERATIONS                            -->
 <!-- ═══════════════════════════════════════════════════════════ -->
-<section id="slide-5" class="slide" style="background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);padding:80px 60px;">
+<style>
+.s5-card{position:absolute;width:156px;border-radius:13px;padding:12px 14px;transition:all .4s ease;}
+.s5-hub-wrap[data-state="before"] .s5-card{background:rgba(248,113,113,0.08);border:1.5px solid rgba(248,113,113,0.3);}
+.s5-hub-wrap[data-state="after"] .s5-card{background:rgba(114,191,68,0.08);border:1.5px solid rgba(114,191,68,0.28);}
+.s5-card-name{font-size:11.5px;font-weight:800;color:white;display:flex;align-items:center;gap:6px;margin-bottom:7px;}
+.s5-chip-b,.s5-chip-a{font-size:8.5px;font-weight:700;padding:3px 8px;border-radius:20px;}
+.s5-chip-b{background:rgba(248,113,113,0.15);color:#FCA5A5;}
+.s5-chip-a{background:rgba(114,191,68,0.15);color:#86EFAC;}
+.s5-hub-wrap[data-state="before"] .s5-chip-b{display:inline-block;}
+.s5-hub-wrap[data-state="before"] .s5-chip-a{display:none;}
+.s5-hub-wrap[data-state="after"] .s5-chip-b{display:none;}
+.s5-hub-wrap[data-state="after"] .s5-chip-a{display:inline-block;}
+.s5-ln-b,.s5-ln-a,.s5-dot{transition:opacity .4s ease;}
+.s5-hub-wrap[data-state="before"] .s5-ln-b{opacity:.7;}
+.s5-hub-wrap[data-state="before"] .s5-ln-a,.s5-hub-wrap[data-state="before"] .s5-dot{opacity:0;}
+.s5-hub-wrap[data-state="after"] .s5-ln-b{opacity:0;}
+.s5-hub-wrap[data-state="after"] .s5-ln-a{opacity:.75;}
+.s5-hub-wrap[data-state="after"] .s5-dot{opacity:1;}
+.s5-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:84px;height:84px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;transition:all .4s ease;}
+.s5-hub-wrap[data-state="before"] .s5-center{background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.12);}
+.s5-hub-wrap[data-state="after"] .s5-center{background:rgba(2,116,190,0.2);border:2px solid rgba(2,116,190,0.5);box-shadow:0 0 28px rgba(2,116,190,0.3);}
+.s5-tog{display:flex;border-radius:22px;overflow:hidden;border:1.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);}
+.s5-tog-btn{padding:7px 18px;font-size:11px;font-weight:800;cursor:pointer;transition:all .22s ease;color:rgba(255,255,255,0.4);background:transparent;border:none;}
+.s5-tog-btn.s5-on{background:rgba(255,255,255,0.12);color:white;}
+</style>
+
+<section id="slide-5" class="slide" style="background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);padding:52px 60px;">
   <div class="max-w-6xl mx-auto w-full">
-    <div class="text-center mb-12">
-      <div class="reveal mb-3 flex justify-center"><span class="pill" style="background:rgba(114,191,68,0.15);color:#A7F3D0;border:1px solid rgba(114,191,68,0.25);">Pillar 2</span></div>
-      <h2 class="reveal" style="font-size:clamp(1.8rem,3.5vw,2.7rem);font-weight:900;color:white;letter-spacing:-0.025em;line-height:1.1;margin-bottom:8px;">From Fragmented Tools<br/>to <span style="color:var(--brand-accent);">Connected Operations</span></h2>
-      <div class="accent-line reveal" style="margin:12px auto;background:linear-gradient(90deg,var(--brand-accent),#72BF44);"></div>
+
+    <!-- Header row -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;">
+      <div>
+        <div class="reveal mb-2 flex items-center gap-3">
+          <span class="pill" style="background:rgba(114,191,68,0.15);color:#A7F3D0;border:1px solid rgba(114,191,68,0.25);">Pillar 2</span>
+        </div>
+        <h2 class="reveal" style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:white;line-height:1.1;margin-bottom:6px;">From Fragmented Tools<br/>to <span style="color:var(--brand-accent);">Connected Operations</span></h2>
+        <div class="accent-line reveal" style="margin:0;background:linear-gradient(90deg,var(--brand-accent),#72BF44);"></div>
+      </div>
+      <!-- Toggle -->
+      <div class="reveal" style="display:flex;flex-direction:column;align-items:center;gap:5px;padding-top:6px;">
+        <div class="s5-tog" id="s5-tog">
+          <button class="s5-tog-btn s5-on" onclick="setHubState('before')">Before</button>
+          <button class="s5-tog-btn" onclick="setHubState('after')">After →</button>
+        </div>
+        <span style="font-size:9.5px;color:rgba(255,255,255,0.3);">Toggle to compare</span>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Hub map -->
+    <div class="reveal">
+      <div class="s5-hub-wrap" id="s5-hub" data-state="before" style="position:relative;height:295px;max-width:780px;margin:0 auto;">
 
-      <!-- Before -->
-      <div class="reveal">
-        <div style="font-size:11px;font-weight:800;color:#F87171;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:#F87171;"></div>
-          Before: Broken Connections
+        <!-- SVG connection lines -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <!-- Before: dashed red -->
+          <line class="s5-ln-b" x1="20" y1="14" x2="46" y2="46" stroke="#F87171" stroke-width=".8" stroke-dasharray="2.5 2"/>
+          <line class="s5-ln-b" x1="80" y1="14" x2="54" y2="46" stroke="#F87171" stroke-width=".8" stroke-dasharray="2.5 2"/>
+          <line class="s5-ln-b" x1="20" y1="86" x2="46" y2="54" stroke="#F87171" stroke-width=".8" stroke-dasharray="2.5 2"/>
+          <line class="s5-ln-b" x1="80" y1="86" x2="54" y2="54" stroke="#F87171" stroke-width=".8" stroke-dasharray="2.5 2"/>
+          <!-- After: solid green -->
+          <line class="s5-ln-a" x1="20" y1="14" x2="46" y2="46" stroke="#72BF44" stroke-width="1"/>
+          <line class="s5-ln-a" x1="80" y1="14" x2="54" y2="46" stroke="#72BF44" stroke-width="1"/>
+          <line class="s5-ln-a" x1="20" y1="86" x2="46" y2="54" stroke="#72BF44" stroke-width="1"/>
+          <line class="s5-ln-a" x1="80" y1="86" x2="54" y2="54" stroke="#72BF44" stroke-width="1"/>
+          <!-- Traveling dots (after only) -->
+          <circle class="s5-dot" r="1.4" fill="#72BF44"><animateMotion dur="1.9s" repeatCount="indefinite" path="M20,14 L46,46"/></circle>
+          <circle class="s5-dot" r="1.4" fill="#72BF44"><animateMotion dur="2.2s" repeatCount="indefinite" path="M80,14 L54,46"/></circle>
+          <circle class="s5-dot" r="1.4" fill="#72BF44"><animateMotion dur="1.7s" repeatCount="indefinite" path="M20,86 L46,54"/></circle>
+          <circle class="s5-dot" r="1.4" fill="#72BF44"><animateMotion dur="2.4s" repeatCount="indefinite" path="M80,86 L54,54"/></circle>
+        </svg>
+
+        <!-- Salesforce hub badge -->
+        <div class="s5-center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M13 10V3L4 14h7v7l9-11h-7z" fill="white" opacity="0.92"/></svg>
+          <div style="font-size:7px;font-weight:800;color:rgba(255,255,255,0.8);letter-spacing:.04em;margin-top:2px;">SALESFORCE</div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div class="feature-hl" style="border-left-color:#F87171 !important;background:rgba(248,113,113,0.05);padding:12px 16px;border-radius:0 10px 10px 0;border-left:3px solid #F87171 !important;">
-            <p style="font-size:0.83rem;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:3px;">Outlook emails unlinked from deals</p>
-            <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.55;">Every broker email, meeting, and calendar event disappears into Outlook — zero connection to contacts, leads, or opportunities in any system</p>
+
+        <!-- Top-left: Outlook -->
+        <div class="s5-card" style="left:0;top:0;">
+          <div class="s5-card-name">
+            <svg width="13" height="13" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24" opacity=".8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Outlook
           </div>
-          <div class="feature-hl" style="border-left-color:#F87171 !important;background:rgba(248,113,113,0.05);padding:12px 16px;border-radius:0 10px 10px 0;border-left:3px solid #F87171 !important;">
-            <p style="font-size:0.83rem;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:3px;">ClickUp tasks isolated from CRM</p>
-            <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.55;">Transaction coordinators manage checklists in ClickUp while deal data lives in DLAS — no connection, no shared visibility, constant context-switching</p>
-          </div>
-          <div class="feature-hl" style="border-left-color:#F87171 !important;background:rgba(248,113,113,0.05);padding:12px 16px;border-radius:0 10px 10px 0;border-left:3px solid #F87171 !important;">
-            <p style="font-size:0.83rem;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:3px;">DLAS pipeline emailed to accounting weekly</p>
-            <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.55;">Closed deals manually emailed → accounting enters into Yardi → payments keyed back into DLAS for payroll. Every week. No automation.</p>
-          </div>
-          <div class="feature-hl" style="border-left-color:#F87171 !important;background:rgba(248,113,113,0.05);padding:12px 16px;border-radius:0 10px 10px 0;border-left:3px solid #F87171 !important;">
-            <p style="font-size:0.83rem;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:3px;">Pipeline entry depends on assistants</p>
-            <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.55;">Assistants meet weekly with brokers to manually extract pipeline data and enter it into DLAS — data is always 5-7 days old and broker-dependent</p>
-          </div>
+          <div><span class="s5-chip-b">Emails unlinked from CRM</span><span class="s5-chip-a">Bidirectional auto-sync</span></div>
         </div>
+
+        <!-- Top-right: DLAS -->
+        <div class="s5-card" style="right:0;top:0;">
+          <div class="s5-card-name">
+            <svg width="13" height="13" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24" opacity=".8"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            DLAS
+          </div>
+          <div><span class="s5-chip-b">Manual weekly exports</span><span class="s5-chip-a">Live pipeline sync</span></div>
+        </div>
+
+        <!-- Bottom-left: ClickUp -->
+        <div class="s5-card" style="left:0;bottom:0;">
+          <div class="s5-card-name">
+            <svg width="13" height="13" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24" opacity=".8"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            ClickUp
+          </div>
+          <div><span class="s5-chip-b">Tasks isolated from deals</span><span class="s5-chip-a">AppExchange integration</span></div>
+        </div>
+
+        <!-- Bottom-right: Yardi -->
+        <div class="s5-card" style="right:0;bottom:0;">
+          <div class="s5-card-name">
+            <svg width="13" height="13" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24" opacity=".8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Yardi
+          </div>
+          <div><span class="s5-chip-b">Re-keyed from emails</span><span class="s5-chip-a">Automated deal flow</span></div>
+        </div>
+
       </div>
-
-      <!-- After -->
-      <div class="reveal">
-        <div style="font-size:11px;font-weight:800;color:#72BF44;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:#72BF44;"></div>
-          After: Unified Salesforce Platform
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div class="feature-hl" style="border-left-color:#72BF44 !important;background:rgba(114,191,68,0.07);padding:12px 16px;border-radius:0 10px 10px 0;border-left:3px solid #72BF44 !important;">
-            <p style="font-size:0.83rem;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:3px;">Outlook bidirectional sync</p>
-            <p style="font-size:0.78rem;color:rgba(255,255,255,0.55);line-height:1.55;">Every email, calendar event, and meeting auto-logged to the relevant deal, contact, or property record in Salesforce — work in Outlook, see it in CRM</p>
-          </div>
-          <div class="feature-hl" style="border-left-color:#72BF44 !important;background:rgba(114,191,68,0.07);padding:12px 16px;border-radius:0 10px 10px 0;border-left:3px solid #72BF44 !important;">
-            <p style="font-size:0.83rem;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:3px;">ClickUp integration via Salesforce AppExchange</p>
-            <p style="font-size:0.78rem;color:rgba(255,255,255,0.55);line-height:1.55;">Transaction coordinator tasks surface alongside deal stages in Salesforce — confirmed by Ally in the Aug 31 demo, integration documentation verified live</p>
-          </div>
-          <div class="feature-hl" style="border-left-color:#72BF44 !important;background:rgba(114,191,68,0.07);padding:12px 16px;border-radius:0 10px 10px 0;border-left:3px solid #72BF44 !important;">
-            <p style="font-size:0.83rem;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:3px;">Automated DLAS ↔ Yardi data flow</p>
-            <p style="font-size:0.78rem;color:rgba(255,255,255,0.55);line-height:1.55;">Closed deals trigger accounting workflows automatically — payments sync back without email, without re-keying, and without anyone's manual intervention</p>
-          </div>
-          <div class="feature-hl" style="border-left-color:#72BF44 !important;background:rgba(114,191,68,0.07);padding:12px 16px;border-radius:0 10px 10px 0;border-left:3px solid #72BF44 !important;">
-            <p style="font-size:0.83rem;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:3px;">Brokers update by voice, anywhere</p>
-            <p style="font-size:0.78rem;color:rgba(255,255,255,0.55);line-height:1.55;">Agentforce mobile means pipeline updates happen in real time — no more weekly extraction meetings, no 5-day-old data, no gaps from sticky notes</p>
-          </div>
-        </div>
-      </div>
-
     </div>
 
     <!-- Stats strip -->
-    <div class="reveal mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="reveal mt-5 grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="glass rounded-xl p-4 text-center" style="border:1px solid rgba(114,191,68,0.2);">
-        <div style="font-size:1.5rem;font-weight:900;color:#A7F3D0;">100%</div>
-        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-top:4px;">Email Activity Captured</div>
+        <div style="font-size:1.3rem;font-weight:900;color:#A7F3D0;">5-7 days → Live</div>
+        <div style="font-size:9.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-top:4px;">Pipeline Visibility</div>
       </div>
       <div class="glass rounded-xl p-4 text-center" style="border:1px solid rgba(114,191,68,0.2);">
-        <div style="font-size:1.5rem;font-weight:900;color:#A7F3D0;">0</div>
-        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-top:4px;">Manual Re-Entry Steps</div>
+        <div style="font-size:1.3rem;font-weight:900;color:#A7F3D0;">0</div>
+        <div style="font-size:9.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-top:4px;">Manual Re-Entry Steps</div>
       </div>
       <div class="glass rounded-xl p-4 text-center" style="border:1px solid rgba(114,191,68,0.2);">
-        <div style="font-size:1.5rem;font-weight:900;color:#A7F3D0;">Live</div>
-        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-top:4px;">Deal Visibility</div>
+        <div style="font-size:1.3rem;font-weight:900;color:#A7F3D0;">100%</div>
+        <div style="font-size:9.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-top:4px;">Email Activity Captured</div>
       </div>
       <div class="glass rounded-xl p-4 text-center" style="border:1px solid rgba(114,191,68,0.2);">
-        <div style="font-size:1.5rem;font-weight:900;color:#A7F3D0;">Full</div>
-        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-top:4px;">Audit Trail</div>
+        <div style="font-size:1.3rem;font-weight:900;color:#A7F3D0;">Full Audit Trail</div>
+        <div style="font-size:9.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-top:4px;">Every Deal Action Logged</div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -921,88 +974,185 @@
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!--  SLIDE 6 — AI ARCHITECTURE                                 -->
 <!-- ═══════════════════════════════════════════════════════════ -->
-<section id="slide-6" class="slide" style="background:var(--brand-light);padding:80px 60px;">
-  <div class="img-strip">
-    <img src="https://www.bradleyco.com/wp-content/uploads/2021/04/grand-rapids.jpg" alt="Bradley" loading="lazy"/>
-  </div>
+<style>
+.s6-layer-row{display:flex;align-items:center;gap:13px;padding:11px 15px;border-radius:11px;cursor:pointer;transition:all .22s ease;border:1.5px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);}
+.s6-layer-row:hover{background:rgba(255,255,255,0.09);transform:translateX(5px);}
+.s6-layer-row.s6-active{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.24);transform:translateX(8px);}
+.s6-chip{display:inline-block;font-size:8.5px;font-weight:700;padding:2px 7px;border-radius:20px;margin-right:3px;background:rgba(255,255,255,0.09);color:rgba(255,255,255,0.55);}
+.s6-arrow{width:2px;height:18px;background:linear-gradient(to bottom,rgba(255,255,255,0.14),rgba(255,255,255,0.03));margin:0 24px;position:relative;overflow:hidden;flex-shrink:0;}
+.s6-arrow-dot{position:absolute;left:0;width:2px;height:7px;border-radius:1px;animation:flowDot 2.2s ease-in-out infinite;}
+.s6-det-panel{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;height:100%;}
+.s6-det-content{display:none;flex-direction:column;flex:1;}
+.s6-det-content.s6-det-on{display:flex;}
+.s6-det-bullet{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.s6-det-bullet:last-of-type{border-bottom:none;}
+.s6-callout{margin-top:auto;padding:11px 13px;border-radius:10px;background:rgba(255,105,0,0.08);border:1px solid rgba(255,105,0,0.2);font-size:0.78rem;color:rgba(255,255,255,0.65);line-height:1.55;font-style:italic;}
+.s6-ov-layer{display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.07);}
+.s6-ov-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.s6-ov-arrow{width:2px;height:12px;background:rgba(255,255,255,0.1);margin:0 auto;position:relative;overflow:hidden;}
+.s6-ov-travel{position:absolute;left:0;width:2px;height:6px;border-radius:1px;animation:flowDot 2s ease-in-out infinite;}
+</style>
 
-  <div class="max-w-6xl mx-auto w-full" style="padding-right:42%;">
-    <div class="mb-3 reveal"><span class="pill" style="background:rgba(255,105,0,0.1);color:#C04A00;border:1px solid rgba(255,105,0,0.25);">Pillar 3</span></div>
-    <h2 class="reveal" style="font-size:clamp(1.8rem,3.5vw,2.7rem);font-weight:900;color:var(--brand-secondary);letter-spacing:-0.025em;line-height:1.1;margin-bottom:8px;">Agentforce<br/><span style="color:var(--brand-primary);">Enterprise AI Architecture</span></h2>
-    <div class="accent-line reveal" style="background:linear-gradient(90deg,var(--brand-primary),var(--brand-accent));margin-bottom:8px;"></div>
-    <p class="reveal" style="color:#64748B;font-size:0.85rem;margin-bottom:24px;">Click each layer to expand implementation details</p>
+<section id="slide-6" class="slide" style="background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);padding:56px 60px;">
+  <div style="display:flex;align-items:stretch;gap:36px;max-width:1240px;margin:0 auto;width:100%;">
 
-    <div style="display:flex;flex-direction:column;gap:2px;">
+    <!-- ── Left: heading + layer stack ── -->
+    <div style="flex:0 0 44%;display:flex;flex-direction:column;">
+      <div class="mb-2 reveal"><span class="pill" style="background:rgba(255,105,0,0.15);color:#FFB380;border:1px solid rgba(255,105,0,0.3);">Pillar 3</span></div>
+      <h2 class="reveal" style="font-size:clamp(1.4rem,2.4vw,1.9rem);font-weight:900;color:white;line-height:1.1;margin-bottom:5px;">How Salesforce Powers<br/><span style="color:var(--brand-accent);">Bradley's AI Stack</span></h2>
+      <div class="accent-line reveal" style="background:linear-gradient(90deg,var(--brand-accent),var(--brand-primary));margin-bottom:12px;"></div>
+      <p class="reveal" style="color:rgba(255,255,255,0.45);font-size:0.78rem;line-height:1.6;margin-bottom:18px;">Your existing systems stay. Data flows up through a secured AI layer into every broker's pocket. Click any layer to explore.</p>
 
-      <!-- Layer 1: Data Sources -->
-      <div class="arch-layer reveal bg-white rounded-xl p-5" style="border:1px solid #E5E7EB;" onclick="toggleArch(this)">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#1D4ED8,#3B82F6);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div style="display:flex;flex-direction:column;flex:1;justify-content:space-between;">
+
+        <div class="s6-layer-row reveal" onclick="selectArchLayer(1)">
+          <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1D4ED8,#3B82F6);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:9px;font-weight:700;color:#60A5FA;text-transform:uppercase;letter-spacing:.07em;">Layer 1 — Data Sources</div>
+            <div style="font-size:.85rem;font-weight:800;color:white;margin-bottom:4px;">DLAS + Yardi Voyager</div>
+            <div><span class="s6-chip">Deal Pipeline</span><span class="s6-chip">Property Data</span><span class="s6-chip">Financials</span></div>
           </div>
-          <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#3B82F6;text-transform:uppercase;letter-spacing:0.05em;">Layer 1</div><div style="font-weight:800;color:#0B2545;">DLAS + Yardi Voyager</div><div style="font-size:12px;color:#64748B;">Deal pipeline · Property inventory · Comps · Financial data · Broker payroll</div></div>
-          <svg width="14" height="14" fill="none" stroke="#CBD5E1" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          <svg width="11" height="11" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="arch-expand"><div style="padding:12px 0 4px 48px;font-size:0.82rem;color:#374151;line-height:1.7;">DLAS houses Bradley's deal pipeline, property listings, comps, and broker payroll. Yardi Voyager manages property management accounting and financial reporting. Salesforce's open API bridges both systems — DLAS data flows into the CRM layer without duplication, Yardi property and financial data surfaces in dashboards without manual extraction.</div></div>
-      </div>
 
-      <div class="arch-arrow-line reveal"><div class="arch-travel"></div></div>
+        <div class="s6-arrow"><div class="s6-arrow-dot" style="background:#3B82F6;"></div></div>
 
-      <!-- Layer 2: Data Cloud -->
-      <div class="arch-layer reveal bg-white rounded-xl p-5" style="border:1px solid #E5E7EB;" onclick="toggleArch(this)">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#7C3AED,#9F67F7);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="s6-layer-row reveal" onclick="selectArchLayer(2)">
+          <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#7C3AED,#9F67F7);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:9px;font-weight:700;color:#A78BFA;text-transform:uppercase;letter-spacing:.07em;">Layer 2 — Federation</div>
+            <div style="font-size:.85rem;font-weight:800;color:white;margin-bottom:4px;">Salesforce Data Cloud</div>
+            <div><span class="s6-chip">Zero-Copy</span><span class="s6-chip">Unified Profiles</span><span class="s6-chip">Real-Time</span></div>
           </div>
-          <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#7C3AED;text-transform:uppercase;letter-spacing:0.05em;">Layer 2</div><div style="font-weight:800;color:#0B2545;">Salesforce Data Cloud</div><div style="font-size:12px;color:#64748B;">Zero-Copy Federation · Unified Broker Profiles · Real-Time Streaming</div></div>
-          <svg width="14" height="14" fill="none" stroke="#CBD5E1" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          <svg width="11" height="11" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="arch-expand"><div style="padding:12px 0 4px 48px;font-size:0.82rem;color:#374151;line-height:1.7;">Data Cloud federates DLAS and Yardi data with Salesforce CRM without ETL or duplication. Unified broker profiles merge contact history, deal pipeline, communication logs, and property data into a single governed view — powering both Agentforce AI signals and Tableau dashboards from the same source of truth.</div></div>
-      </div>
 
-      <div class="arch-arrow-line reveal"><div class="arch-travel"></div></div>
+        <div class="s6-arrow"><div class="s6-arrow-dot" style="background:#9F67F7;"></div></div>
 
-      <!-- Layer 3: Trust Layer -->
-      <div class="arch-layer reveal bg-white rounded-xl p-5" style="border:1px solid #E5E7EB;" onclick="toggleArch(this)">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#374151,#1F2937);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="s6-layer-row reveal" onclick="selectArchLayer(3)">
+          <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#4B5563,#374151);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:9px;font-weight:700;color:#D1D5DB;text-transform:uppercase;letter-spacing:.07em;">Layer 3 — Security</div>
+            <div style="font-size:.85rem;font-weight:800;color:white;margin-bottom:4px;">Einstein Trust Layer</div>
+            <div><span class="s6-chip">Zero Retention</span><span class="s6-chip">PII Masking</span><span class="s6-chip">Audit Trail</span></div>
           </div>
-          <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.05em;">Layer 3</div><div style="font-weight:800;color:#0B2545;">Einstein Trust Layer</div><div style="font-size:12px;color:#64748B;">Data Security · Zero Retention · PII Masking · Full Audit Trail</div></div>
-          <svg width="14" height="14" fill="none" stroke="#CBD5E1" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          <svg width="11" height="11" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="arch-expand"><div style="padding:12px 0 4px 48px;font-size:0.82rem;color:#374151;line-height:1.7;">Bradley's deal data, client contacts, and financial records never leave the Trust Layer boundary when powering AI. Zero data retention by the AI model, PII automatically masked, and complete audit trail of every AI action. Same stack as CrowdStrike, RBC, and Toyota — enterprise-grade security with no compromise.</div></div>
-      </div>
 
-      <div class="arch-arrow-line reveal"><div class="arch-travel"></div></div>
+        <div class="s6-arrow"><div class="s6-arrow-dot" style="background:var(--brand-accent);"></div></div>
 
-      <!-- Layer 4: Agentforce -->
-      <div class="arch-layer reveal bg-white rounded-xl p-5" style="border:1px solid rgba(255,105,0,0.2);" onclick="toggleArch(this)">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--brand-accent),#C44E00);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="s6-layer-row reveal" onclick="selectArchLayer(4)">
+          <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--brand-accent),#C44E00);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:9px;font-weight:700;color:#FB923C;text-transform:uppercase;letter-spacing:.07em;">Layer 4 — AI · Mobile-First ✦</div>
+            <div style="font-size:.85rem;font-weight:800;color:white;margin-bottom:4px;">Agentforce (AWS Bedrock)</div>
+            <div><span class="s6-chip">Lead Scoring</span><span class="s6-chip">Voice Logging</span><span class="s6-chip">Task AI</span></div>
           </div>
-          <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:var(--brand-accent);text-transform:uppercase;letter-spacing:0.05em;">Layer 4 — Mobile-First</div><div style="font-weight:800;color:#0B2545;">Agentforce (AWS Bedrock)</div><div style="font-size:12px;color:#64748B;">Lead scoring · Voice logging · Deal summaries · Task automation · Mobile broker assistant</div></div>
-          <svg width="14" height="14" fill="none" stroke="#CBD5E1" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          <svg width="11" height="11" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="arch-expand"><div style="padding:12px 0 4px 48px;font-size:0.82rem;color:#374151;line-height:1.7;">Agentforce powers Bradley's "Bradley Internal Assistant" — the mobile AI that surfaces ranked leads by location, logs meeting notes by voice, drafts personalized emails based on contact history (like the LinkedIn promotion congratulation shown live on Aug 31), and auto-creates follow-up tasks. Model-agnostic via AWS Bedrock — no vendor lock-in, no unpredictable token costs.</div></div>
-      </div>
 
-      <div class="arch-arrow-line reveal"><div class="arch-travel"></div></div>
+        <div class="s6-arrow"><div class="s6-arrow-dot" style="background:#72BF44;"></div></div>
 
-      <!-- Layer 5: Applications -->
-      <div class="arch-layer reveal bg-white rounded-xl p-5" style="border:1px solid rgba(114,191,68,0.2);" onclick="toggleArch(this)">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#72BF44,#4A9A1E);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="s6-layer-row reveal" onclick="selectArchLayer(5)">
+          <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#72BF44,#4A9A1E);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:9px;font-weight:700;color:#86EFAC;text-transform:uppercase;letter-spacing:.07em;">Layer 5 — Applications</div>
+            <div style="font-size:.85rem;font-weight:800;color:white;margin-bottom:4px;">Sales Cloud + Tableau</div>
+            <div><span class="s6-chip">Broker CRM</span><span class="s6-chip">Live Dashboards</span><span class="s6-chip">Mobile App</span></div>
           </div>
-          <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#72BF44;text-transform:uppercase;letter-spacing:0.05em;">Layer 5</div><div style="font-weight:800;color:#0B2545;">Sales Cloud + Tableau</div><div style="font-size:12px;color:#64748B;">Broker command center · Deal pipeline · Executive dashboards · Mobile approvals</div></div>
-          <svg width="14" height="14" fill="none" stroke="#CBD5E1" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          <svg width="11" height="11" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="arch-expand"><div style="padding:12px 0 4px 48px;font-size:0.82rem;color:#374151;line-height:1.7;">What brokers, market leaders, and executives actually see and interact with every day. Brokers get their command center with AI-ranked leads, activity logs, and deal stages. Leaders get live Tableau dashboards by market and broker. The CEO gets a phone app that shows the full picture — no prep, no waiting, no stitched-together spreadsheets.</div></div>
-      </div>
 
+      </div>
     </div>
+
+    <!-- ── Right: detail panel ── -->
+    <div style="flex:1;display:flex;flex-direction:column;">
+      <div class="s6-det-panel reveal" style="flex:1;">
+
+        <!-- 0 — default overview -->
+        <div class="s6-det-content s6-det-on" id="s6-det-0">
+          <div style="margin-bottom:18px;">
+            <div style="font-size:9.5px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;">End-to-End Platform</div>
+            <h3 style="font-size:1.05rem;font-weight:800;color:white;margin-bottom:7px;">Data flows from your systems<br/>upward to every broker's pocket.</h3>
+            <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.6;">DLAS and Yardi aren't going anywhere. Salesforce federates your data, secures it through the Trust Layer, and surfaces it as AI-powered insights on mobile. Click any layer on the left to explore the details.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0;flex:1;justify-content:center;">
+            <div class="s6-ov-layer"><div class="s6-ov-dot" style="background:#3B82F6;"></div><span style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,0.7);">DLAS + Yardi Voyager</span><span style="margin-left:auto;font-size:8.5px;color:rgba(255,255,255,0.3);">Your existing data</span></div>
+            <div class="s6-ov-arrow"><div class="s6-ov-travel" style="background:#3B82F6;"></div></div>
+            <div class="s6-ov-layer"><div class="s6-ov-dot" style="background:#9F67F7;"></div><span style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,0.7);">Salesforce Data Cloud</span><span style="margin-left:auto;font-size:8.5px;color:rgba(255,255,255,0.3);">Zero-copy federation</span></div>
+            <div class="s6-ov-arrow"><div class="s6-ov-travel" style="background:#9F67F7;"></div></div>
+            <div class="s6-ov-layer"><div class="s6-ov-dot" style="background:#6B7280;"></div><span style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,0.7);">Einstein Trust Layer</span><span style="margin-left:auto;font-size:8.5px;color:rgba(255,255,255,0.3);">Zero retention · PII masked</span></div>
+            <div class="s6-ov-arrow"><div class="s6-ov-travel" style="background:var(--brand-accent);"></div></div>
+            <div class="s6-ov-layer" style="background:rgba(255,105,0,0.1);border-color:rgba(255,105,0,0.22);"><div class="s6-ov-dot" style="background:var(--brand-accent);"></div><span style="font-size:10.5px;font-weight:800;color:white;">Agentforce ✦</span><span style="margin-left:auto;font-size:8.5px;color:rgba(255,255,255,0.3);">AI — mobile-first</span></div>
+            <div class="s6-ov-arrow"><div class="s6-ov-travel" style="background:#72BF44;"></div></div>
+            <div class="s6-ov-layer"><div class="s6-ov-dot" style="background:#72BF44;"></div><span style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,0.7);">Sales Cloud + Tableau</span><span style="margin-left:auto;font-size:8.5px;color:rgba(255,255,255,0.3);">Broker + leadership UI</span></div>
+          </div>
+        </div>
+
+        <!-- 1 — DLAS + Yardi -->
+        <div class="s6-det-content" id="s6-det-1">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#1D4ED8,#3B82F6);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+            <div><div style="font-size:9px;font-weight:700;color:#60A5FA;text-transform:uppercase;letter-spacing:.07em;">Layer 1 · Data Sources</div><div style="font-size:.98rem;font-weight:800;color:white;">DLAS + Yardi Voyager</div></div>
+          </div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#3B82F6;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">DLAS</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — deal pipeline, property listings, comps, and broker payroll all flow into Salesforce via open API. No duplication, no migration.</span></div></div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#3B82F6;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Yardi Voyager</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — property management accounting and financial reporting surfaces in dashboards without manual extraction or re-keying.</span></div></div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#3B82F6;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Zero replacement</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — both systems stay exactly as-is. Salesforce federates the data at the layer above, not in place of them.</span></div></div>
+          <div class="s6-callout">"Bradley's $540M revenue runs through DLAS and Yardi. Neither goes away — Salesforce makes that data useful across the whole business."</div>
+        </div>
+
+        <!-- 2 — Data Cloud -->
+        <div class="s6-det-content" id="s6-det-2">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#7C3AED,#9F67F7);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg></div>
+            <div><div style="font-size:9px;font-weight:700;color:#A78BFA;text-transform:uppercase;letter-spacing:.07em;">Layer 2 · Federation</div><div style="font-size:.98rem;font-weight:800;color:white;">Salesforce Data Cloud</div></div>
+          </div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#9F67F7;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Zero-Copy Federation</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — DLAS and Yardi data appears in Salesforce without ETL pipelines, warehousing, or duplication. One source of truth.</span></div></div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#9F67F7;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Unified Broker Profiles</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — contact history, deal pipeline, communication logs, and property data merged into a single governed view per broker.</span></div></div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#9F67F7;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Real-Time Streaming</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — data refreshes live as brokers log voice notes in the field. Agentforce and Tableau both run from the same real-time source.</span></div></div>
+          <div class="s6-callout">"Data Cloud is what makes Agentforce actually smart — it gives the AI a complete, real-time picture of every broker, deal, and property without IT building a data warehouse."</div>
+        </div>
+
+        <!-- 3 — Trust Layer -->
+        <div class="s6-det-content" id="s6-det-3">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#4B5563,#374151);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+            <div><div style="font-size:9px;font-weight:700;color:#D1D5DB;text-transform:uppercase;letter-spacing:.07em;">Layer 3 · Security</div><div style="font-size:.98rem;font-weight:800;color:white;">Einstein Trust Layer</div></div>
+          </div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#9CA3AF;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Zero Data Retention</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — Bradley's deal data, client contacts, and financials are never stored by the AI model. Every prompt is processed and immediately discarded.</span></div></div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#9CA3AF;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">PII Masking</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — personally identifiable information is automatically detected and masked before it reaches the AI layer. No configuration required.</span></div></div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#9CA3AF;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Full Audit Trail</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — every AI action logged with timestamp, user, and reasoning. Complete compliance record with zero additional setup.</span></div></div>
+          <div class="s6-callout">"Same security architecture as CrowdStrike, RBC, and Toyota — enterprise-grade, no compromise. Bradley's client data stays Bradley's."</div>
+        </div>
+
+        <!-- 4 — Agentforce -->
+        <div class="s6-det-content" id="s6-det-4">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--brand-accent),#C44E00);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+            <div><div style="font-size:9px;font-weight:700;color:#FB923C;text-transform:uppercase;letter-spacing:.07em;">Layer 4 · AI · Mobile-First</div><div style="font-size:.98rem;font-weight:800;color:white;">Agentforce (AWS Bedrock)</div></div>
+          </div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:var(--brand-accent);flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Lead Scoring</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — "Show me my top leads near Grand Rapids today." Agentforce returns ranked results with AI scores in 10 seconds flat.</span></div></div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:var(--brand-accent);flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Voice Logging</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — one voice memo creates the activity record, opportunity update, and follow-up task automatically. Zero manual entry.</span></div></div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:var(--brand-accent);flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Model-Agnostic via AWS Bedrock</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — no vendor lock-in, no unpredictable token costs. Best model for each task, always.</span></div></div>
+          <div class="s6-callout">"The LinkedIn congratulation email drafted live on Aug 31 came from Agentforce reading contact history through this exact stack — no prompt engineering, no setup."</div>
+        </div>
+
+        <!-- 5 — Sales Cloud + Tableau -->
+        <div class="s6-det-content" id="s6-det-5">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#72BF44,#4A9A1E);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg></div>
+            <div><div style="font-size:9px;font-weight:700;color:#86EFAC;text-transform:uppercase;letter-spacing:.07em;">Layer 5 · Applications</div><div style="font-size:.98rem;font-weight:800;color:white;">Sales Cloud + Tableau</div></div>
+          </div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#72BF44;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Broker Command Center</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — AI-ranked leads, logged activities, deal stages, and tasks in one mobile-first view. No app switching, no spreadsheets.</span></div></div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#72BF44;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Live Market Dashboards</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — Tableau dashboards per market and broker, updated in real time as activity is logged from the field. No Monday morning catch-up.</span></div></div>
+          <div class="s6-det-bullet"><div style="width:6px;height:6px;border-radius:50%;background:#72BF44;flex-shrink:0;margin-top:6px;"></div><div><span style="font-size:0.82rem;font-weight:700;color:white;">Executive Mobile View</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.55);"> — Chad sees the full company picture from a phone app. No prep, no waiting, no stitched-together spreadsheets.</span></div></div>
+          <div class="s6-callout">"John gets real-time pipeline visibility without a single status email from his team. Chad sees the full picture from his phone on Monday morning."</div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -2180,6 +2330,25 @@ updateFlow();
 window.toggleArch=function(el){
   document.querySelectorAll('.arch-layer').forEach(l=>{if(l!==el)l.classList.remove('expanded');});
   el.classList.toggle('expanded');
+};
+
+/* ── Slide 6: architecture layer selection ── */
+window.selectArchLayer = function(n) {
+  document.querySelectorAll('.s6-layer-row').forEach((el, i) => {
+    el.classList.toggle('s6-active', i + 1 === n);
+  });
+  document.querySelectorAll('.s6-det-content').forEach((el, i) => {
+    el.classList.toggle('s6-det-on', i === n);
+  });
+};
+
+/* ── Slide 5: hub before/after toggle ── */
+window.setHubState = function(state) {
+  const hub = document.getElementById('s5-hub');
+  if (hub) hub.setAttribute('data-state', state);
+  document.querySelectorAll('.s5-tog-btn').forEach((btn, i) => {
+    btn.classList.toggle('s5-on', (i === 0 && state === 'before') || (i === 1 && state === 'after'));
+  });
 };
 
 /* ── Detail drawer ── */
