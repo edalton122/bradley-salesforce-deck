@@ -1295,6 +1295,16 @@
 
     <!-- Right: Phone simulator -->
     <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+
+      <!-- ── Interactive invitation badge ── -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:6px 16px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);border-radius:30px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--brand-accent);flex-shrink:0;animation:pulseSlow 1.2s ease-in-out infinite;box-shadow:0 0 8px var(--brand-accent);"></span>
+        <span style="font-size:10px;font-weight:800;color:white;letter-spacing:0.04em;">Interactive Demo</span>
+        <span style="width:1px;height:12px;background:rgba(255,255,255,0.2);"></span>
+        <span style="font-size:10px;color:rgba(255,255,255,0.5);font-weight:600;">Tap the screen to begin the walkthrough</span>
+        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+
       <div id="phone-outer">
         <!-- Status bar -->
         <div id="phone-status-bar">
@@ -1311,7 +1321,20 @@
         <div id="phone-screen">
 
           <!-- ── Screen 1: Morning Brief ── -->
-          <div id="ds-screen-1" class="demo-screen ds-active">
+          <div id="ds-screen-1" class="demo-screen ds-active" style="position:relative;">
+
+            <!-- Tap-to-begin invitation overlay (dismisses on click, starts demo) -->
+            <div id="demo-invite" onclick="dismissInvite()" style="position:absolute;inset:0;z-index:25;cursor:pointer;border-radius:30px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(to bottom,rgba(11,37,69,0.2) 0%,rgba(11,37,69,0.75) 55%,rgba(11,37,69,0.9) 100%);">
+              <!-- Bouncing tap icon -->
+              <div style="font-size:36px;margin-bottom:10px;animation:bounce 1.1s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));">👆</div>
+              <!-- Invitation card -->
+              <div style="background:white;border-radius:16px;padding:12px 18px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.3);max-width:190px;">
+                <div style="font-size:11px;font-weight:900;color:#0B2545;margin-bottom:3px;">Try the Interactive Demo</div>
+                <div style="font-size:9px;color:#64748B;line-height:1.5;">Tap anywhere to begin a guided walkthrough of Agentforce in action</div>
+                <div style="margin-top:8px;padding:6px 14px;background:linear-gradient(135deg,var(--brand-primary),#015A9E);border-radius:8px;font-size:9.5px;font-weight:800;color:white;">Tap to Begin →</div>
+              </div>
+            </div>
+
             <div class="ds-app-bar">
               <img src="https://www.bradleyco.com/wp-content/uploads/2021/03/Asset-2733.svg" alt="Bradley" style="height:18px;" onerror="this.style.display='none'"/>
               <span style="font-size:10px;font-weight:800;color:#0B2545;">Home</span>
@@ -3781,6 +3804,17 @@ function triggerNotificationBanner() {
   }, 3200);
 }
 
+// ── Demo invite overlay ──
+window.dismissInvite = function() {
+  const inv = document.getElementById('demo-invite');
+  if (!inv) return;
+  inv.style.transition = 'opacity 0.35s ease';
+  inv.style.opacity = '0';
+  setTimeout(() => { inv.style.display = 'none'; }, 360);
+  // Start the demo flow (same as tapping "Ask Agentforce")
+  if (demoScreen === 0) { demoScreen = 1; showDemoScreen(1); }
+};
+
 // ── Screen 6: Send email 3-beat animation ──
 window.sendEmail = function() {
   const btn = document.getElementById('s6-send-btn');
@@ -3931,6 +3965,9 @@ window.resetDemo = function() {
   if (s6path) s6path.style.strokeDashoffset = '30';
   const sendBtn = document.getElementById('s6-send-btn');
   if (sendBtn) { sendBtn.textContent = 'Send Now ✓'; sendBtn.style.opacity = '1'; sendBtn.onclick = sendEmail; }
+  // Restore invite overlay
+  const inv = document.getElementById('demo-invite');
+  if (inv) { inv.style.display = 'flex'; inv.style.opacity = '1'; }
   // Reset email typewriter
   if (emailTypewriterTimer) { clearInterval(emailTypewriterTimer); emailTypewriterTimer = null; }
   const emailBody = document.getElementById('ds-email-body');
