@@ -1523,7 +1523,7 @@
           </div>
 
           <!-- ── Screen 6: AI Email Draft ── -->
-          <div id="ds-screen-6" class="demo-screen">
+          <div id="ds-screen-6" class="demo-screen" style="position:relative;overflow:hidden;">
             <div class="ds-app-bar">
               <svg width="14" height="14" fill="none" stroke="#64748B" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
               <span style="font-size:10px;font-weight:800;color:#0B2545;">Email Draft</span>
@@ -1558,68 +1558,201 @@
             <!-- Action buttons -->
             <div style="padding:10px 14px;display:flex;gap:8px;border-top:1px solid #F1F5F9;">
               <button style="flex:1;padding:9px;background:#F1F5F9;border:1.5px solid #E5E7EB;border-radius:10px;font-size:9.5px;font-weight:800;color:#64748B;cursor:default;">Edit Draft</button>
-              <button class="ds-pulse" onclick="advanceDemoScreen()" style="flex:2;padding:9px;background:linear-gradient(135deg,var(--brand-primary),#015A9E);border:none;border-radius:10px;font-size:9.5px;font-weight:800;color:white;cursor:pointer;">Send Now ✓</button>
+              <button id="s6-send-btn" class="ds-pulse" onclick="sendEmail()" style="flex:2;padding:9px;background:linear-gradient(135deg,var(--brand-primary),#015A9E);border:none;border-radius:10px;font-size:9.5px;font-weight:800;color:white;cursor:pointer;">Send Now ✓</button>
             </div>
+
+            <!-- ── Send overlay (3-beat animation, slides up on send) ── -->
+            <div id="s6-overlay" style="position:absolute;inset:0;background:white;transform:translateY(100%);transition:transform 0.45s cubic-bezier(0.34,1.2,0.64,1);z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:28px;">
+
+              <!-- Beat 2: Sent confirmation -->
+              <div id="s6-beat-sent" style="display:flex;flex-direction:column;align-items:center;width:100%;padding:0 16px;">
+                <!-- Animated checkmark ring -->
+                <div style="width:56px;height:56px;border-radius:50%;background:rgba(5,150,105,0.1);border:2.5px solid #059669;display:flex;align-items:center;justify-content:center;margin-bottom:12px;animation:pulseRing 1.4s ease-out;">
+                  <svg id="s6-check-svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                    <polyline id="s6-check-path" points="5,13 11,19 21,8" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30" style="transition:stroke-dashoffset 0.5s ease 0.1s;"/>
+                  </svg>
+                </div>
+                <div style="font-size:13px;font-weight:900;color:#0B2545;margin-bottom:4px;">Email Sent</div>
+                <div style="font-size:9.5px;color:#64748B;text-align:center;margin-bottom:3px;">Mike Thompson · Greenfield Capital</div>
+                <!-- Auto-logged items -->
+                <div style="width:100%;margin-top:12px;display:flex;flex-direction:column;gap:5px;">
+                  <div style="display:flex;align-items:center;gap:7px;padding:6px 10px;background:#F0FDF4;border-radius:8px;border:1px solid #BBF7D0;">
+                    <svg width="10" height="10" fill="none" stroke="#059669" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span style="font-size:8.5px;font-weight:700;color:#065F46;">Activity logged automatically</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;padding:6px 10px;background:#F0FDF4;border-radius:8px;border:1px solid #BBF7D0;">
+                    <svg width="10" height="10" fill="none" stroke="#059669" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span style="font-size:8.5px;font-weight:700;color:#065F46;">Opportunity updated · Follow-up task created</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Beat 3: Bridge notification (slides up after sent) -->
+              <div id="s6-beat-bridge" style="width:100%;padding:0 12px;margin-top:14px;transform:translateY(30px);opacity:0;transition:transform 0.4s ease,opacity 0.4s ease;">
+                <div style="padding:11px 13px;background:linear-gradient(135deg,rgba(255,105,0,0.07),rgba(2,116,190,0.05));border:1.5px solid rgba(255,105,0,0.25);border-radius:12px;">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                    <div style="width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,var(--brand-accent),#C44E00);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      <svg width="9" height="9" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <span style="font-size:8px;font-weight:800;color:var(--brand-accent);text-transform:uppercase;letter-spacing:0.05em;">★ Agentforce</span>
+                  </div>
+                  <div style="font-size:9.5px;font-weight:700;color:#0B2545;margin-bottom:3px;">South Bend pipeline just refreshed</div>
+                  <div style="font-size:8.5px;color:#64748B;margin-bottom:9px;">New activity data is ready. Your dashboard has updated metrics.</div>
+                  <button onclick="advanceDemoScreen()" style="width:100%;padding:9px;background:linear-gradient(135deg,var(--brand-primary),#015A9E);border:none;border-radius:9px;font-size:9.5px;font-weight:800;color:white;cursor:pointer;">View Dashboard →</button>
+                </div>
+              </div>
+
+            </div><!-- /s6-overlay -->
           </div>
 
           <!-- ── Screen 7: Live Pipeline Dashboard ── -->
           <div id="ds-screen-7" class="demo-screen" style="position:relative;overflow:hidden;">
 
-            <!-- Push notification banner (slides in from top after delay) -->
-            <div id="ds-s7-notif" onclick="advanceDemoScreen()" style="position:absolute;top:0;left:0;right:0;transform:translateY(-90px);opacity:0;transition:transform 0.55s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s ease;z-index:20;background:white;border-radius:0 0 16px 16px;padding:11px 13px;box-shadow:0 6px 24px rgba(0,0,0,0.18);cursor:pointer;display:flex;align-items:center;gap:9px;">
-              <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand-accent),#C44E00);display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:pulseRing 1.6s ease-out infinite;">
-                <svg width="13" height="13" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <!-- ── URGENT NOTIFICATION BANNER (orange, LIVE badge, dim overlay) ── -->
+            <!-- Dim overlay behind banner -->
+            <div id="ds-s7-dim" style="position:absolute;inset:0;background:rgba(0,0,0,0.35);opacity:0;transition:opacity 0.3s ease;z-index:18;pointer-events:none;"></div>
+            <!-- Banner itself -->
+            <div id="ds-s7-notif" onclick="advanceDemoScreen()" style="position:absolute;top:0;left:0;right:0;transform:translateY(-110px);opacity:0;transition:transform 0.6s cubic-bezier(0.34,1.7,0.64,1),opacity 0.3s ease;z-index:20;cursor:pointer;">
+              <!-- Notch-style orange banner -->
+              <div style="background:linear-gradient(135deg,#C44E00,#FF6900);border-radius:0 0 18px 18px;padding:13px 14px;box-shadow:0 8px 32px rgba(196,78,0,0.55),0 2px 8px rgba(0,0,0,0.3);">
+                <!-- Top row: LIVE badge + time -->
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                  <div style="display:flex;align-items:center;gap:5px;">
+                    <span style="width:7px;height:7px;border-radius:50%;background:#FF0000;display:inline-block;animation:pulseSlow 0.8s ease-in-out infinite;box-shadow:0 0 6px #FF0000;"></span>
+                    <span style="font-size:8px;font-weight:900;color:white;letter-spacing:0.1em;text-transform:uppercase;">LIVE</span>
+                  </div>
+                  <span style="font-size:8px;font-weight:700;color:rgba(255,255,255,0.75);">Just now</span>
+                </div>
+                <!-- Main content row -->
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.4);">
+                    <svg width="14" height="14" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                  </div>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:10px;font-weight:900;color:white;line-height:1.2;margin-bottom:2px;">Agentforce · Signal Detected</div>
+                    <div style="font-size:8.5px;color:rgba(255,255,255,0.85);">Midwest Industrial Group · AI Score ↑ 61→74 · Tap to view</div>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.25);border-radius:6px;padding:4px 8px;font-size:8px;font-weight:800;color:white;white-space:nowrap;">View →</div>
+                </div>
               </div>
-              <div style="flex:1;min-width:0;">
-                <div style="font-size:9px;font-weight:900;color:#0B2545;line-height:1.2;">Agentforce · AI Score Increased</div>
-                <div style="font-size:8px;color:#64748B;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Midwest Industrial Group · 61 → 74 · Tap to view</div>
-              </div>
-              <svg width="12" height="12" fill="none" stroke="#94A3B8" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
 
+            <!-- App bar -->
             <div class="ds-app-bar">
               <svg width="14" height="14" fill="none" stroke="#64748B" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-              <span style="font-size:10px;font-weight:800;color:#0B2545;">Market Pipeline</span>
+              <span style="font-size:10px;font-weight:800;color:#0B2545;">Market Dashboard</span>
               <span style="font-size:8px;font-weight:700;color:#059669;">● Live</span>
             </div>
+
             <!-- Market header -->
-            <div style="padding:10px 14px 8px;border-bottom:1px solid #F1F5F9;">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+            <div style="padding:8px 14px 6px;border-bottom:1px solid #F1F5F9;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1px;">
                 <div style="font-size:11px;font-weight:900;color:#0B2545;">South Bend Market</div>
                 <div style="font-size:8px;font-weight:700;color:#059669;">Updated: just now</div>
               </div>
               <div style="font-size:8.5px;color:#64748B;">63 brokers · Q3 2026</div>
             </div>
-            <!-- Stat chips -->
-            <div style="display:flex;gap:6px;padding:8px 14px;border-bottom:1px solid #F1F5F9;">
-              <div style="flex:1;background:rgba(2,116,190,0.06);border:1px solid rgba(2,116,190,0.15);border-radius:9px;padding:7px 9px;">
-                <div style="font-size:8px;color:#94A3B8;text-transform:uppercase;font-weight:700;">Active Pipeline</div>
-                <div style="font-size:13px;font-weight:900;color:var(--brand-primary);">$4.2M</div>
+
+            <!-- View carousel wrapper (clips to single view) -->
+            <div style="flex:1;overflow:hidden;position:relative;">
+
+              <!-- ── View 1: Pipeline by Stage ── -->
+              <div id="s7-view-1" style="position:absolute;inset:0;transition:transform 0.4s ease;display:flex;flex-direction:column;">
+                <!-- Stat chips -->
+                <div style="display:flex;gap:6px;padding:7px 14px;border-bottom:1px solid #F1F5F9;">
+                  <div style="flex:1;background:rgba(2,116,190,0.06);border:1px solid rgba(2,116,190,0.15);border-radius:9px;padding:6px 9px;">
+                    <div style="font-size:8px;color:#94A3B8;text-transform:uppercase;font-weight:700;">Active Pipeline</div>
+                    <div style="font-size:13px;font-weight:900;color:var(--brand-primary);">$4.2M</div>
+                  </div>
+                  <div style="flex:1;background:rgba(5,150,105,0.06);border:1px solid rgba(5,150,105,0.15);border-radius:9px;padding:6px 9px;">
+                    <div style="font-size:8px;color:#94A3B8;text-transform:uppercase;font-weight:700;">Closing</div>
+                    <div style="font-size:13px;font-weight:900;color:#059669;">3 Deals</div>
+                  </div>
+                </div>
+                <!-- Bar chart -->
+                <div style="padding:9px 14px;flex:1;">
+                  <div style="font-size:8px;font-weight:800;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:7px;">Pipeline by Stage</div>
+                  <div style="margin-bottom:6px;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:2px;"><span style="font-size:8px;color:#64748B;font-weight:600;">Prospecting</span><span style="font-size:8px;font-weight:700;color:#0B2545;">$1.1M</span></div>
+                    <div style="height:7px;background:#F1F5F9;border-radius:4px;overflow:hidden;"><div id="bar-prospect" style="height:100%;width:0%;background:linear-gradient(90deg,#94A3B8,#CBD5E1);border-radius:4px;transition:width 0.8s ease 0.1s;"></div></div>
+                  </div>
+                  <div style="margin-bottom:6px;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:2px;"><span style="font-size:8px;color:#64748B;font-weight:600;">Active</span><span style="font-size:8px;font-weight:700;color:#0B2545;">$2.2M</span></div>
+                    <div style="height:7px;background:#F1F5F9;border-radius:4px;overflow:hidden;"><div id="bar-active" style="height:100%;width:0%;background:linear-gradient(90deg,var(--brand-primary),#0288D1);border-radius:4px;transition:width 0.8s ease 0.25s;"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:2px;"><span style="font-size:8px;color:#64748B;font-weight:600;">Closing</span><span style="font-size:8px;font-weight:700;color:#0B2545;">$0.9M</span></div>
+                    <div style="height:7px;background:#F1F5F9;border-radius:4px;overflow:hidden;"><div id="bar-closing" style="height:100%;width:0%;background:linear-gradient(90deg,#059669,#047857);border-radius:4px;transition:width 0.8s ease 0.4s;"></div></div>
+                  </div>
+                </div>
+                <!-- Next tap -->
+                <div onclick="advanceDashView()" style="padding:9px 14px;border-top:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:#FAFBFC;">
+                  <div style="display:flex;gap:4px;">
+                    <span style="width:6px;height:6px;border-radius:50%;background:var(--brand-primary);display:inline-block;"></span>
+                    <span style="width:6px;height:6px;border-radius:50%;background:#E2E8F0;display:inline-block;"></span>
+                  </div>
+                  <span style="font-size:8.5px;font-weight:700;color:var(--brand-primary);">Deal Velocity →</span>
+                </div>
               </div>
-              <div style="flex:1;background:rgba(5,150,105,0.06);border:1px solid rgba(5,150,105,0.15);border-radius:9px;padding:7px 9px;">
-                <div style="font-size:8px;color:#94A3B8;text-transform:uppercase;font-weight:700;">Closing</div>
-                <div style="font-size:13px;font-weight:900;color:#059669;">3 Deals</div>
+
+              <!-- ── View 2: Deal Velocity ── -->
+              <div id="s7-view-2" style="position:absolute;inset:0;transform:translateX(100%);transition:transform 0.4s ease;display:flex;flex-direction:column;">
+                <!-- Stat chips -->
+                <div style="display:flex;gap:6px;padding:7px 14px;border-bottom:1px solid #F1F5F9;">
+                  <div style="flex:1;background:rgba(2,116,190,0.06);border:1px solid rgba(2,116,190,0.15);border-radius:9px;padding:6px 9px;">
+                    <div style="font-size:8px;color:#94A3B8;text-transform:uppercase;font-weight:700;">Activities This Week</div>
+                    <div style="font-size:13px;font-weight:900;color:var(--brand-primary);">14</div>
+                  </div>
+                  <div style="flex:1;background:rgba(114,191,68,0.07);border:1px solid rgba(114,191,68,0.2);border-radius:9px;padding:6px 9px;">
+                    <div style="font-size:8px;color:#94A3B8;text-transform:uppercase;font-weight:700;">New Meetings</div>
+                    <div style="font-size:13px;font-weight:900;color:#059669;">2 Set</div>
+                  </div>
+                </div>
+                <!-- Day-by-day velocity mini chart -->
+                <div style="padding:9px 14px;flex:1;">
+                  <div style="font-size:8px;font-weight:800;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Deal Velocity · Mon–Fri</div>
+                  <div style="display:flex;align-items:flex-end;gap:5px;height:65px;margin-bottom:5px;">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;">
+                      <div style="width:100%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" id="vel-mon" style="height:0;" data-h="68%"></div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;">
+                      <div style="width:100%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" id="vel-tue" data-h="85%"></div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;">
+                      <div style="width:100%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" id="vel-wed" data-h="55%"></div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;">
+                      <div style="width:100%;background:linear-gradient(180deg,var(--brand-accent),#C44E00);border-radius:3px 3px 0 0;" id="vel-thu" data-h="100%"></div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;">
+                      <div style="width:100%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" id="vel-fri" data-h="72%"></div>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:5px;">
+                    <div style="flex:1;text-align:center;font-size:7.5px;color:#94A3B8;font-weight:700;">Mon</div>
+                    <div style="flex:1;text-align:center;font-size:7.5px;color:#94A3B8;font-weight:700;">Tue</div>
+                    <div style="flex:1;text-align:center;font-size:7.5px;color:#94A3B8;font-weight:700;">Wed</div>
+                    <div style="flex:1;text-align:center;font-size:7.5px;color:#94A3B8;font-weight:700;">Thu</div>
+                    <div style="flex:1;text-align:center;font-size:7.5px;color:#94A3B8;font-weight:700;">Fri</div>
+                  </div>
+                  <!-- Top opportunity row -->
+                  <div style="margin-top:8px;padding:7px 9px;background:#F8FAFC;border-radius:8px;border-left:3px solid var(--brand-primary);">
+                    <div style="font-size:8px;font-weight:800;color:#94A3B8;text-transform:uppercase;margin-bottom:2px;">Top Opportunity This Week</div>
+                    <div style="font-size:9px;font-weight:700;color:#0B2545;">Greenfield Capital · $2.4M</div>
+                    <div style="font-size:8px;color:#64748B;">Email sent today · Follow-up task created</div>
+                  </div>
+                </div>
+                <!-- Page indicator (no next tap — notification fires instead) -->
+                <div style="padding:9px 14px;border-top:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;background:#FAFBFC;">
+                  <div style="display:flex;gap:4px;">
+                    <span style="width:6px;height:6px;border-radius:50%;background:#E2E8F0;display:inline-block;"></span>
+                    <span style="width:6px;height:6px;border-radius:50%;background:var(--brand-primary);display:inline-block;"></span>
+                  </div>
+                  <span style="font-size:8px;color:#94A3B8;font-weight:600;">Watching for signals...</span>
+                </div>
               </div>
-            </div>
-            <!-- Bar chart -->
-            <div style="padding:10px 14px;border-bottom:1px solid #F1F5F9;">
-              <div style="font-size:8px;font-weight:800;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Pipeline by Stage</div>
-              <!-- Prospecting -->
-              <div style="margin-bottom:6px;">
-                <div style="display:flex;justify-content:space-between;margin-bottom:2px;"><span style="font-size:8px;color:#64748B;font-weight:600;">Prospecting</span><span style="font-size:8px;font-weight:700;color:#0B2545;">$1.1M</span></div>
-                <div style="height:7px;background:#F1F5F9;border-radius:4px;overflow:hidden;"><div id="bar-prospect" style="height:100%;width:0%;background:linear-gradient(90deg,#94A3B8,#CBD5E1);border-radius:4px;transition:width 0.8s ease 0.1s;"></div></div>
-              </div>
-              <!-- Active -->
-              <div style="margin-bottom:6px;">
-                <div style="display:flex;justify-content:space-between;margin-bottom:2px;"><span style="font-size:8px;color:#64748B;font-weight:600;">Active</span><span style="font-size:8px;font-weight:700;color:#0B2545;">$2.2M</span></div>
-                <div style="height:7px;background:#F1F5F9;border-radius:4px;overflow:hidden;"><div id="bar-active" style="height:100%;width:0%;background:linear-gradient(90deg,var(--brand-primary),#0288D1);border-radius:4px;transition:width 0.8s ease 0.25s;"></div></div>
-              </div>
-              <!-- Closing -->
-              <div>
-                <div style="display:flex;justify-content:space-between;margin-bottom:2px;"><span style="font-size:8px;color:#64748B;font-weight:600;">Closing</span><span style="font-size:8px;font-weight:700;color:#0B2545;">$0.9M</span></div>
-                <div style="height:7px;background:#F1F5F9;border-radius:4px;overflow:hidden;"><div id="bar-closing" style="height:100%;width:0%;background:linear-gradient(90deg,#059669,#047857);border-radius:4px;transition:width 0.8s ease 0.4s;"></div></div>
-              </div>
-            </div>
+
+            </div><!-- /carousel -->
           </div>
 
           <!-- ── Screen 8: Real-Time AI Alert (Final) ── -->
@@ -1631,8 +1764,11 @@
                   <svg width="13" height="13" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 </div>
                 <div>
-                  <div style="font-size:8.5px;font-weight:800;color:var(--brand-accent);text-transform:uppercase;letter-spacing:0.07em;">Agentforce Signal</div>
-                  <div style="font-size:9px;color:#64748B;">Detected without you asking · just now</div>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="font-size:8.5px;font-weight:800;color:var(--brand-accent);text-transform:uppercase;letter-spacing:0.07em;">Agentforce Signal</div>
+                    <span style="background:#FF0000;color:white;font-size:7px;font-weight:900;padding:1px 6px;border-radius:10px;letter-spacing:0.08em;animation:pulseSlow 1s ease-in-out infinite;">LIVE</span>
+                  </div>
+                  <div style="font-size:9px;color:#64748B;">Received just now · triggered automatically</div>
                 </div>
               </div>
             </div>
@@ -1646,7 +1782,7 @@
                 </div>
               </div>
               <!-- Score bar -->
-              <div style="font-size:8px;color:#94A3B8;text-transform:uppercase;font-weight:700;margin-bottom:3px;">AI Score — Increased</div>
+              <div style="font-size:8px;color:#94A3B8;text-transform:uppercase;font-weight:700;margin-bottom:3px;">AI Score — Live Update</div>
               <div style="display:flex;align-items:center;gap:7px;">
                 <div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden;">
                   <div id="alert-score-fill" style="height:100%;width:0%;background:linear-gradient(90deg,#059669,#047857);border-radius:4px;transition:width 0.9s ease 0.3s;"></div>
@@ -3507,12 +3643,12 @@ const DEMO_CONTEXT = [
     pill: 'Step 7 of 8',
     title: "Your pipeline,<br>live. Right now.",
     body: "No weekly status report. No spreadsheet. The moment that email sent, this view updated — for you and for your manager. Then something unexpected appears at the bottom.",
-    hint: '📲 Watch for the Agentforce notification'
+    hint: '📲 Tap "Deal Velocity →" to see the next metric'
   },
   {
     pill: 'Step 8 of 8',
     title: "Agentforce sees<br>what you don't.",
-    body: "Without you asking, Agentforce detected that Midwest Industrial Group just re-engaged. Their AI score jumped from 61 to 74. Yardi flagged a lease expiry in 4 months. This is curated data — working in real time.",
+    body: "While you were reviewing pipeline, the system was working. Agentforce just detected that Midwest Industrial Group re-engaged — without you asking. This is curated data in real time.",
     hint: '↺ Try again or schedule your live demo'
   }
 ];
@@ -3584,7 +3720,7 @@ function showDemoScreen(n) {
   if (n === 4) setTimeout(triggerNotificationBanner, 650);
   if (n === 5) setTimeout(startEmailTypewriter, 400);
   if (n === 6) {
-    // Animate pipeline bar chart
+    // Animate pipeline bar chart on View 1
     setTimeout(() => {
       const bars = [
         { id: 'bar-prospect', pct: 52 },
@@ -3596,8 +3732,7 @@ function showDemoScreen(n) {
         if (el) el.style.width = b.pct + '%';
       });
     }, 250);
-    // Trigger push notification after bars finish animating
-    setTimeout(triggerS7Notification, 2400);
+    // Notification is now triggered by advanceDashView() on 2nd view, not auto
   }
   if (n === 7) {
     // Animate AI score bar from 0 → 74%
@@ -3640,12 +3775,67 @@ function triggerNotificationBanner() {
   }, 3200);
 }
 
-// Screen 7 — push notification (Agentforce signal)
+// ── Screen 6: Send email 3-beat animation ──
+window.sendEmail = function() {
+  const btn = document.getElementById('s6-send-btn');
+  if (btn) { btn.textContent = 'Sending...'; btn.style.opacity = '0.7'; btn.onclick = null; }
+
+  // Beat 1 → Beat 2: slide overlay up after 0.55s
+  setTimeout(() => {
+    const overlay = document.getElementById('s6-overlay');
+    if (overlay) overlay.style.transform = 'translateY(0)';
+    // Animate checkmark draw
+    setTimeout(() => {
+      const path = document.getElementById('s6-check-path');
+      if (path) path.style.strokeDashoffset = '0';
+    }, 200);
+    // Beat 3: bridge card slides up after 1.4s
+    setTimeout(() => {
+      const bridge = document.getElementById('s6-beat-bridge');
+      if (bridge) { bridge.style.transform = 'translateY(0)'; bridge.style.opacity = '1'; }
+    }, 1400);
+  }, 550);
+};
+
+// ── Screen 7: carousel view advance + notification trigger ──
+let dashView = 1;
+window.advanceDashView = function() {
+  if (dashView === 1) {
+    dashView = 2;
+    const v1 = document.getElementById('s7-view-1');
+    const v2 = document.getElementById('s7-view-2');
+    if (v1) v1.style.transform = 'translateX(-100%)';
+    if (v2) v2.style.transform = 'translateX(0)';
+    // Animate velocity bars
+    setTimeout(animateVelocityBars, 300);
+    // Fire the notification after the broker has had a moment to look at the view
+    setTimeout(triggerS7Notification, 1800);
+  }
+};
+
+function animateVelocityBars() {
+  const days = ['vel-mon','vel-tue','vel-wed','vel-thu','vel-fri'];
+  days.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const targetH = el.getAttribute('data-h') || '60%';
+    setTimeout(() => {
+      el.style.transition = 'height 0.6s ease';
+      el.style.height = targetH;
+    }, i * 80);
+  });
+}
+
+// Screen 7 — urgent LIVE push notification
 function triggerS7Notification() {
   const notif = document.getElementById('ds-s7-notif');
+  const dim   = document.getElementById('ds-s7-dim');
   if (!notif) return;
-  notif.style.transform = 'translateY(0)';
+  // Reveal dim overlay first
+  if (dim) { dim.style.opacity = '1'; dim.style.pointerEvents = 'none'; }
+  // Then drop the banner with spring
   notif.style.opacity   = '1';
+  notif.style.transform = 'translateY(0)';
 }
 
 // Screen 6 — typewriter for email body generation
@@ -3711,9 +3901,30 @@ window.resetDemo = function() {
   if (alertScore) { alertScore.style.transition='none'; alertScore.style.width='0%'; setTimeout(()=>{ alertScore.style.transition='width 0.9s ease 0.3s'; },50); }
   const banner = document.getElementById('ds-notification');
   if (banner) { banner.style.opacity='0'; banner.style.transform='translateY(-80px)'; }
-  // Reset S7 push notification
+  // Reset S7 notification + dim + carousel
   const s7notif = document.getElementById('ds-s7-notif');
-  if (s7notif) { s7notif.style.opacity='0'; s7notif.style.transform='translateY(-90px)'; }
+  if (s7notif) { s7notif.style.opacity='0'; s7notif.style.transform='translateY(-110px)'; }
+  const s7dim = document.getElementById('ds-s7-dim');
+  if (s7dim) { s7dim.style.opacity='0'; }
+  dashView = 1;
+  const v1 = document.getElementById('s7-view-1');
+  const v2 = document.getElementById('s7-view-2');
+  if (v1) v1.style.transform = 'translateX(0)';
+  if (v2) v2.style.transform = 'translateX(100%)';
+  // Reset velocity bars
+  ['vel-mon','vel-tue','vel-wed','vel-thu','vel-fri'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.transition='none'; el.style.height='0%'; setTimeout(()=>{ el.style.transition='height 0.6s ease'; },50); }
+  });
+  // Reset Screen 6 send overlay
+  const s6ov = document.getElementById('s6-overlay');
+  if (s6ov) s6ov.style.transform = 'translateY(100%)';
+  const s6bridge = document.getElementById('s6-beat-bridge');
+  if (s6bridge) { s6bridge.style.transform = 'translateY(30px)'; s6bridge.style.opacity = '0'; }
+  const s6path = document.getElementById('s6-check-path');
+  if (s6path) s6path.style.strokeDashoffset = '30';
+  const sendBtn = document.getElementById('s6-send-btn');
+  if (sendBtn) { sendBtn.textContent = 'Send Now ✓'; sendBtn.style.opacity = '1'; sendBtn.onclick = sendEmail; }
   // Reset email typewriter
   if (emailTypewriterTimer) { clearInterval(emailTypewriterTimer); emailTypewriterTimer = null; }
   const emailBody = document.getElementById('ds-email-body');
