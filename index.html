@@ -2112,87 +2112,521 @@
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!--  SLIDE 7 — EXECUTIVE DASHBOARD                             -->
 <!-- ═══════════════════════════════════════════════════════════ -->
-<section id="slide-7" class="slide" style="background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);padding:80px 60px;">
-  <div class="max-w-6xl mx-auto w-full">
-    <div class="text-center mb-10">
-      <div class="reveal mb-3 flex justify-center"><span class="pill" style="background:rgba(2,116,190,0.2);color:#BDE3FF;border:1px solid rgba(2,116,190,0.3);">Pillar 4</span></div>
-      <h2 class="reveal" style="font-size:clamp(1.8rem,3.5vw,2.7rem);font-weight:900;color:white;letter-spacing:-0.025em;line-height:1.1;margin-bottom:8px;">Live Executive Intelligence<br/><span style="color:var(--brand-accent);">for Bradley Leadership</span></h2>
-      <div class="accent-line reveal" style="margin:12px auto;background:linear-gradient(90deg,var(--brand-primary),var(--brand-accent));"></div>
-      <p class="reveal" style="color:rgba(255,255,255,0.55);font-size:0.88rem;">Interactive preview — click tabs to explore each dashboard view</p>
+<style>
+/* ── Salesforce desktop frame ── */
+.sf-frame { border-radius:10px; overflow:hidden; box-shadow:0 32px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.06); display:flex; flex-direction:column; }
+.sf-browser-bar { background:#2A2A2E; height:30px; display:flex; align-items:center; padding:0 12px; gap:10px; flex-shrink:0; }
+.sf-traffic-dot { width:10px; height:10px; border-radius:50%; }
+.sf-url-bar { flex:1; background:#1A1A1E; border-radius:5px; height:18px; margin:0 10px; display:flex; align-items:center; padding:0 10px; font-size:9px; color:rgba(255,255,255,0.3); font-family:monospace; }
+.sf-topnav { background:#0070D2; height:38px; display:flex; align-items:center; padding:0 12px; gap:0; flex-shrink:0; }
+.sf-topnav-logo { display:flex; align-items:center; gap:7px; margin-right:10px; }
+.sf-appswitcher { width:28px; height:28px; border-radius:5px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.sf-appswitcher:hover { background:rgba(255,255,255,0.15); }
+.sf-app-name { font-size:12px; font-weight:800; color:white; white-space:nowrap; padding:5px 12px; border-radius:4px; }
+.sf-search { flex:1; max-width:260px; margin:0 auto; background:rgba(255,255,255,0.15); border-radius:4px; height:24px; display:flex; align-items:center; padding:0 10px; gap:6px; }
+.sf-topnav-actions { display:flex; align-items:center; gap:2px; margin-left:auto; }
+.sf-topnav-icon { width:28px; height:28px; border-radius:4px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.sf-topnav-icon:hover { background:rgba(255,255,255,0.15); }
+.sf-avatar { width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg,var(--brand-accent),#C44E00); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:white; }
+.sf-body { flex:1; display:flex; overflow:hidden; }
+.sf-sidebar { width:44px; background:#16325C; display:flex; flex-direction:column; align-items:center; padding:8px 0; gap:2px; flex-shrink:0; }
+.sf-nav-item { width:36px; height:36px; border-radius:6px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; cursor:pointer; transition:background .2s; }
+.sf-nav-item:hover { background:rgba(255,255,255,0.1); }
+.sf-nav-item.sf-nav-active { background:rgba(255,255,255,0.18); }
+.sf-nav-label { font-size:6.5px; font-weight:700; color:rgba(255,255,255,0.55); letter-spacing:0.02em; }
+.sf-nav-item.sf-nav-active .sf-nav-label { color:white; }
+.sf-main { flex:1; background:#F3F2F2; overflow:hidden; display:flex; flex-direction:column; }
+
+/* ── Dashboard header ── */
+.sf-dash-header { background:white; border-bottom:1px solid #E0E5EE; padding:8px 16px; display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.sf-breadcrumb { font-size:10px; color:#706E6B; }
+.sf-breadcrumb strong { color:#3E3E3C; }
+.sf-live-badge { font-size:8.5px; font-weight:700; color:#2E844A; background:#EEF5EA; border:1px solid #A8D58B; border-radius:10px; padding:2px 8px; display:flex; align-items:center; gap:3px; }
+.sf-refresh { font-size:9px; color:#706E6B; margin-left:auto; }
+
+/* ── KPI tiles ── */
+.sf-kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:10px 14px 6px; flex-shrink:0; }
+.sf-kpi-tile { background:white; border:1px solid #E0E5EE; border-radius:8px; padding:10px 12px; cursor:pointer; transition:all .2s; position:relative; overflow:hidden; }
+.sf-kpi-tile:hover { border-color:#0070D2; box-shadow:0 2px 8px rgba(0,112,210,0.12); }
+.sf-kpi-tile.sf-kpi-open { border-color:#0070D2; box-shadow:0 4px 16px rgba(0,112,210,0.15); }
+.sf-kpi-label { font-size:9px; font-weight:700; color:#706E6B; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px; }
+.sf-kpi-value { font-size:1.35rem; font-weight:900; color:#3E3E3C; line-height:1; }
+.sf-kpi-delta { font-size:8.5px; font-weight:700; margin-top:3px; }
+.sf-kpi-detail { max-height:0; overflow:hidden; transition:max-height .3s ease; }
+.sf-kpi-open .sf-kpi-detail { max-height:100px; }
+
+/* ── Dashboard tabs (Lightning style) ── */
+.sf-dash-tabs { display:flex; border-bottom:1px solid #E0E5EE; background:white; padding:0 14px; flex-shrink:0; }
+.sf-dash-tab { font-size:11px; font-weight:700; color:#706E6B; padding:8px 14px; border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap; transition:all .2s; background:none; border-top:none; border-left:none; border-right:none; }
+.sf-dash-tab:hover { color:#0070D2; }
+.sf-dash-tab.sf-tab-active { color:#0070D2; border-bottom-color:#0070D2; }
+
+/* ── Tab panels ── */
+.sf-tab-panel { display:none; flex:1; overflow:hidden; }
+.sf-tab-panel.sf-panel-active { display:flex; flex-direction:column; overflow:auto; }
+
+/* ── Deal table (Lightning style) ── */
+.sf-table { width:100%; border-collapse:collapse; font-size:11.5px; }
+.sf-th { text-align:left; padding:7px 14px; font-size:9.5px; font-weight:800; color:#706E6B; text-transform:uppercase; letter-spacing:0.05em; background:#F3F2F2; border-bottom:1px solid #E0E5EE; white-space:nowrap; }
+.sf-tr { cursor:pointer; transition:background .15s; }
+.sf-tr:hover td { background:#F0F6FF; }
+.sf-tr.sf-row-open td { background:#EAF2FF; }
+.sf-td { padding:9px 14px; border-bottom:1px solid #E0E5EE; color:#3E3E3C; vertical-align:top; }
+.sf-link { color:#0070D2; font-weight:700; }
+.sf-badge { display:inline-block; padding:2px 9px; border-radius:20px; font-size:9.5px; font-weight:700; }
+.sf-badge-green { background:#EEF5EA; color:#2E844A; }
+.sf-badge-yellow { background:#FEF7E2; color:#A16207; }
+.sf-badge-red { background:#FEE8E8; color:#B91C1C; }
+.sf-badge-blue { background:#E3F0FF; color:#0070D2; }
+.sf-badge-orange { background:#FFF3E8; color:#C44E00; }
+/* Drill row */
+.sf-drill-row { display:none; }
+.sf-drill-row.sf-drill-open { display:table-row; }
+.sf-drill-cell { background:#F0F6FF; border-bottom:1px solid #D8E8FF; padding:10px 14px 14px 28px; }
+
+/* ── Broker activity CSS bars ── */
+.sf-bar-wrap { padding:10px 16px; }
+.sf-broker-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; cursor:pointer; border-radius:6px; padding:6px 8px; transition:background .15s; }
+.sf-broker-row:hover { background:rgba(0,112,210,0.04); }
+.sf-broker-name { font-size:11px; font-weight:700; color:#3E3E3C; width:120px; flex-shrink:0; }
+.sf-bar-track { flex:1; height:22px; background:#E9E9E9; border-radius:4px; overflow:hidden; display:flex; }
+.sf-bar-seg-calls { background:#0070D2; height:100%; display:flex; align-items:center; justify-content:flex-end; padding-right:5px; transition:width 0.8s ease; border-radius:4px 0 0 4px; }
+.sf-bar-seg-meetings { background:#FF6900; height:100%; display:flex; align-items:center; justify-content:flex-end; padding-right:5px; transition:width 0.8s ease; }
+.sf-bar-label { font-size:9px; font-weight:700; color:white; }
+.sf-broker-total { font-size:11px; font-weight:800; color:#0070D2; width:40px; flex-shrink:0; text-align:right; }
+/* broker detail popout */
+.sf-broker-detail { display:none; background:white; border:1px solid #D8E8FF; border-radius:8px; margin:0 8px 8px; padding:10px 14px; }
+.sf-broker-row.sf-brow-open + .sf-broker-detail { display:block; }
+
+/* ── Win/Loss SVG donut ── */
+.sf-wl-wrap { display:flex; align-items:flex-start; gap:24px; padding:14px 18px; }
+</style>
+
+<section id="slide-7" class="slide" style="background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);padding:36px 52px;">
+  <div style="max-width:1160px;margin:0 auto;width:100%;height:100%;display:flex;flex-direction:column;">
+
+    <!-- Compact header -->
+    <div class="reveal" style="margin-bottom:14px;display:flex;align-items:flex-end;justify-content:space-between;">
+      <div>
+        <span class="pill" style="background:rgba(2,116,190,0.2);color:#BDE3FF;border:1px solid rgba(2,116,190,0.3);margin-bottom:7px;display:inline-block;">Pillar 4</span>
+        <h2 style="font-size:clamp(1.4rem,2.6vw,2rem);font-weight:900;color:white;line-height:1.1;margin-bottom:6px;">Live Executive Intelligence — <span style="color:var(--brand-accent);">Bradley Leadership View</span></h2>
+        <div class="accent-line" style="margin:0;background:linear-gradient(90deg,var(--brand-primary),var(--brand-accent));"></div>
+      </div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.35);text-align:right;padding-bottom:2px;">Click rows · tap KPIs · switch tabs</div>
     </div>
 
-    <!-- Tab nav -->
-    <div class="reveal flex gap-4 mb-6" style="border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:0;">
-      <button class="dash-tab active" onclick="switchDashTab(event,'risk')" style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);padding:8px 16px;">Deal Pipeline</button>
-      <button class="dash-tab" onclick="switchDashTab(event,'pipeline')" style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);padding:8px 16px;">Broker Activity</button>
-      <button class="dash-tab" onclick="switchDashTab(event,'winloss')" style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);padding:8px 16px;">Win / Loss Analysis</button>
-    </div>
+    <!-- ── Salesforce Desktop Frame ── -->
+    <div class="sf-frame reveal" style="flex:1;min-height:0;">
 
-    <!-- Tab: Deal Pipeline -->
-    <div class="dash-panel active reveal" id="dash-risk">
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;">
-        <div style="display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1.2fr;padding:10px 20px;background:rgba(255,255,255,0.06);font-size:10px;font-weight:800;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.06em;gap:12px;">
-          <span>Market / Office</span><span>Deal Type</span><span>Pipeline Value</span><span>Brokers</span><span>Stage</span>
+      <!-- Browser chrome -->
+      <div class="sf-browser-bar">
+        <div class="sf-traffic-dot" style="background:#FF5F57;"></div>
+        <div class="sf-traffic-dot" style="background:#FEBC2E;"></div>
+        <div class="sf-traffic-dot" style="background:#28C840;"></div>
+        <div class="sf-url-bar">
+          <svg width="9" height="9" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <span>salesforce.com / lightning / r / Dashboard / Bradley-Commercial-RE / view</span>
         </div>
-        <div id="risk-rows">
-          <div class="risk-row" style="display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1.2fr;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;gap:12px;align-items:center;cursor:default;">
-            <span style="color:white;font-weight:700;">Grand Rapids, MI</span>
-            <span style="color:rgba(255,255,255,0.6);">Investment Sales</span>
-            <span style="color:#A7F3D0;font-weight:800;">$4.8M</span>
-            <span style="color:rgba(255,255,255,0.6);">8</span>
-            <span><span class="tag" style="background:rgba(5,150,105,0.15);color:#6EE7B7;">Active</span></span>
+        <div style="width:60px;"></div>
+      </div>
+
+      <!-- SF UI body -->
+      <div class="sf-body" style="flex:1;min-height:0;">
+
+        <!-- SF Top Nav Bar -->
+        <div class="sf-topnav">
+          <!-- App launcher -->
+          <div class="sf-appswitcher">
+            <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24" opacity=".85"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           </div>
-          <div class="risk-row" style="display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1.2fr;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;gap:12px;align-items:center;cursor:default;">
-            <span style="color:white;font-weight:700;">South Bend, IN</span>
-            <span style="color:rgba(255,255,255,0.6);">Tenant Rep</span>
-            <span style="color:#A7F3D0;font-weight:800;">$3.6M</span>
-            <span style="color:rgba(255,255,255,0.6);">6</span>
-            <span><span class="tag" style="background:rgba(5,150,105,0.15);color:#6EE7B7;">Active</span></span>
+          <!-- Logo + app name -->
+          <div class="sf-topnav-logo">
+            <svg width="20" height="20" viewBox="0 0 52 52" fill="none"><path d="M21.6 10.4A10.4 10.4 0 0132 0a10.4 10.4 0 019.5 6.2A7.8 7.8 0 0144 5.2a7.8 7.8 0 017.8 7.8 7.8 7.8 0 01-.9 3.6 6.5 6.5 0 01.9 3.3A6.5 6.5 0 0145.3 26a7.8 7.8 0 01.1 1.3 7.8 7.8 0 01-7.8 7.8 7.8 7.8 0 01-2-.27A10.4 10.4 0 0126 40a10.4 10.4 0 01-9.8-6.9 7.8 7.8 0 01-3.8 1 7.8 7.8 0 01-7.2-10.8A6.5 6.5 0 012.6 19 6.5 6.5 0 019 12.5a6.5 6.5 0 012 .3A10.4 10.4 0 0121.6 10.4z" fill="white" opacity=".9"/></svg>
+            <span class="sf-app-name">Bradley Commercial RE</span>
           </div>
-          <div class="risk-row" style="display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1.2fr;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;gap:12px;align-items:center;cursor:default;">
-            <span style="color:white;font-weight:700;">Detroit Metro, MI</span>
-            <span style="color:rgba(255,255,255,0.6);">Landlord Rep</span>
-            <span style="color:#FDE68A;font-weight:800;">$2.9M</span>
-            <span style="color:rgba(255,255,255,0.6);">5</span>
-            <span><span class="tag" style="background:rgba(245,158,11,0.15);color:#FDE68A;">Qualifying</span></span>
+          <!-- Search -->
+          <div class="sf-search">
+            <svg width="11" height="11" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span style="font-size:10px;color:rgba(255,255,255,0.5);">Search...</span>
           </div>
-          <div class="risk-row" style="display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1.2fr;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;gap:12px;align-items:center;cursor:default;">
-            <span style="color:white;font-weight:700;">Indianapolis, IN</span>
-            <span style="color:rgba(255,255,255,0.6);">Industrial Land</span>
-            <span style="color:#FDE68A;font-weight:800;">$2.1M</span>
-            <span style="color:rgba(255,255,255,0.6);">4</span>
-            <span><span class="tag" style="background:rgba(245,158,11,0.15);color:#FDE68A;">Negotiating</span></span>
-          </div>
-          <div class="risk-row" style="display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1.2fr;padding:12px 20px;font-size:13px;gap:12px;align-items:center;cursor:default;">
-            <span style="color:white;font-weight:700;">National Healthcare Team</span>
-            <span style="color:rgba(255,255,255,0.6);">Healthcare RE</span>
-            <span style="color:#FCA5A5;font-weight:800;">$1.4M</span>
-            <span style="color:rgba(255,255,255,0.6);">3</span>
-            <span><span class="tag" style="background:rgba(239,68,68,0.15);color:#FCA5A5;">Early Stage</span></span>
+          <!-- Right actions -->
+          <div class="sf-topnav-actions">
+            <div class="sf-topnav-icon"><svg width="14" height="14" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24" opacity=".75"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+            <div class="sf-topnav-icon"><svg width="14" height="14" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24" opacity=".75"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <div class="sf-avatar" style="margin-left:6px;">ED</div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Tab: Broker Activity (Bar chart) -->
-    <div class="dash-panel reveal" id="dash-pipeline" style="height:320px;">
-      <canvas id="pipelineChart" style="max-height:300px;"></canvas>
-    </div>
+        <!-- Main area: sidebar + dashboard -->
+        <div style="flex:1;display:flex;min-height:0;">
 
-    <!-- Tab: Win/Loss (Doughnut) -->
-    <div class="dash-panel reveal" id="dash-winloss">
-      <div style="max-width:400px;margin:0 auto;">
-        <canvas id="winlossChart" style="max-height:300px;"></canvas>
-      </div>
-    </div>
+          <!-- Left sidebar (icon rail) -->
+          <div class="sf-sidebar">
+            <div class="sf-nav-item" title="Home">
+              <svg width="14" height="14" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+              <span class="sf-nav-label">Home</span>
+            </div>
+            <div class="sf-nav-item sf-nav-active" title="Deals">
+              <svg width="14" height="14" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+              <span class="sf-nav-label" style="color:white;">Deals</span>
+            </div>
+            <div class="sf-nav-item" title="Contacts">
+              <svg width="14" height="14" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span class="sf-nav-label">People</span>
+            </div>
+            <div class="sf-nav-item" title="Reports">
+              <svg width="14" height="14" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span class="sf-nav-label">Reports</span>
+            </div>
+            <div class="sf-nav-item" title="Dashboards">
+              <svg width="14" height="14" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+              <span class="sf-nav-label">Dashboards</span>
+            </div>
+          </div>
 
-    <!-- Mobile note -->
-    <div class="reveal mt-6 glass rounded-xl p-4" style="border:1px solid rgba(255,105,0,0.2);">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <svg width="20" height="20" fill="none" stroke="var(--brand-accent)" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-        <p style="color:rgba(255,255,255,0.7);font-size:0.82rem;"><strong style="color:white;">Every dashboard is fully mobile.</strong> The CEO can pull pipeline by market, broker activity, and deal velocity from a phone — before a board meeting, between flights, anywhere. No desktop required.</p>
-      </div>
-    </div>
+          <!-- Dashboard main area -->
+          <div class="sf-main">
+
+            <!-- Dashboard title bar -->
+            <div class="sf-dash-header">
+              <div class="sf-breadcrumb">Dashboards › <strong>Real Estate Pipeline</strong></div>
+              <div class="sf-live-badge">
+                <span style="width:6px;height:6px;border-radius:50%;background:#2E844A;display:inline-block;animation:pulseSlow 1.8s ease-in-out infinite;"></span>
+                Live
+              </div>
+              <span style="font-size:9px;font-weight:700;color:#0070D2;margin-left:8px;cursor:pointer;">+ Subscribe</span>
+              <div class="sf-refresh">
+                <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline;margin-right:3px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                Updated just now
+              </div>
+            </div>
+
+            <!-- KPI tiles row -->
+            <div class="sf-kpi-row">
+              <div class="sf-kpi-tile" onclick="toggleSfKpi(this)">
+                <div class="sf-kpi-label">Total Pipeline</div>
+                <div class="sf-kpi-value">$14.8M</div>
+                <div class="sf-kpi-delta" style="color:#2E844A;">▲ $1.2M vs. last quarter</div>
+                <div class="sf-kpi-detail" style="padding-top:6px;border-top:1px solid #E0E5EE;margin-top:6px;">
+                  <div style="font-size:9px;color:#706E6B;">Investment Sales <span style="float:right;font-weight:700;color:#3E3E3C;">$6.1M</span></div>
+                  <div style="font-size:9px;color:#706E6B;">Tenant Rep <span style="float:right;font-weight:700;color:#3E3E3C;">$5.3M</span></div>
+                  <div style="font-size:9px;color:#706E6B;">Healthcare RE <span style="float:right;font-weight:700;color:#3E3E3C;">$3.4M</span></div>
+                </div>
+              </div>
+              <div class="sf-kpi-tile" onclick="toggleSfKpi(this)">
+                <div class="sf-kpi-label">Active Deals</div>
+                <div class="sf-kpi-value">26</div>
+                <div class="sf-kpi-delta" style="color:#2E844A;">▲ 4 new this month</div>
+                <div class="sf-kpi-detail" style="padding-top:6px;border-top:1px solid #E0E5EE;margin-top:6px;">
+                  <div style="font-size:9px;color:#706E6B;">Closing (30 days) <span style="float:right;font-weight:700;color:#2E844A;">4</span></div>
+                  <div style="font-size:9px;color:#706E6B;">Negotiating <span style="float:right;font-weight:700;color:#A16207;">8</span></div>
+                  <div style="font-size:9px;color:#706E6B;">Qualifying <span style="float:right;font-weight:700;color:#706E6B;">14</span></div>
+                </div>
+              </div>
+              <div class="sf-kpi-tile" onclick="toggleSfKpi(this)">
+                <div class="sf-kpi-label">Avg AI Lead Score</div>
+                <div class="sf-kpi-value" style="color:#0070D2;">73</div>
+                <div class="sf-kpi-delta" style="color:#2E844A;">▲ 8 pts vs. last month</div>
+                <div class="sf-kpi-detail" style="padding-top:6px;border-top:1px solid #E0E5EE;margin-top:6px;">
+                  <div style="height:6px;background:#E0E5EE;border-radius:3px;overflow:hidden;"><div style="width:73%;height:100%;background:linear-gradient(90deg,#0070D2,#72BF44);border-radius:3px;"></div></div>
+                  <div style="font-size:9px;color:#706E6B;margin-top:3px;">Top market: Grand Rapids (AI: 87)</div>
+                </div>
+              </div>
+              <div class="sf-kpi-tile" onclick="toggleSfKpi(this)">
+                <div class="sf-kpi-label">Closing This Month</div>
+                <div class="sf-kpi-value" style="color:#FF6900;">4</div>
+                <div class="sf-kpi-delta" style="color:#A16207;">$3.8M at stake</div>
+                <div class="sf-kpi-detail" style="padding-top:6px;border-top:1px solid #E0E5EE;margin-top:6px;">
+                  <div style="font-size:9px;color:#706E6B;">→ Grand Rapids $1.9M · LOI signed</div>
+                  <div style="font-size:9px;color:#706E6B;">→ South Bend $1.1M · Final review</div>
+                  <div style="font-size:9px;color:#706E6B;">+ 2 more in final stages</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Agentforce alert bar -->
+            <div style="margin:0 14px 6px;padding:7px 12px;background:linear-gradient(90deg,rgba(255,105,0,0.06),rgba(0,112,210,0.04));border:1px solid rgba(255,105,0,0.2);border-radius:7px;display:flex;align-items:center;gap:8px;">
+              <svg width="12" height="12" fill="none" stroke="var(--brand-accent)" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <span style="font-size:10px;font-weight:700;color:#3E3E3C;">Agentforce Insight:</span>
+              <span style="font-size:10px;color:#706E6B;">Midwest Industrial Group re-engaged — AI score jumped to 74. <span style="color:#0070D2;font-weight:700;cursor:pointer;">View signal →</span></span>
+            </div>
+
+            <!-- Tab bar -->
+            <div class="sf-dash-tabs">
+              <button class="sf-dash-tab sf-tab-active" onclick="switchSfTab(event,'sf-pipeline')">Deal Pipeline</button>
+              <button class="sf-dash-tab" onclick="switchSfTab(event,'sf-brokers')">Broker Activity</button>
+              <button class="sf-dash-tab" onclick="switchSfTab(event,'sf-winloss')">Win / Loss</button>
+            </div>
+
+            <!-- ── Tab: Deal Pipeline ── -->
+            <div class="sf-tab-panel sf-panel-active" id="sf-pipeline">
+              <table class="sf-table">
+                <thead>
+                  <tr>
+                    <th class="sf-th">Market / Team</th>
+                    <th class="sf-th">Deal Type</th>
+                    <th class="sf-th">Pipeline Value</th>
+                    <th class="sf-th">Brokers</th>
+                    <th class="sf-th">Stage</th>
+                    <th class="sf-th">AI Score</th>
+                    <th class="sf-th" style="width:24px;"></th>
+                  </tr>
+                </thead>
+                <tbody id="sf-deal-tbody">
+                  <!-- Row 1 -->
+                  <tr class="sf-tr" onclick="toggleDealRow('dr-1')">
+                    <td class="sf-td"><span class="sf-link">Grand Rapids, MI</span></td>
+                    <td class="sf-td" style="color:#706E6B;">Investment Sales</td>
+                    <td class="sf-td"><strong style="color:#2E844A;">$4.8M</strong></td>
+                    <td class="sf-td" style="color:#706E6B;">8</td>
+                    <td class="sf-td"><span class="sf-badge sf-badge-green">Active</span></td>
+                    <td class="sf-td"><div style="display:flex;align-items:center;gap:5px;"><div style="width:40px;height:5px;background:#E0E5EE;border-radius:3px;overflow:hidden;"><div style="width:87%;height:100%;background:#2E844A;border-radius:3px;"></div></div><span style="font-size:10px;font-weight:700;color:#2E844A;">87</span></div></td>
+                    <td class="sf-td" style="color:#0070D2;font-size:14px;" id="dr-1-chevron">›</td>
+                  </tr>
+                  <tr class="sf-drill-row" id="dr-1-detail"><td colspan="7" class="sf-drill-cell">
+                    <div style="display:flex;gap:16px;align-items:flex-start;">
+                      <div style="flex:1;">
+                        <div style="font-size:9.5px;font-weight:700;color:#706E6B;text-transform:uppercase;margin-bottom:5px;">Deal Stage Progression</div>
+                        <div style="display:flex;gap:2px;margin-bottom:7px;">
+                          <div style="flex:1;height:6px;border-radius:3px 0 0 3px;background:#2E844A;"></div>
+                          <div style="flex:1;height:6px;background:#2E844A;"></div>
+                          <div style="flex:1;height:6px;background:#2E844A;"></div>
+                          <div style="flex:1;height:6px;border-radius:0 3px 3px 0;background:#E0E5EE;"></div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:8px;color:#706E6B;"><span>Qualify</span><span>Proposal</span><span>Negotiate</span><span>Close</span></div>
+                      </div>
+                      <div style="flex:1;padding-left:12px;border-left:1px solid #E0E5EE;">
+                        <div style="font-size:9.5px;font-weight:700;color:#706E6B;text-transform:uppercase;margin-bottom:4px;">★ Agentforce Next Step</div>
+                        <div style="font-size:10px;color:#3E3E3C;">"3 brokers haven't logged activity in 5+ days. Recommend outreach today — competing firm seen near property."</div>
+                      </div>
+                      <div style="font-size:9px;color:#706E6B;white-space:nowrap;padding-left:12px;border-left:1px solid #E0E5EE;"><div><strong>Last Activity:</strong> 2 days ago</div><div style="margin-top:3px;"><strong>Commission Est.:</strong> $144K</div><div style="margin-top:3px;"><strong>Close Probability:</strong> 78%</div></div>
+                    </div>
+                  </td></tr>
+                  <!-- Row 2 -->
+                  <tr class="sf-tr" onclick="toggleDealRow('dr-2')">
+                    <td class="sf-td"><span class="sf-link">South Bend, IN</span></td>
+                    <td class="sf-td" style="color:#706E6B;">Tenant Rep</td>
+                    <td class="sf-td"><strong style="color:#2E844A;">$3.6M</strong></td>
+                    <td class="sf-td" style="color:#706E6B;">6</td>
+                    <td class="sf-td"><span class="sf-badge sf-badge-blue">Negotiating</span></td>
+                    <td class="sf-td"><div style="display:flex;align-items:center;gap:5px;"><div style="width:40px;height:5px;background:#E0E5EE;border-radius:3px;overflow:hidden;"><div style="width:74%;height:100%;background:#0070D2;border-radius:3px;"></div></div><span style="font-size:10px;font-weight:700;color:#0070D2;">74</span></div></td>
+                    <td class="sf-td" style="color:#0070D2;font-size:14px;" id="dr-2-chevron">›</td>
+                  </tr>
+                  <tr class="sf-drill-row" id="dr-2-detail"><td colspan="7" class="sf-drill-cell">
+                    <div style="display:flex;gap:16px;align-items:flex-start;">
+                      <div style="flex:1;">
+                        <div style="font-size:9.5px;font-weight:700;color:#706E6B;text-transform:uppercase;margin-bottom:5px;">Deal Stage Progression</div>
+                        <div style="display:flex;gap:2px;margin-bottom:7px;">
+                          <div style="flex:1;height:6px;border-radius:3px 0 0 3px;background:#0070D2;"></div>
+                          <div style="flex:1;height:6px;background:#0070D2;"></div>
+                          <div style="flex:1;height:6px;background:#E0E5EE;"></div>
+                          <div style="flex:1;height:6px;border-radius:0 3px 3px 0;background:#E0E5EE;"></div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:8px;color:#706E6B;"><span>Qualify</span><span>Proposal</span><span>Negotiate</span><span>Close</span></div>
+                      </div>
+                      <div style="flex:1;padding-left:12px;border-left:1px solid #E0E5EE;">
+                        <div style="font-size:9.5px;font-weight:700;color:#706E6B;text-transform:uppercase;margin-bottom:4px;">★ Agentforce Next Step</div>
+                        <div style="font-size:10px;color:#3E3E3C;">"Client requested updated LOI terms yesterday. No response logged. High risk of stall — recommended follow-up today."</div>
+                      </div>
+                      <div style="font-size:9px;color:#706E6B;white-space:nowrap;padding-left:12px;border-left:1px solid #E0E5EE;"><div><strong>Last Activity:</strong> 1 day ago</div><div style="margin-top:3px;"><strong>Commission Est.:</strong> $108K</div><div style="margin-top:3px;"><strong>Close Probability:</strong> 65%</div></div>
+                    </div>
+                  </td></tr>
+                  <!-- Row 3 -->
+                  <tr class="sf-tr" onclick="toggleDealRow('dr-3')">
+                    <td class="sf-td"><span class="sf-link">Detroit Metro, MI</span></td>
+                    <td class="sf-td" style="color:#706E6B;">Landlord Rep</td>
+                    <td class="sf-td"><strong style="color:#A16207;">$2.9M</strong></td>
+                    <td class="sf-td" style="color:#706E6B;">5</td>
+                    <td class="sf-td"><span class="sf-badge sf-badge-yellow">Qualifying</span></td>
+                    <td class="sf-td"><div style="display:flex;align-items:center;gap:5px;"><div style="width:40px;height:5px;background:#E0E5EE;border-radius:3px;overflow:hidden;"><div style="width:61%;height:100%;background:#A16207;border-radius:3px;"></div></div><span style="font-size:10px;font-weight:700;color:#A16207;">61</span></div></td>
+                    <td class="sf-td" style="color:#0070D2;font-size:14px;" id="dr-3-chevron">›</td>
+                  </tr>
+                  <tr class="sf-drill-row" id="dr-3-detail"><td colspan="7" class="sf-drill-cell">
+                    <div style="display:flex;gap:16px;align-items:flex-start;">
+                      <div style="flex:1;">
+                        <div style="font-size:9.5px;font-weight:700;color:#706E6B;text-transform:uppercase;margin-bottom:5px;">Deal Stage Progression</div>
+                        <div style="display:flex;gap:2px;margin-bottom:7px;">
+                          <div style="flex:1;height:6px;border-radius:3px 0 0 3px;background:#A16207;"></div>
+                          <div style="flex:1;height:6px;background:#E0E5EE;"></div>
+                          <div style="flex:1;height:6px;background:#E0E5EE;"></div>
+                          <div style="flex:1;height:6px;border-radius:0 3px 3px 0;background:#E0E5EE;"></div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:8px;color:#706E6B;"><span>Qualify</span><span>Proposal</span><span>Negotiate</span><span>Close</span></div>
+                      </div>
+                      <div style="flex:1;padding-left:12px;border-left:1px solid #E0E5EE;">
+                        <div style="font-size:9.5px;font-weight:700;color:#706E6B;text-transform:uppercase;margin-bottom:4px;">★ Agentforce Next Step</div>
+                        <div style="font-size:10px;color:#3E3E3C;">"Yardi data shows lease expiry in 6 months for primary tenant. Opportunity to accelerate timeline — recommend proposal this week."</div>
+                      </div>
+                      <div style="font-size:9px;color:#706E6B;white-space:nowrap;padding-left:12px;border-left:1px solid #E0E5EE;"><div><strong>Last Activity:</strong> 4 days ago</div><div style="margin-top:3px;"><strong>Commission Est.:</strong> $87K</div><div style="margin-top:3px;"><strong>Close Probability:</strong> 42%</div></div>
+                    </div>
+                  </td></tr>
+                  <!-- Row 4 -->
+                  <tr class="sf-tr" onclick="toggleDealRow('dr-4')">
+                    <td class="sf-td"><span class="sf-link">Indianapolis, IN</span></td>
+                    <td class="sf-td" style="color:#706E6B;">Industrial</td>
+                    <td class="sf-td"><strong style="color:#A16207;">$2.1M</strong></td>
+                    <td class="sf-td" style="color:#706E6B;">4</td>
+                    <td class="sf-td"><span class="sf-badge sf-badge-orange">Early Stage</span></td>
+                    <td class="sf-td"><div style="display:flex;align-items:center;gap:5px;"><div style="width:40px;height:5px;background:#E0E5EE;border-radius:3px;overflow:hidden;"><div style="width:55%;height:100%;background:#FF6900;border-radius:3px;"></div></div><span style="font-size:10px;font-weight:700;color:#FF6900;">55</span></div></td>
+                    <td class="sf-td" style="color:#0070D2;font-size:14px;" id="dr-4-chevron">›</td>
+                  </tr>
+                  <tr class="sf-drill-row" id="dr-4-detail"><td colspan="7" class="sf-drill-cell">
+                    <div style="display:flex;gap:16px;align-items:flex-start;">
+                      <div style="flex:1;">
+                        <div style="font-size:9.5px;font-weight:700;color:#706E6B;text-transform:uppercase;margin-bottom:5px;">Deal Stage Progression</div>
+                        <div style="display:flex;gap:2px;margin-bottom:7px;">
+                          <div style="flex:1;height:6px;border-radius:3px 0 0 3px;background:#FF6900;"></div>
+                          <div style="flex:1;height:6px;background:#E0E5EE;"></div>
+                          <div style="flex:1;height:6px;background:#E0E5EE;"></div>
+                          <div style="flex:1;height:6px;border-radius:0 3px 3px 0;background:#E0E5EE;"></div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:8px;color:#706E6B;"><span>Qualify</span><span>Proposal</span><span>Negotiate</span><span>Close</span></div>
+                      </div>
+                      <div style="flex:1;padding-left:12px;border-left:1px solid #E0E5EE;">
+                        <div style="font-size:9.5px;font-weight:700;color:#706E6B;text-transform:uppercase;margin-bottom:4px;">★ Agentforce Next Step</div>
+                        <div style="font-size:10px;color:#3E3E3C;">"New healthcare team expanding into Indianapolis market. Cross-sell opportunity — tag Chris Fimmen for Field Service intro."</div>
+                      </div>
+                      <div style="font-size:9px;color:#706E6B;white-space:nowrap;padding-left:12px;border-left:1px solid #E0E5EE;"><div><strong>Last Activity:</strong> Today</div><div style="margin-top:3px;"><strong>Commission Est.:</strong> $63K</div><div style="margin-top:3px;"><strong>Close Probability:</strong> 30%</div></div>
+                    </div>
+                  </td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- ── Tab: Broker Activity ── -->
+            <div class="sf-tab-panel" id="sf-brokers">
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px 4px;">
+                <div style="flex:1;">
+                  <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px;padding:0 8px;">
+                    <div style="font-size:9px;font-weight:700;color:#706E6B;width:120px;">Broker / Market</div>
+                    <div style="flex:1;display:flex;gap:8px;font-size:9px;font-weight:700;color:#706E6B;">
+                      <div style="display:flex;align-items:center;gap:3px;"><span style="width:9px;height:9px;border-radius:2px;background:#0070D2;display:inline-block;"></span>Calls</div>
+                      <div style="display:flex;align-items:center;gap:3px;"><span style="width:9px;height:9px;border-radius:2px;background:#FF6900;display:inline-block;"></span>Meetings</div>
+                    </div>
+                    <div style="font-size:9px;font-weight:700;color:#706E6B;width:40px;">Total</div>
+                  </div>
+                  <div class="sf-bar-wrap" style="padding:0 8px;">
+                    <!-- Broker rows -->
+                    <div class="sf-broker-row" onclick="toggleBrokerDetail(this,'bd-1')">
+                      <div class="sf-broker-name">Grand Rapids</div>
+                      <div class="sf-bar-track">
+                        <div class="sf-bar-seg-calls" style="width:0%" data-w="62%"><span class="sf-bar-label">47</span></div>
+                        <div class="sf-bar-seg-meetings" style="width:0%" data-w="16%"><span class="sf-bar-label">12</span></div>
+                      </div>
+                      <div class="sf-broker-total">59</div>
+                    </div>
+                    <div class="sf-broker-detail" id="bd-1" style="display:none;background:white;border:1px solid #D8E8FF;border-radius:7px;margin:0 0 6px;padding:8px 12px;">
+                      <div style="font-size:9.5px;color:#706E6B;">Avg AI score: <strong style="color:#2E844A;">87</strong> · Last activity: <strong>Today</strong> · Pipeline: <strong>$4.8M</strong></div>
+                      <div style="font-size:9.5px;color:#FF6900;margin-top:3px;">★ Agentforce: "Top performer this week — 3 qualified leads flagged for follow-up."</div>
+                    </div>
+                    <div class="sf-broker-row" onclick="toggleBrokerDetail(this,'bd-2')">
+                      <div class="sf-broker-name">South Bend</div>
+                      <div class="sf-bar-track">
+                        <div class="sf-bar-seg-calls" style="width:0%" data-w="50%"><span class="sf-bar-label">38</span></div>
+                        <div class="sf-bar-seg-meetings" style="width:0%" data-w="12%"><span class="sf-bar-label">9</span></div>
+                      </div>
+                      <div class="sf-broker-total">47</div>
+                    </div>
+                    <div class="sf-broker-detail" id="bd-2" style="display:none;background:white;border:1px solid #D8E8FF;border-radius:7px;margin:0 0 6px;padding:8px 12px;">
+                      <div style="font-size:9.5px;color:#706E6B;">Avg AI score: <strong style="color:#0070D2;">74</strong> · Last activity: <strong>Yesterday</strong> · Pipeline: <strong>$3.6M</strong></div>
+                      <div style="font-size:9.5px;color:#FF6900;margin-top:3px;">★ Agentforce: "LOI response overdue on primary deal — follow up recommended."</div>
+                    </div>
+                    <div class="sf-broker-row" onclick="toggleBrokerDetail(this,'bd-3')">
+                      <div class="sf-broker-name">Kalamazoo</div>
+                      <div class="sf-bar-track">
+                        <div class="sf-bar-seg-calls" style="width:0%" data-w="41%"><span class="sf-bar-label">31</span></div>
+                        <div class="sf-bar-seg-meetings" style="width:0%" data-w="11%"><span class="sf-bar-label">8</span></div>
+                      </div>
+                      <div class="sf-broker-total">39</div>
+                    </div>
+                    <div class="sf-broker-detail" id="bd-3" style="display:none;background:white;border:1px solid #D8E8FF;border-radius:7px;margin:0 0 6px;padding:8px 12px;">
+                      <div style="font-size:9.5px;color:#706E6B;">Avg AI score: <strong style="color:#0070D2;">68</strong> · Last activity: <strong>2 days ago</strong> · Pipeline: <strong>$1.8M</strong></div>
+                      <div style="font-size:9.5px;color:#FF6900;margin-top:3px;">★ Agentforce: "2 dormant leads scored above 65 — re-engagement email drafted."</div>
+                    </div>
+                    <div class="sf-broker-row" onclick="toggleBrokerDetail(this,'bd-4')">
+                      <div class="sf-broker-name">Detroit Metro</div>
+                      <div class="sf-bar-track">
+                        <div class="sf-bar-seg-calls" style="width:0%" data-w="38%"><span class="sf-bar-label">29</span></div>
+                        <div class="sf-bar-seg-meetings" style="width:0%" data-w="9%"><span class="sf-bar-label">7</span></div>
+                      </div>
+                      <div class="sf-broker-total">36</div>
+                    </div>
+                    <div class="sf-broker-detail" id="bd-4" style="display:none;background:white;border:1px solid #D8E8FF;border-radius:7px;margin:0 0 6px;padding:8px 12px;">
+                      <div style="font-size:9.5px;color:#706E6B;">Avg AI score: <strong style="color:#A16207;">61</strong> · Last activity: <strong>4 days ago</strong> · Pipeline: <strong>$2.9M</strong></div>
+                      <div style="font-size:9.5px;color:#F87171;margin-top:3px;">★ Agentforce: "Activity gap detected — Yardi shows lease expiry risk on key tenant. Immediate action needed."</div>
+                    </div>
+                    <div class="sf-broker-row" onclick="toggleBrokerDetail(this,'bd-5')">
+                      <div class="sf-broker-name">Indianapolis</div>
+                      <div class="sf-bar-track">
+                        <div class="sf-bar-seg-calls" style="width:0%" data-w="29%"><span class="sf-bar-label">22</span></div>
+                        <div class="sf-bar-seg-meetings" style="width:0%" data-w="8%"><span class="sf-bar-label">6</span></div>
+                      </div>
+                      <div class="sf-broker-total">28</div>
+                    </div>
+                    <div class="sf-broker-detail" id="bd-5" style="display:none;background:white;border:1px solid #D8E8FF;border-radius:7px;margin:0 0 6px;padding:8px 12px;">
+                      <div style="font-size:9.5px;color:#706E6B;">Avg AI score: <strong style="color:#A16207;">55</strong> · Last activity: <strong>Today</strong> · Pipeline: <strong>$2.1M</strong></div>
+                      <div style="font-size:9.5px;color:#FF6900;margin-top:3px;">★ Agentforce: "New healthcare expansion opportunity flagged — cross-sell with Field Service team."</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Tab: Win / Loss ── -->
+            <div class="sf-tab-panel" id="sf-winloss">
+              <div class="sf-wl-wrap">
+                <!-- SVG Donut -->
+                <div style="flex-shrink:0;">
+                  <svg width="160" height="160" viewBox="0 0 160 160">
+                    <circle cx="80" cy="80" r="60" fill="none" stroke="#E0E5EE" stroke-width="22"/>
+                    <!-- Won: 32% = 376.99 * 0.32 = 120.6 -->
+                    <circle cx="80" cy="80" r="60" fill="none" stroke="#72BF44" stroke-width="22" stroke-dasharray="120.6 256.4" stroke-dashoffset="0" transform="rotate(-90 80 80)"/>
+                    <!-- In Progress: 45% = 169.6, offset by 120.6 -->
+                    <circle cx="80" cy="80" r="60" fill="none" stroke="#0070D2" stroke-width="22" stroke-dasharray="169.6 207.4" stroke-dashoffset="-120.6" transform="rotate(-90 80 80)"/>
+                    <!-- Lost: 23% = 86.8, offset by 290.2 -->
+                    <circle cx="80" cy="80" r="60" fill="none" stroke="#FF6900" stroke-width="22" stroke-dasharray="86.8 290.2" stroke-dashoffset="-290.2" transform="rotate(-90 80 80)"/>
+                    <text x="80" y="76" text-anchor="middle" font-size="18" font-weight="900" fill="#3E3E3C">32%</text>
+                    <text x="80" y="91" text-anchor="middle" font-size="10" fill="#706E6B">Won</text>
+                  </svg>
+                </div>
+                <!-- Legend + detail -->
+                <div style="flex:1;display:flex;flex-direction:column;gap:10px;padding-top:10px;">
+                  <div style="background:white;border:1px solid #E0E5EE;border-radius:8px;padding:10px 14px;cursor:pointer;transition:box-shadow .2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,112,210,0.1)'" onmouseout="this.style.boxShadow=''">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+                      <div style="width:11px;height:11px;border-radius:2px;background:#72BF44;flex-shrink:0;"></div>
+                      <div style="font-size:11px;font-weight:800;color:#3E3E3C;flex:1;">Won</div>
+                      <div style="font-size:1.1rem;font-weight:900;color:#2E844A;">32%</div>
+                    </div>
+                    <div style="height:4px;background:#E0E5EE;border-radius:2px;margin-bottom:5px;"><div style="width:32%;height:100%;background:#72BF44;border-radius:2px;"></div></div>
+                    <div style="font-size:9px;color:#706E6B;">Avg time to close: 47 days · Avg value: $1.8M · Top market: Grand Rapids</div>
+                  </div>
+                  <div style="background:white;border:1px solid #E0E5EE;border-radius:8px;padding:10px 14px;cursor:pointer;transition:box-shadow .2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,112,210,0.1)'" onmouseout="this.style.boxShadow=''">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+                      <div style="width:11px;height:11px;border-radius:2px;background:#0070D2;flex-shrink:0;"></div>
+                      <div style="font-size:11px;font-weight:800;color:#3E3E3C;flex:1;">In Progress</div>
+                      <div style="font-size:1.1rem;font-weight:900;color:#0070D2;">45%</div>
+                    </div>
+                    <div style="height:4px;background:#E0E5EE;border-radius:2px;margin-bottom:5px;"><div style="width:45%;height:100%;background:#0070D2;border-radius:2px;"></div></div>
+                    <div style="font-size:9px;color:#706E6B;">26 active deals · $14.8M at stake · 4 closing this month</div>
+                  </div>
+                  <div style="background:white;border:1px solid #E0E5EE;border-radius:8px;padding:10px 14px;cursor:pointer;transition:box-shadow .2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,112,210,0.1)'" onmouseout="this.style.boxShadow=''">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+                      <div style="width:11px;height:11px;border-radius:2px;background:#FF6900;flex-shrink:0;"></div>
+                      <div style="font-size:11px;font-weight:800;color:#3E3E3C;flex:1;">Lost / No Decision</div>
+                      <div style="font-size:1.1rem;font-weight:900;color:#FF6900;">23%</div>
+                    </div>
+                    <div style="height:4px;background:#E0E5EE;border-radius:2px;margin-bottom:5px;"><div style="width:23%;height:100%;background:#FF6900;border-radius:2px;"></div></div>
+                    <div style="font-size:9px;color:#706E6B;">Primary reason: <strong style="color:#3E3E3C;">No follow-up after proposal (61%)</strong> — addressable with Agentforce task automation</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /sf-main -->
+        </div><!-- /sidebar+dashboard -->
+      </div><!-- /sf-body -->
+    </div><!-- /sf-frame -->
+
   </div>
 </section>
 
@@ -2691,7 +3125,61 @@ window.closeDrawer=function(){
 };
 document.addEventListener('keydown',e=>{if(e.key==='Escape') closeDrawer();});
 
-/* ── Dashboard tabs ── */
+/* ── SF Dashboard tabs ── */
+window.switchSfTab = function(e, panelId) {
+  document.querySelectorAll('.sf-dash-tab').forEach(t => t.classList.remove('sf-tab-active'));
+  document.querySelectorAll('.sf-tab-panel').forEach(p => p.classList.remove('sf-panel-active'));
+  if (e && e.target) e.target.classList.add('sf-tab-active');
+  const panel = document.getElementById(panelId);
+  if (panel) {
+    panel.classList.add('sf-panel-active');
+    // Animate broker bars when that tab is opened
+    if (panelId === 'sf-brokers') animateBrokerBars();
+  }
+};
+
+window.toggleSfKpi = function(el) {
+  el.classList.toggle('sf-kpi-open');
+};
+
+window.toggleDealRow = function(id) {
+  const detail = document.getElementById(id + '-detail');
+  const chevron = document.getElementById(id + '-chevron');
+  const row = detail && detail.previousElementSibling;
+  if (!detail) return;
+  const isOpen = detail.classList.contains('sf-drill-open');
+  // Close all others first
+  document.querySelectorAll('.sf-drill-row').forEach(r => r.classList.remove('sf-drill-open'));
+  document.querySelectorAll('.sf-tr').forEach(r => r.classList.remove('sf-row-open'));
+  document.querySelectorAll('[id$="-chevron"]').forEach(c => { c.textContent = '›'; c.style.transform = ''; });
+  if (!isOpen) {
+    detail.classList.add('sf-drill-open');
+    if (row) row.classList.add('sf-row-open');
+    if (chevron) { chevron.textContent = '›'; chevron.style.transform = 'rotate(90deg)'; chevron.style.display='inline-block'; chevron.style.transition='transform .2s'; }
+  }
+};
+
+window.toggleBrokerDetail = function(rowEl, detailId) {
+  const detail = document.getElementById(detailId);
+  if (!detail) return;
+  const isOpen = detail.style.display !== 'none';
+  // Close all broker details
+  document.querySelectorAll('.sf-broker-detail').forEach(d => { d.style.display = 'none'; });
+  document.querySelectorAll('.sf-broker-row').forEach(r => r.classList.remove('sf-brow-open'));
+  if (!isOpen) {
+    detail.style.display = 'block';
+    rowEl.classList.add('sf-brow-open');
+  }
+};
+
+function animateBrokerBars() {
+  document.querySelectorAll('.sf-bar-seg-calls, .sf-bar-seg-meetings').forEach(el => {
+    const target = el.getAttribute('data-w');
+    if (target) setTimeout(() => { el.style.width = target; }, 100);
+  });
+}
+
+/* ── Legacy dashboard tab (kept for any leftover references) ── */
 window.switchDashTab=function(e,panel){
   document.querySelectorAll('.dash-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.dash-panel').forEach(p=>p.classList.remove('active'));
@@ -2701,17 +3189,7 @@ window.switchDashTab=function(e,panel){
   if(panel==='winloss') renderWinLossChart();
 };
 
-let brokerChart=null, wlChart=null;
-function renderBrokerActivityChart(){
-  if(brokerChart) return;
-  const ctx=document.getElementById('pipelineChart').getContext('2d');
-  brokerChart=new Chart(ctx,{type:'bar',data:{labels:['Grand Rapids','South Bend','Detroit Metro','Indianapolis','Kalamazoo','Ft. Wayne'],datasets:[{label:'Calls This Week',data:[47,38,29,22,31,19],backgroundColor:'#0274BE',borderRadius:6,borderSkipped:false},{label:'Meetings',data:[12,9,7,6,8,5],backgroundColor:'#FF6900',borderRadius:6,borderSkipped:false}]},options:{responsive:true,plugins:{legend:{position:'top',labels:{font:{weight:'600',size:11},color:'#374151',boxWidth:11}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}`}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{font:{weight:'600',size:11},color:'#6B7280'}},y:{grid:{color:'rgba(0,0,0,0.05)'},border:{display:false},ticks:{font:{size:11},color:'#9CA3AF'},beginAtZero:true}}}});
-}
-function renderWinLossChart(){
-  if(wlChart) return;
-  const ctx=document.getElementById('winlossChart').getContext('2d');
-  wlChart=new Chart(ctx,{type:'doughnut',data:{labels:['Won (32%)','In Progress (45%)','Lost (23%)'],datasets:[{data:[32,45,23],backgroundColor:['#72BF44','#0274BE','#FF6900'],borderWidth:3,borderColor:'#fff',hoverOffset:6}]},options:{responsive:true,cutout:'66%',plugins:{legend:{position:'bottom',labels:{padding:14,font:{size:11,weight:'600'},color:'#374151',boxWidth:11,boxHeight:11}}}}});
-}
+// Chart.js canvases removed — replaced with CSS/SVG dashboard in the SF frame
 
 /* ══════════════════════════════════════
    BUSINESS VALUE CALCULATOR
