@@ -2081,17 +2081,22 @@
 .s6-ov-travel{position:absolute;left:0;width:2px;height:6px;border-radius:1px;animation:flowDot 2s ease-in-out infinite;}
 </style>
 
-<section id="slide-6" class="slide" style="background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);padding:56px 60px;">
-  <div style="display:flex;align-items:stretch;gap:36px;max-width:1240px;margin:0 auto;width:100%;">
+<section id="slide-6" class="slide" style="background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);padding:44px 60px;">
+  <div style="max-width:1240px;margin:0 auto;width:100%;height:100%;display:flex;flex-direction:column;">
 
-    <!-- ── Left: heading + layer stack ── -->
-    <div style="flex:0 0 44%;display:flex;flex-direction:column;">
-      <div class="mb-2 reveal"><span class="pill" style="background:rgba(255,105,0,0.15);color:#FFB380;border:1px solid rgba(255,105,0,0.3);">Pillar 3</span></div>
-      <h2 class="reveal" style="font-size:clamp(1.4rem,2.4vw,1.9rem);font-weight:900;color:white;line-height:1.1;margin-bottom:5px;">How Salesforce Powers<br/><span style="color:var(--brand-accent);">Bradley's AI Stack</span></h2>
-      <div class="accent-line reveal" style="background:linear-gradient(90deg,var(--brand-accent),var(--brand-primary));margin-bottom:12px;"></div>
-      <p class="reveal" style="color:rgba(255,255,255,0.45);font-size:0.78rem;line-height:1.6;margin-bottom:18px;">Your existing systems stay. Data flows up through a secured AI layer into every broker's pocket. Click any layer to explore.</p>
+    <!-- ── Full-width heading (demarcation above both columns) ── -->
+    <div class="reveal" style="margin-bottom:22px;">
+      <div class="mb-2"><span class="pill" style="background:rgba(255,105,0,0.15);color:#FFB380;border:1px solid rgba(255,105,0,0.3);">Pillar 3</span></div>
+      <h2 style="font-size:clamp(1.6rem,2.8vw,2.3rem);font-weight:900;color:white;line-height:1.1;margin-bottom:6px;">How Salesforce Powers <span style="color:var(--brand-accent);">Bradley's AI Stack</span></h2>
+      <div class="accent-line" style="background:linear-gradient(90deg,var(--brand-accent),var(--brand-primary));margin-bottom:10px;"></div>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;line-height:1.55;">Your existing systems stay. Data flows up through a secured AI layer into every broker's pocket. <span style="color:rgba(255,255,255,0.3);">Click any layer to explore the detail →</span></p>
+    </div>
 
-      <div style="display:flex;flex-direction:column;flex:1;justify-content:space-between;">
+    <!-- ── Two-column: layers (left) + detail panel (right) — same height ── -->
+    <div style="display:flex;align-items:stretch;gap:32px;flex:1;min-height:0;">
+
+      <!-- Left: layer stack only (no heading above) -->
+      <div style="flex:0 0 44%;display:flex;flex-direction:column;justify-content:space-between;">
 
         <div class="s6-layer-row reveal" onclick="selectArchLayer(1)">
           <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1D4ED8,#3B82F6);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
@@ -2151,12 +2156,11 @@
           <svg width="11" height="11" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
         </div>
 
-      </div>
-    </div>
+    </div><!-- /left layer stack -->
 
-    <!-- ── Right: detail panel ── -->
-    <div style="flex:1;display:flex;flex-direction:column;">
-      <div class="s6-det-panel reveal" style="flex:1;">
+    <!-- ── Right: detail panel (aligns with layer rows) ── -->
+    <div style="flex:1;display:flex;flex-direction:column;min-height:0;">
+      <div class="s6-det-panel reveal" style="flex:1;overflow:auto;">
 
         <!-- 0 — default overview -->
         <div class="s6-det-content s6-det-on" id="s6-det-0">
@@ -2238,10 +2242,12 @@
           <div class="s6-callout">"John gets real-time pipeline visibility without a single status email from his team. Chad sees the full picture from his phone on Monday morning."</div>
         </div>
 
-      </div>
-    </div>
+      </div><!-- /s6-det-panel -->
+    </div><!-- /right column -->
 
-  </div>
+    </div><!-- /two-column row -->
+
+  </div><!-- /outer flex column -->
 </section>
 
 
