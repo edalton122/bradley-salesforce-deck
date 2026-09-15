@@ -643,15 +643,54 @@
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!--  SLIDE 4 — BROKER AI ENGINE                                -->
 <!-- ═══════════════════════════════════════════════════════════ -->
-<section id="slide-4" class="slide" style="background:var(--brand-light);padding:80px 60px;">
-  <div class="img-strip" style="background:var(--brand-secondary);display:flex;align-items:center;justify-content:center;">
-    <video autoplay loop muted playsinline style="max-height:88%;max-width:88%;object-fit:contain;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.4);">
-      <source src="demo-loop.mp4" type="video/mp4"/>
-      <img src="https://www.bradleyco.com/wp-content/uploads/2021/04/grand-rapids.jpg" alt="Bradley demo" loading="lazy"/>
-    </video>
-  </div>
+<style>
+/* ── Slide 4 iPhone frame ── */
+.s4-phone {
+  width: 200px;
+  background: #1C1C1E;
+  border-radius: 40px;
+  padding: 10px;
+  position: relative;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.1),
+    0 0 0 2.5px #0A0A0A,
+    0 24px 56px rgba(0,0,0,0.65),
+    inset 0 1px 0 rgba(255,255,255,0.09);
+  flex-shrink: 0;
+}
+/* Volume buttons — left */
+.s4-phone::before {
+  content: ''; position: absolute; left: -3px; top: 84px;
+  width: 3px; height: 22px; background: #2A2A2C; border-radius: 2px 0 0 2px;
+  box-shadow: 0 32px 0 #2A2A2C, 0 64px 0 #2A2A2C;
+}
+/* Power button — right */
+.s4-phone::after {
+  content: ''; position: absolute; right: -3px; top: 106px;
+  width: 3px; height: 48px; background: #2A2A2C; border-radius: 0 2px 2px 0;
+}
+.s4-island {
+  width: 82px; height: 24px; background: #0A0A0A;
+  border-radius: 13px; margin: 0 auto 3px;
+}
+.s4-statusbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 7px 3px; color: white; font-size: 7.5px; font-weight: 700; letter-spacing: 0.01em;
+}
+.s4-screen {
+  background: #000; border-radius: 28px; overflow: hidden; height: 340px;
+}
+.s4-screen video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.s4-homebar { height: 17px; display: flex; align-items: center; justify-content: center; }
+.s4-homebar span { width: 72px; height: 4px; background: rgba(255,255,255,0.22); border-radius: 2px; }
+</style>
 
-  <div class="max-w-6xl mx-auto w-full" style="padding-right:42%;">
+<section id="slide-4" class="slide" style="background:var(--brand-light);padding:80px 60px;">
+
+  <div style="display:flex;align-items:flex-start;gap:48px;max-width:1240px;margin:0 auto;width:100%;">
+
+    <!-- ── Left: text + flow steps ── -->
+    <div style="flex:1;min-width:0;">
     <div class="mb-3 reveal flex items-center gap-3">
       <span class="pill" style="background:rgba(255,105,0,0.1);color:#C04A00;border:1px solid rgba(255,105,0,0.25);">Mobile-First AI</span>
       <span style="font-size:11px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;">#1 Selling Point from Aug 31 Demo</span>
@@ -743,7 +782,49 @@
       <p style="font-size:0.85rem;color:#374151;line-height:1.7;font-style:italic;">"I've been looking for ways to utilize AI better in my business — and want to make sure I'm keeping up with my competitors. The more AI the better as far as I'm concerned."</p>
       <p style="font-size:11px;font-weight:800;color:var(--brand-primary);margin-top:6px;">— John Jessen, Market Leader, Bradley Company (Aug 31, 2026 Demo)</p>
     </div>
-  </div>
+    </div><!-- /left column -->
+
+    <!-- ── Right: Bradley branded panel + iPhone ── -->
+    <div style="flex:0 0 auto;align-self:stretch;display:flex;align-items:center;justify-content:center;position:relative;min-width:240px;">
+
+      <!-- Full-height branded background -->
+      <div style="position:absolute;inset:0;border-radius:20px;overflow:hidden;background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);">
+        <!-- Grand Rapids aerial — ultra-faint texture -->
+        <img src="https://www.bradleyco.com/wp-content/uploads/2021/04/grand-rapids.jpg" alt="" loading="lazy"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.06;pointer-events:none;"/>
+        <!-- Dot grid overlay -->
+        <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.045) 1px,transparent 1px);background-size:18px 18px;pointer-events:none;"></div>
+        <!-- "AGENTFORCE" watermark text — decorative -->
+        <div style="position:absolute;bottom:28px;left:0;right:0;text-align:center;font-size:8px;font-weight:900;letter-spacing:0.22em;color:rgba(255,255,255,0.13);text-transform:uppercase;pointer-events:none;">BRADLEY COMPANY · AGENTFORCE</div>
+        <!-- Orange accent glow behind phone -->
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:220px;height:360px;background:radial-gradient(ellipse at center,rgba(255,105,0,0.12) 0%,transparent 70%);pointer-events:none;"></div>
+      </div>
+
+      <!-- iPhone frame — centered, aligned to steps area via padding -->
+      <div style="position:relative;z-index:2;padding:0 24px;">
+        <div class="s4-phone">
+          <div class="s4-island"></div>
+          <div class="s4-statusbar">
+            <span>9:41</span>
+            <div style="display:flex;align-items:center;gap:3px;">
+              <svg width="10" height="8" viewBox="0 0 10 8" fill="white"><rect x="0" y="5" width="2" height="3" rx="0.5"/><rect x="2.5" y="3" width="2" height="5" rx="0.5"/><rect x="5" y="1" width="2" height="7" rx="0.5"/><rect x="7.5" y="0" width="2" height="8" rx="0.5"/></svg>
+              <svg width="10" height="8" viewBox="0 0 10 8" fill="white"><path d="M5 1.5a5 5 0 014.2 2.3l-.9.9A3.7 3.7 0 005 3a3.7 3.7 0 00-3.3 1.7l-.9-.9A5 5 0 015 1.5z"/><path d="M5 3.8a2.5 2.5 0 012 1l-.9.9A1.2 1.2 0 005 5.2a1.2 1.2 0 00-1.1.5l-.9-.9a2.5 2.5 0 012-1z"/><circle cx="5" cy="6.8" r="0.8"/></svg>
+              <svg width="14" height="8" viewBox="0 0 14 8" fill="none"><rect x="0" y="1" width="11" height="6" rx="1.5" stroke="white" stroke-width="1"/><rect x="1" y="2" width="8" height="4" rx="0.8" fill="white"/><rect x="12" y="2.5" width="1.5" height="3" rx="0.75" fill="rgba(255,255,255,0.5)"/></svg>
+            </div>
+          </div>
+          <div class="s4-screen">
+            <video autoplay loop muted playsinline>
+              <source src="demo-loop.mp4" type="video/mp4"/>
+            </video>
+          </div>
+          <div class="s4-homebar"><span></span></div>
+        </div>
+      </div>
+
+    </div><!-- /right column -->
+
+  </div><!-- /flex row -->
+
 </section>
 
 
