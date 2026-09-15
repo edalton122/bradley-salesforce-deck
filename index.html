@@ -2635,7 +2635,7 @@ function showDemoScreen(n) {
     }, 420);
   }
 
-  target.style.transform = 'translateX(100%)';
+  target.style.transform = ''; // clear any inline override so CSS default (translateX(100%)) applies
   requestAnimationFrame(() => requestAnimationFrame(() => {
     target.classList.add('ds-active');
   }));
