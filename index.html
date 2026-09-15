@@ -87,6 +87,8 @@
     @keyframes pulseSlow { 0%,100% { opacity:1; } 50% { opacity:0.45; } }
     @keyframes slideInR  { from { transform:translateX(100%); } to { transform:translateX(0); } }
     @keyframes shimmerBg { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
+    @keyframes voiceBar  { from { height:3px; } to { height:14px; } }
+    .ds-wave-bar { height:5px; }
 
     .anim-fiu { animation: fadeInUp 0.65s ease both; }
     .anim-fi  { animation: fadeIn   0.65s ease both; }
@@ -1482,10 +1484,40 @@
                 <div style="font-size:8px;font-weight:800;color:var(--brand-primary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">★ Agentforce Insight</div>
                 <div style="font-size:9px;color:#374151;line-height:1.5;">"High probability — referenced budget in last call. Competitor evaluating same property."</div>
               </div>
-              <button class="ds-mic-btn ds-pulse" onclick="advanceDemoScreen()">
+              <button id="ds-s4-mic-btn" class="ds-mic-btn ds-pulse" onclick="startVoiceNote()">
                 <svg width="13" height="17" viewBox="0 0 13 17" fill="none"><rect x="3.5" y="0.5" width="6" height="10" rx="3" fill="white"/><path d="M1 8.5a5.5 5.5 0 0 0 11 0" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="6.5" y1="14" x2="6.5" y2="16.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
                 Log Voice Note
               </button>
+
+              <!-- ── Voice recording panel (hidden until mic is tapped) ── -->
+              <div id="ds-s4-record-panel" style="display:none;margin-top:10px;border-radius:14px;overflow:hidden;border:1.5px solid rgba(255,105,0,0.25);background:rgba(255,105,0,0.04);">
+                <!-- Recording header -->
+                <div id="ds-s4-rec-header" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(255,105,0,0.08);border-bottom:1px solid rgba(255,105,0,0.15);">
+                  <span id="ds-s4-rec-dot" style="width:8px;height:8px;border-radius:50%;background:#EF4444;flex-shrink:0;animation:pulseSlow 0.7s ease-in-out infinite;box-shadow:0 0 6px #EF4444;"></span>
+                  <span id="ds-s4-rec-label" style="font-size:9px;font-weight:800;color:#EF4444;letter-spacing:0.06em;text-transform:uppercase;">Recording</span>
+                  <!-- Voice wave bars -->
+                  <div id="ds-s4-wave" style="display:flex;align-items:center;gap:2px;margin-left:4px;">
+                    <div style="width:2px;background:#EF4444;border-radius:2px;animation:voiceBar 0.6s ease-in-out infinite alternate;animation-delay:0s;" class="ds-wave-bar"></div>
+                    <div style="width:2px;background:#EF4444;border-radius:2px;animation:voiceBar 0.6s ease-in-out infinite alternate;animation-delay:0.1s;" class="ds-wave-bar"></div>
+                    <div style="width:2px;background:#EF4444;border-radius:2px;animation:voiceBar 0.6s ease-in-out infinite alternate;animation-delay:0.2s;" class="ds-wave-bar"></div>
+                    <div style="width:2px;background:#EF4444;border-radius:2px;animation:voiceBar 0.6s ease-in-out infinite alternate;animation-delay:0.3s;" class="ds-wave-bar"></div>
+                    <div style="width:2px;background:#EF4444;border-radius:2px;animation:voiceBar 0.6s ease-in-out infinite alternate;animation-delay:0.15s;" class="ds-wave-bar"></div>
+                  </div>
+                </div>
+                <!-- Transcription text -->
+                <div style="padding:9px 12px;min-height:52px;">
+                  <div style="font-size:8px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px;">Transcription</div>
+                  <div id="ds-s4-transcript" style="font-size:9px;color:#374151;line-height:1.65;font-style:italic;"></div>
+                  <span id="ds-s4-cursor" style="display:none;width:1px;height:10px;background:#EF4444;animation:blink 0.6s step-start infinite;vertical-align:text-bottom;"></span>
+                </div>
+                <!-- Processing row (hidden until typing done) -->
+                <div id="ds-s4-processing" style="display:none;align-items:center;gap:7px;padding:8px 12px;background:rgba(2,116,190,0.06);border-top:1px solid rgba(2,116,190,0.12);">
+                  <svg width="12" height="12" viewBox="0 0 52 52" fill="none"><path d="M21.6 10.4A10.4 10.4 0 0132 0a10.4 10.4 0 019.5 6.2A7.8 7.8 0 0144 5.2a7.8 7.8 0 017.8 7.8 7.8 7.8 0 01-.9 3.6 6.5 6.5 0 01.9 3.3A6.5 6.5 0 0145.3 26a7.8 7.8 0 01.1 1.3 7.8 7.8 0 01-7.8 7.8 7.8 7.8 0 01-2-.27A10.4 10.4 0 0126 40a10.4 10.4 0 01-9.8-6.9 7.8 7.8 0 01-3.8 1 7.8 7.8 0 01-7.2-10.8A6.5 6.5 0 012.6 19 6.5 6.5 0 019 12.5a6.5 6.5 0 012 .3A10.4 10.4 0 0121.6 10.4z" fill="var(--brand-primary)" opacity=".8"/></svg>
+                  <span style="font-size:8.5px;font-weight:700;color:var(--brand-primary);">Agentforce is logging your note</span>
+                  <span class="ds-thinking-dot"></span><span class="ds-thinking-dot"></span><span class="ds-thinking-dot"></span>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -3852,6 +3884,59 @@ window.dismissInvite = function() {
   // "Ask Agentforce" button and taps it to start the demo naturally.
 };
 
+// ── Screen 4: Voice note dictation + Agentforce logging ──
+const VOICE_NOTE_TEXT = '"Met with Mike Thompson at the Jefferson property. Strong interest in the third floor — open layout, great light. Competing offer on the table from another firm. Need to send updated pricing to Mike by Thursday, and include a draft LOI. Mark this one high priority."';
+
+let voiceNoteTimer = null;
+window.startVoiceNote = function() {
+  const btn      = document.getElementById('ds-s4-mic-btn');
+  const panel    = document.getElementById('ds-s4-record-panel');
+  const label    = document.getElementById('ds-s4-rec-label');
+  const dot      = document.getElementById('ds-s4-rec-dot');
+  const wave     = document.getElementById('ds-s4-wave');
+  const transcript = document.getElementById('ds-s4-transcript');
+  const cursor   = document.getElementById('ds-s4-cursor');
+  const processing = document.getElementById('ds-s4-processing');
+  if (!btn || !panel) return;
+
+  // Disable button to prevent double-tap
+  btn.onclick = null;
+  btn.style.opacity = '0.5';
+  btn.style.pointerEvents = 'none';
+
+  // Show panel
+  panel.style.display = 'block';
+  panel.style.animation = 'fadeInUp 0.35s ease';
+  transcript.textContent = '';
+  if (cursor) { cursor.style.display = 'inline-block'; }
+  if (processing) processing.style.display = 'none';
+
+  // Typewriter the spoken text
+  let i = 0;
+  if (voiceNoteTimer) { clearInterval(voiceNoteTimer); voiceNoteTimer = null; }
+  voiceNoteTimer = setInterval(() => {
+    transcript.textContent += VOICE_NOTE_TEXT[i];
+    i++;
+    if (i >= VOICE_NOTE_TEXT.length) {
+      clearInterval(voiceNoteTimer);
+      voiceNoteTimer = null;
+
+      // Stop cursor blink, freeze wave
+      if (cursor) cursor.style.animation = 'none';
+      if (wave) wave.style.animation = 'none';
+      if (dot)  { dot.style.animation = 'none'; dot.style.background = '#94A3B8'; dot.style.boxShadow = 'none'; }
+      if (label){ label.textContent = 'Done'; label.style.color = '#64748B'; }
+
+      // Show "Agentforce is logging" after short pause
+      setTimeout(() => {
+        if (processing) processing.style.display = 'flex';
+        // Advance to Screen 5 after Agentforce "processes"
+        setTimeout(() => { advanceDemoScreen(); }, 1400);
+      }, 500);
+    }
+  }, 28); // ~28ms per char = fast but readable
+};
+
 // ── Screen 6: Send email 3-beat animation ──
 window.sendEmail = function() {
   const btn = document.getElementById('s6-send-btn');
@@ -4005,6 +4090,18 @@ window.resetDemo = function() {
   // Restore invite overlay
   const inv = document.getElementById('demo-invite');
   if (inv) { inv.style.display = 'flex'; inv.style.opacity = '1'; }
+  // Reset Screen 4 voice note panel
+  if (voiceNoteTimer) { clearInterval(voiceNoteTimer); voiceNoteTimer = null; }
+  const s4panel = document.getElementById('ds-s4-record-panel');
+  if (s4panel) s4panel.style.display = 'none';
+  const s4transcript = document.getElementById('ds-s4-transcript');
+  if (s4transcript) s4transcript.textContent = '';
+  const s4cursor = document.getElementById('ds-s4-cursor');
+  if (s4cursor) { s4cursor.style.display = 'none'; s4cursor.style.animation = 'blink 0.6s step-start infinite'; }
+  const s4processing = document.getElementById('ds-s4-processing');
+  if (s4processing) s4processing.style.display = 'none';
+  const s4micBtn = document.getElementById('ds-s4-mic-btn');
+  if (s4micBtn) { s4micBtn.onclick = startVoiceNote; s4micBtn.style.opacity = '1'; s4micBtn.style.pointerEvents = ''; }
   // Reset email typewriter
   if (emailTypewriterTimer) { clearInterval(emailTypewriterTimer); emailTypewriterTimer = null; }
   const emailBody = document.getElementById('ds-email-body');
