@@ -1734,22 +1734,13 @@
                 <!-- Day-by-day velocity mini chart -->
                 <div style="padding:9px 14px;flex:1;">
                   <div style="font-size:8px;font-weight:800;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Deal Velocity · Mon–Fri</div>
-                  <div style="display:flex;align-items:flex-end;gap:5px;height:65px;margin-bottom:5px;">
-                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;">
-                      <div style="width:100%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" id="vel-mon" style="height:0;" data-h="68%"></div>
-                    </div>
-                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;">
-                      <div style="width:100%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" id="vel-tue" data-h="85%"></div>
-                    </div>
-                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;">
-                      <div style="width:100%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" id="vel-wed" data-h="55%"></div>
-                    </div>
-                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;">
-                      <div style="width:100%;background:linear-gradient(180deg,var(--brand-accent),#C44E00);border-radius:3px 3px 0 0;" id="vel-thu" data-h="100%"></div>
-                    </div>
-                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;">
-                      <div style="width:100%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" id="vel-fri" data-h="72%"></div>
-                    </div>
+                  <!-- Bar chart: bars are direct flex children of the 65px container so % heights resolve correctly -->
+                  <div style="display:flex;align-items:flex-end;gap:5px;height:65px;margin-bottom:4px;">
+                    <div id="vel-mon" style="flex:1;height:0%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" data-h="68%"></div>
+                    <div id="vel-tue" style="flex:1;height:0%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" data-h="85%"></div>
+                    <div id="vel-wed" style="flex:1;height:0%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" data-h="55%"></div>
+                    <div id="vel-thu" style="flex:1;height:0%;background:linear-gradient(180deg,var(--brand-accent),#C44E00);border-radius:3px 3px 0 0;" data-h="100%"></div>
+                    <div id="vel-fri" style="flex:1;height:0%;background:linear-gradient(180deg,var(--brand-primary),#0288D1);border-radius:3px 3px 0 0;" data-h="72%"></div>
                   </div>
                   <div style="display:flex;gap:5px;">
                     <div style="flex:1;text-align:center;font-size:7.5px;color:#94A3B8;font-weight:700;">Mon</div>
