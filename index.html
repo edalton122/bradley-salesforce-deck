@@ -1916,6 +1916,33 @@
 [data-hub="after"]  .s5-stat-b { display:none; }
 [data-hub="after"]  .s5-stat-a { display:block; }
 .s5-stat-lbl { font-size:9px; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; margin-top:3px; }
+
+/* ── "After" button pulses when user is on "before" state ── */
+[data-hub="before"] #s5-btn-after {
+  animation: s5AfterGlow 2s ease-in-out infinite;
+}
+@keyframes s5AfterGlow {
+  0%,100% { box-shadow: inset 0 0 0 1px rgba(114,191,68,0.2), 0 0 0 0 rgba(114,191,68,0); }
+  50%      { box-shadow: inset 0 0 0 2px rgba(114,191,68,0.7), 0 0 18px 4px rgba(114,191,68,0.22); }
+}
+/* subtle hint text element — shown only when before */
+#s5-click-hint {
+  text-align: center;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: rgba(114,191,68,0.65);
+  letter-spacing: 0.05em;
+  margin-top: 6px;
+  margin-bottom: -4px;
+  animation: pulseSlow 2s ease-in-out infinite;
+  transition: opacity 0.4s;
+}
+[data-hub="after"] #s5-click-hint { opacity: 0; pointer-events: none; }
+/* converge animation — JS adds this class during transition */
+#s5-chaos-group.s5-converging {
+  transform: scale(0.04) !important;
+  opacity: 0 !important;
+}
 </style>
 
 <section id="slide-5" class="slide" style="background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);padding:44px 60px;">
@@ -1954,6 +1981,9 @@
       </div>
     </div>
 
+    <!-- Hint to click "After" -->
+    <div id="s5-click-hint">↑ &nbsp;Tap "After Salesforce" to watch all data streams converge in real time</div>
+
     <!-- ── HUB MAP ── -->
     <div class="reveal">
       <div class="s5-map-wrap" style="height:248px;">
@@ -1961,23 +1991,25 @@
         <!-- SVG lines layer -->
         <svg class="s5-map-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 800 248" preserveAspectRatio="none">
 
-          <!-- ── CHAOS PATHS (before) — systems connect to each other, not to center ── -->
-          <!-- Outlook ↔ Yardi: wild cross path -->
-          <path class="s5-chaos" d="M 172,50 C 500,-30 100,280 628,200" stroke="#F87171" stroke-width="1.4" fill="none" stroke-dasharray="6 4" opacity="0.65"/>
-          <!-- DLAS ↔ ClickUp: another cross -->
-          <path class="s5-chaos" d="M 628,50 C 250,-20 550,280 172,200" stroke="#F87171" stroke-width="1.4" fill="none" stroke-dasharray="6 4" opacity="0.65"/>
-          <!-- Outlook → nowhere (dead-end arrow going off) -->
-          <path class="s5-chaos" d="M 172,50 C 260,90 300,60 320,30" stroke="#FB923C" stroke-width="1" fill="none" stroke-dasharray="3 4" opacity="0.4"/>
-          <!-- DLAS → wanders to center then bounces away -->
-          <path class="s5-chaos" d="M 628,50 C 500,100 420,130 440,180" stroke="#FB923C" stroke-width="1" fill="none" stroke-dasharray="3 4" opacity="0.4"/>
-          <!-- ClickUp → zigzag to Outlook -->
-          <path class="s5-chaos" d="M 172,200 C 280,130 350,170 320,90 C 290,30 200,80 172,50" stroke="#F87171" stroke-width="1" fill="none" stroke-dasharray="4 4" opacity="0.35"/>
-          <!-- Orphan line going nowhere -->
-          <path class="s5-chaos" d="M 628,200 C 550,160 480,200 440,240" stroke="#FB923C" stroke-width="1" fill="none" stroke-dasharray="3 5" opacity="0.3"/>
-          <!-- X marks on the chaos paths midpoints -->
-          <text class="s5-chaos" x="390" y="28" font-size="12" fill="#F87171" opacity="0.7" text-anchor="middle">✕</text>
-          <text class="s5-chaos" x="400" y="235" font-size="12" fill="#F87171" opacity="0.7" text-anchor="middle">✕</text>
-          <text class="s5-chaos" x="250" y="100" font-size="10" fill="#FB923C" opacity="0.5" text-anchor="middle">?</text>
+          <!-- ── CHAOS PATHS (before) — grouped for convergence animation ── -->
+          <g id="s5-chaos-group" style="transform-box:fill-box;transform-origin:50% 50%;transition:transform 0.65s cubic-bezier(0.4,0,0.8,0.2),opacity 0.65s ease-in;">
+            <!-- Outlook ↔ Yardi: wild cross path -->
+            <path class="s5-chaos" d="M 172,50 C 500,-30 100,280 628,200" stroke="#F87171" stroke-width="1.4" fill="none" stroke-dasharray="6 4" opacity="0.65"/>
+            <!-- DLAS ↔ ClickUp: another cross -->
+            <path class="s5-chaos" d="M 628,50 C 250,-20 550,280 172,200" stroke="#F87171" stroke-width="1.4" fill="none" stroke-dasharray="6 4" opacity="0.65"/>
+            <!-- Outlook → nowhere (dead-end arrow going off) -->
+            <path class="s5-chaos" d="M 172,50 C 260,90 300,60 320,30" stroke="#FB923C" stroke-width="1" fill="none" stroke-dasharray="3 4" opacity="0.4"/>
+            <!-- DLAS → wanders to center then bounces away -->
+            <path class="s5-chaos" d="M 628,50 C 500,100 420,130 440,180" stroke="#FB923C" stroke-width="1" fill="none" stroke-dasharray="3 4" opacity="0.4"/>
+            <!-- ClickUp → zigzag to Outlook -->
+            <path class="s5-chaos" d="M 172,200 C 280,130 350,170 320,90 C 290,30 200,80 172,50" stroke="#F87171" stroke-width="1" fill="none" stroke-dasharray="4 4" opacity="0.35"/>
+            <!-- Orphan line going nowhere -->
+            <path class="s5-chaos" d="M 628,200 C 550,160 480,200 440,240" stroke="#FB923C" stroke-width="1" fill="none" stroke-dasharray="3 5" opacity="0.3"/>
+            <!-- X marks -->
+            <text class="s5-chaos" x="390" y="28" font-size="12" fill="#F87171" opacity="0.7" text-anchor="middle">✕</text>
+            <text class="s5-chaos" x="400" y="235" font-size="12" fill="#F87171" opacity="0.7" text-anchor="middle">✕</text>
+            <text class="s5-chaos" x="250" y="100" font-size="10" fill="#FB923C" opacity="0.5" text-anchor="middle">?</text>
+          </g>
 
           <!-- ── CLEAN CONVERGENCE (after) — all roads lead to Salesforce ── -->
           <!-- Outlook → SF center -->
@@ -3193,22 +3225,51 @@ window.selectArchLayer = function(n) {
   });
 };
 
-/* ── Slide 5: hub before/after toggle ── */
+/* ── Slide 5: hub before/after toggle (with convergence animation) ── */
+let s5Transitioning = false;
 window.setHubState = function(state) {
-  const root = document.getElementById('s5-root');
-  if (root) root.setAttribute('data-hub', state);
-  // Update big toggle panels
-  const bb = document.getElementById('s5-btn-before');
-  const ba = document.getElementById('s5-btn-after');
-  if (bb && ba) {
-    bb.classList.toggle('s5-tp-active-b', state === 'before');
-    ba.classList.toggle('s5-tp-active-a', state === 'after');
-    bb.classList.toggle('s5-tp-active-b', state === 'before');
+  if (s5Transitioning) return;
+
+  const root      = document.getElementById('s5-root');
+  const bb        = document.getElementById('s5-btn-before');
+  const ba        = document.getElementById('s5-btn-after');
+  const chaosGrp  = document.getElementById('s5-chaos-group');
+  const chkB      = document.getElementById('s5-chk-b');
+  const chkA      = document.getElementById('s5-chk-a');
+
+  if (state === 'before') {
+    // Instant reset — kill transition temporarily so chaos group resets without animation
+    if (chaosGrp) {
+      chaosGrp.style.transition = 'none';
+      chaosGrp.classList.remove('s5-converging');
+      requestAnimationFrame(() => { chaosGrp.style.transition = ''; });
+    }
+    if (root) root.setAttribute('data-hub', 'before');
+    if (bb) { bb.classList.add('s5-tp-active-b'); }
+    if (ba) { ba.classList.remove('s5-tp-active-a'); }
+    if (chkB) chkB.textContent = '✕';
+    if (chkA) chkA.textContent = '○';
+    return;
   }
-  const chkB = document.getElementById('s5-chk-b');
-  const chkA = document.getElementById('s5-chk-a');
-  if (chkB) chkB.textContent = state === 'before' ? '✕' : '○';
-  if (chkA) chkA.textContent = state === 'after'  ? '✓' : '○';
+
+  // ── "After" click: 2-phase transition ──
+  s5Transitioning = true;
+
+  // Phase 1: chaos lines converge to Salesforce hub
+  if (chaosGrp) chaosGrp.classList.add('s5-converging');
+
+  // Dim the "before" button during transition
+  if (bb) bb.style.opacity = '0.4';
+
+  setTimeout(() => {
+    // Phase 2: flip to "after" state (clean lines + dots appear)
+    if (root) root.setAttribute('data-hub', 'after');
+    if (bb)  { bb.classList.remove('s5-tp-active-b'); bb.style.opacity = ''; }
+    if (ba)  { ba.classList.add('s5-tp-active-a'); }
+    if (chkB) chkB.textContent = '○';
+    if (chkA) chkA.textContent = '✓';
+    s5Transitioning = false;
+  }, 680); // matches CSS transition duration
 };
 
 /* ── Detail drawer ── */
