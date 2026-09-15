@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bradley Company × Salesforce — Business Value Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:   #0274BE;
+      --navy:   #013F75;
+      --orange: #FF6900;
+      --green:  #059669;
+      --purple: #7C3AED;
+      --light:  #EEF5FB;
+    }
+    body { font-family: 'Inter', sans-serif; background: white; color: #1E293B; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    /* ── Print bar ── */
+    .print-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: white; border-bottom: 1px solid #E5E7EB;
+      padding: 10px 28px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .print-bar a { font-size: 12px; font-weight: 600; color: var(--blue); text-decoration: none; }
+    .print-bar span { font-size: 12px; font-weight: 700; color: #374151; }
+    .print-btn {
+      padding: 8px 20px; background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer;
+    }
+    .print-btn:hover { opacity: 0.88; }
+
+    /* ── Page ── */
+    .page { max-width: 900px; margin: 0 auto; padding: 0 28px 64px; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #012D5A 55%, var(--blue) 100%);
+      border-radius: 18px; padding: 44px 40px; margin: 24px 0 20px; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 30px 30px; pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; display: flex; align-items: flex-start; gap: 40px; }
+    .hero-left { flex: 1; }
+    .hero-right { flex-shrink: 0; text-align: center; }
+
+    /* ── Donut SVG ── */
+    .donut-wrap { position: relative; width: 180px; height: 180px; }
+    .donut-center {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+
+    /* ── Summary strip ── */
+    .sum-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0; }
+    .sum-box { background: white; border: 1px solid #E5E7EB; border-radius: 12px; padding: 14px 16px; }
+    .sum-val { font-size: 1.45rem; font-weight: 900; letter-spacing: -0.025em; line-height: 1; }
+    .sum-lbl { font-size: 9.5px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 4px; }
+
+    /* ── Stacked bar ── */
+    .bar-track { height: 12px; border-radius: 6px; overflow: hidden; display: flex; margin: 8px 0 4px; }
+    .bar-seg { height: 100%; }
+    .bar-legend { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 8px; }
+    .bar-leg-item { display: flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 600; color: #64748B; }
+    .bar-leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ── Section heading ── */
+    .sec-head { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em; color: #94A3B8; margin: 28px 0 12px; border-top: 1px solid #F1F5F9; padding-top: 20px; }
+
+    /* ── Category cards ── */
+    .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .cat-card { border-radius: 14px; padding: 22px; border: 1px solid #E5E7EB; }
+    .cat-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+    .cat-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cat-val { font-size: 1.8rem; font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+    .cat-pct { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px; margin-top: 4px; display: inline-block; }
+    .cat-title { font-size: 0.88rem; font-weight: 800; color: #0B2545; margin-bottom: 10px; }
+    .driver-list { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+    .driver-list li { font-size: 0.78rem; color: #374151; line-height: 1.55; display: flex; gap: 6px; align-items: flex-start; }
+    .driver-list li::before { content: '▸'; font-size: 8px; flex-shrink: 0; margin-top: 2px; }
+    .input-strip { display: flex; gap: 8px; flex-wrap: wrap; }
+    .input-chip { background: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 6px; padding: 4px 9px; font-size: 10px; font-weight: 700; color: #64748B; }
+
+    /* ── Progress bar inside card ── */
+    .cat-prog-track { height: 6px; background: #F1F5F9; border-radius: 3px; overflow: hidden; margin: 12px 0 8px; }
+    .cat-prog-fill { height: 100%; border-radius: 3px; }
+
+    /* ── Assumptions table ── */
+    .assump-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .assump-table th { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #94A3B8; padding: 6px 10px; text-align: left; background: #F8FAFC; border-bottom: 1px solid #E5E7EB; }
+    .assump-table td { padding: 8px 10px; border-bottom: 1px solid #F1F5F9; color: #374151; vertical-align: top; }
+    .assump-table tr:last-child td { border-bottom: none; }
+    .assump-table td:first-child { font-weight: 700; color: #0B2545; }
+    .assump-table td.num { font-weight: 800; font-variant-numeric: tabular-nums; }
+
+    /* ── Timeline ── */
+    .timeline { display: flex; gap: 10px; }
+    .phase { flex: 1; background: #F8FAFC; border-radius: 10px; padding: 16px; border: 1px solid #E5E7EB; }
+    .phase-hd { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .phase h4 { font-size: 0.82rem; font-weight: 800; color: #0B2545; margin-bottom: 5px; }
+    .phase p { font-size: 0.75rem; color: #64748B; line-height: 1.6; }
+
+    /* ── CTA ── */
+    .cta-box { text-align: center; padding: 28px; background: #F8FAFC; border-radius: 14px; border: 1px solid #E5E7EB; margin-top: 20px; }
+    .cta-contacts { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 14px; }
+    .cta-btn { padding: 9px 16px; color: white; font-size: 11.5px; font-weight: 800; border-radius: 8px; text-decoration: none; display: inline-block; }
+
+    /* ── Disclaimer ── */
+    .disclaimer { margin-top: 24px; padding-top: 16px; border-top: 1px solid #F1F5F9; text-align: center; }
+    .disclaimer p { font-size: 9.5px; color: #94A3B8; line-height: 1.8; }
+
+    /* ── Print ── */
+    @media print {
+      .print-bar { display: none !important; }
+      .page { padding: 0 16px 30px; }
+      .hero, .cat-card, .cta-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .cat-grid { break-inside: avoid; }
+    }
+    @media (max-width: 680px) {
+      .hero-inner { flex-direction: column; }
+      .sum-strip { grid-template-columns: repeat(2, 1fr); }
+      .cat-grid { grid-template-columns: 1fr; }
+      .timeline { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Print bar -->
+<div class="print-bar">
+  <a href="index.html">← Back to Full Deck</a>
+  <span>Bradley Company × Salesforce — Business Value Assessment</span>
+  <button class="print-btn" onclick="window.print()">Print / Save PDF ↓</button>
+</div>
+
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <!-- Logos -->
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+          <img src="https://www.bradleyco.com/wp-content/uploads/2021/03/Asset-2733.svg" alt="Bradley Company" style="height:32px;filter:brightness(0) invert(1);opacity:0.85;" onerror="this.style.display='none'"/>
+          <div style="width:1px;height:26px;background:rgba(255,255,255,0.2);"></div>
+          <img src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/11/logo-salesforce.svg" alt="Salesforce" style="height:24px;"/>
+        </div>
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-bottom:8px;">Business Value Assessment</div>
+        <h1 style="font-size:clamp(1.6rem,3.2vw,2.3rem);font-weight:900;color:white;line-height:1.1;letter-spacing:-0.025em;margin-bottom:10px;">$881K Annual Value<br/>Across 4 Categories</h1>
+        <p style="color:rgba(255,255,255,0.65);font-size:0.85rem;line-height:1.7;max-width:440px;margin-bottom:18px;">Calibrated to Bradley Company's actual scale: 63 brokers, $540M revenue, and the specific operational friction your team named — DLAS/Yardi manual entry, 6–8 hrs/week of reporting, and broker CRM adoption.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;">
+          <span style="font-size:9.5px;font-weight:700;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);padding:3px 11px;border-radius:99px;border:1px solid rgba(255,255,255,0.15);">Prepared September 14, 2026</span>
+          <span style="font-size:9.5px;font-weight:700;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);padding:3px 11px;border-radius:99px;border:1px solid rgba(255,255,255,0.15);">Confidential</span>
+          <span style="font-size:9.5px;font-weight:700;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);padding:3px 11px;border-radius:99px;border:1px solid rgba(255,255,255,0.15);">For Discussion Only</span>
+        </div>
+      </div>
+
+      <!-- Donut chart -->
+      <div class="hero-right">
+        <div class="donut-wrap">
+          <svg width="180" height="180" viewBox="0 0 180 180">
+            <!-- bg ring -->
+            <circle cx="90" cy="90" r="72" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="22"/>
+            <!-- Broker Productivity 83.65% = 452.39/502.65×452.39 -->
+            <!-- circ = 2π×72 = 452.39 -->
+            <!-- BP: 83.65% = 378.42, offset = 452.39×0.25 = 113.10 = start at top -->
+            <circle cx="90" cy="90" r="72" fill="none" stroke="#0274BE" stroke-width="22"
+              stroke-dasharray="378.42 452.39" stroke-dashoffset="113.10"
+              transform="rotate(-90 90 90)"/>
+            <!-- Reporting 4.77% = 21.58 -->
+            <circle cx="90" cy="90" r="72" fill="none" stroke="#7C3AED" stroke-width="22"
+              stroke-dasharray="21.58 452.39" stroke-dashoffset="-265.32"
+              transform="rotate(-90 90 90)"/>
+            <!-- Integration 6.24% = 28.24 -->
+            <circle cx="90" cy="90" r="72" fill="none" stroke="#FF6900" stroke-width="22"
+              stroke-dasharray="28.24 452.39" stroke-dashoffset="-286.90"
+              transform="rotate(-90 90 90)"/>
+            <!-- Revenue Growth 5.45% = 24.65 -->
+            <circle cx="90" cy="90" r="72" fill="none" stroke="#059669" stroke-width="22"
+              stroke-dasharray="24.65 452.39" stroke-dashoffset="-315.14"
+              transform="rotate(-90 90 90)"/>
+          </svg>
+          <div class="donut-center">
+            <div style="font-size:1.6rem;font-weight:900;color:white;line-height:1;letter-spacing:-0.03em;">$881K</div>
+            <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;margin-top:3px;">Annual Value</div>
+          </div>
+        </div>
+        <!-- Legend below chart -->
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:5px;text-align:left;">
+          <div style="display:flex;align-items:center;gap:7px;font-size:9.5px;color:rgba(255,255,255,0.65);">
+            <div style="width:10px;height:10px;border-radius:3px;background:#0274BE;flex-shrink:0;"></div>
+            Broker Productivity — 84%
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:9.5px;color:rgba(255,255,255,0.65);">
+            <div style="width:10px;height:10px;border-radius:3px;background:#7C3AED;flex-shrink:0;"></div>
+            Reporting & Forecasting — 5%
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:9.5px;color:rgba(255,255,255,0.65);">
+            <div style="width:10px;height:10px;border-radius:3px;background:#FF6900;flex-shrink:0;"></div>
+            Systems Integration — 6%
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:9.5px;color:rgba(255,255,255,0.65);">
+            <div style="width:10px;height:10px;border-radius:3px;background:#059669;flex-shrink:0;"></div>
+            Revenue Growth — 5%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COMPANY STATS STRIP ── -->
+  <div class="sum-strip">
+    <div class="sum-box">
+      <div class="sum-val" style="color:var(--blue);">$540M</div>
+      <div class="sum-lbl">Annual Revenue</div>
+    </div>
+    <div class="sum-box">
+      <div class="sum-val" style="color:var(--orange);">63</div>
+      <div class="sum-lbl">Active Brokers</div>
+    </div>
+    <div class="sum-box">
+      <div class="sum-val" style="color:var(--purple);">6–8 hrs</div>
+      <div class="sum-lbl">Weekly Manual Reports</div>
+    </div>
+    <div class="sum-box">
+      <div class="sum-val" style="color:var(--navy);">8 yrs</div>
+      <div class="sum-lbl">Salesforce Partnership</div>
+    </div>
+  </div>
+
+  <!-- ── STACKED BAR ── -->
+  <div style="background:#F8FAFC;border-radius:12px;padding:16px 20px;border:1px solid #E5E7EB;">
+    <div style="font-size:10px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Value Breakdown — $881K Total Annual Impact</div>
+    <div class="bar-track">
+      <div class="bar-seg" style="width:83.65%;background:#0274BE;"></div>
+      <div class="bar-seg" style="width:4.77%;background:#7C3AED;"></div>
+      <div class="bar-seg" style="width:6.24%;background:#FF6900;"></div>
+      <div class="bar-seg" style="width:5.45%;background:#059669;"></div>
+    </div>
+    <div class="bar-legend">
+      <div class="bar-leg-item"><div class="bar-leg-dot" style="background:#0274BE;"></div>Broker Productivity $737K · 84%</div>
+      <div class="bar-leg-item"><div class="bar-leg-dot" style="background:#7C3AED;"></div>Reporting & Forecasting $42K · 5%</div>
+      <div class="bar-leg-item"><div class="bar-leg-dot" style="background:#FF6900;"></div>Systems Integration $55K · 6%</div>
+      <div class="bar-leg-item"><div class="bar-leg-dot" style="background:#059669;"></div>Revenue Growth $48K · 5%</div>
+    </div>
+  </div>
+
+  <!-- ── CATEGORY DETAIL CARDS ── -->
+  <div class="sec-head">Value Category Detail</div>
+  <div class="cat-grid">
+
+    <!-- Broker Productivity -->
+    <div class="cat-card" style="background:#EFF6FF;border-color:#BFDBFE;">
+      <div class="cat-card-header">
+        <div>
+          <div class="cat-icon" style="background:rgba(2,116,190,0.12);">
+            <svg width="18" height="18" fill="none" stroke="#0274BE" stroke-width="2.2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="cat-val" style="color:#0274BE;">$737K</div>
+          <div class="cat-pct" style="background:rgba(2,116,190,0.1);color:#0274BE;">84% of total</div>
+        </div>
+      </div>
+      <div class="cat-title">Broker Productivity Recapture</div>
+      <div class="cat-prog-track">
+        <div class="cat-prog-fill" style="width:83.65%;background:#0274BE;"></div>
+      </div>
+      <ul class="driver-list">
+        <li style="color:#374151;"><span>63 brokers each save <strong>3 hrs/week</strong> via Agentforce voice logging, AI-ranked leads, and auto-drafted follow-ups — eliminating the manual CRM entry brokers have avoided for years</span></li>
+        <li style="color:#374151;"><span>No more duplicating notes across Excel, Pipe Drive, and DLAS — one voice memo creates the activity, updates the record, and creates the follow-up task</span></li>
+        <li style="color:#374151;"><span>Mobile-first experience means adoption happens by choice, not mandate — brokers use it because it makes their job easier in the field</span></li>
+      </ul>
+      <div class="input-strip">
+        <div class="input-chip">63 brokers</div>
+        <div class="input-chip">3 hrs saved / broker / week</div>
+        <div class="input-chip">$75 / hr broker value</div>
+        <div class="input-chip">52 weeks</div>
+      </div>
+    </div>
+
+    <!-- Reporting & Forecasting -->
+    <div class="cat-card" style="background:#FAF5FF;border-color:#E9D5FF;">
+      <div class="cat-card-header">
+        <div>
+          <div class="cat-icon" style="background:rgba(124,58,237,0.1);">
+            <svg width="18" height="18" fill="none" stroke="#7C3AED" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6M3 10h18" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="cat-val" style="color:#7C3AED;">$42K</div>
+          <div class="cat-pct" style="background:rgba(124,58,237,0.1);color:#7C3AED;">5% of total</div>
+        </div>
+      </div>
+      <div class="cat-title">Reporting & Forecasting Time Eliminated</div>
+      <div class="cat-prog-track">
+        <div class="cat-prog-fill" style="width:4.77%;background:#7C3AED;"></div>
+      </div>
+      <ul class="driver-list">
+        <li style="color:#374151;"><span>Live Tableau dashboards replace <strong>8 hrs/week</strong> of manual DLAS + Yardi stitching — what took Brianna's team a day now happens automatically, all day</span></li>
+        <li style="color:#374151;"><span>Board prep drops from a full-day extraction exercise to an automatic report — leadership always has current numbers without requesting them</span></li>
+        <li style="color:#374151;"><span>CEO pulls market-level pipeline from a phone before any partner meeting — no prep required, no lag, no stale data</span></li>
+      </ul>
+      <div class="input-strip">
+        <div class="input-chip">8 hrs / week manual reports</div>
+        <div class="input-chip">2 ops staff</div>
+        <div class="input-chip">$50 / hr ops rate</div>
+        <div class="input-chip">52 weeks</div>
+      </div>
+    </div>
+
+    <!-- Systems Integration -->
+    <div class="cat-card" style="background:#FFF7ED;border-color:#FED7AA;">
+      <div class="cat-card-header">
+        <div>
+          <div class="cat-icon" style="background:rgba(255,105,0,0.1);">
+            <svg width="18" height="18" fill="none" stroke="#FF6900" stroke-width="2.2" viewBox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4M4 17h12m0 0l-4-4m4 4l-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="cat-val" style="color:#FF6900;">$55K</div>
+          <div class="cat-pct" style="background:rgba(255,105,0,0.1);color:#C04A00;">6% of total</div>
+        </div>
+      </div>
+      <div class="cat-title">Data Re-Entry Cost Eliminated</div>
+      <div class="cat-prog-track">
+        <div class="cat-prog-fill" style="width:6.24%;background:#FF6900;"></div>
+      </div>
+      <ul class="driver-list">
+        <li style="color:#374151;"><span>Today: closed deal → email to accounting → manual Yardi entry → payment back to DLAS for broker payroll. Every deal. Every week. Salesforce automates the entire chain</span></li>
+        <li style="color:#374151;"><span><strong>10 hrs/week</strong> of admin re-keying across DLAS and Yardi — eliminated by open API integration connecting both systems to Salesforce with zero data duplication</span></li>
+        <li style="color:#374151;"><span>ClickUp and Outlook sync give coordinators and brokers one connected workflow — transactions, tasks, and communications in one place</span></li>
+      </ul>
+      <div class="input-strip">
+        <div class="input-chip">10 hrs / week re-keying</div>
+        <div class="input-chip">3 admin staff</div>
+        <div class="input-chip">$35 / hr admin rate</div>
+        <div class="input-chip">52 weeks</div>
+      </div>
+    </div>
+
+    <!-- Revenue Growth -->
+    <div class="cat-card" style="background:#F0FDF4;border-color:#A7F3D0;">
+      <div class="cat-card-header">
+        <div>
+          <div class="cat-icon" style="background:rgba(5,150,105,0.1);">
+            <svg width="18" height="18" fill="none" stroke="#059669" stroke-width="2.2" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="cat-val" style="color:#059669;">$48K</div>
+          <div class="cat-pct" style="background:rgba(5,150,105,0.1);color:#059669;">5% of total</div>
+        </div>
+      </div>
+      <div class="cat-title">Additional Annual Commission Revenue</div>
+      <div class="cat-prog-track">
+        <div class="cat-prog-fill" style="width:5.45%;background:#059669;"></div>
+      </div>
+      <ul class="driver-list">
+        <li style="color:#374151;"><span>Agentforce lead scoring surfaces the highest-probability deals first — AI ranks by asset preferences, budget signals, and engagement history so brokers work the right accounts at the right time</span></li>
+        <li style="color:#374151;"><span>Industry benchmark for CRE CRM adoption: <strong>6–12% win rate improvement</strong> — this model uses 8%, applied to Bradley's $15M active deal pipeline</span></li>
+        <li style="color:#374151;"><span>Pipeline visibility eliminates the deals that die at follow-up — automated reminders and task creation ensure no warm lead goes cold by accident</span></li>
+      </ul>
+      <div class="input-strip">
+        <div class="input-chip">$15M active pipeline</div>
+        <div class="input-chip">8% win rate lift</div>
+        <div class="input-chip">4% avg CRE commission</div>
+      </div>
+    </div>
+
+  </div><!-- /cat-grid -->
+
+  <!-- ── ASSUMPTIONS TABLE ── -->
+  <div class="sec-head">Model Inputs & Assumptions</div>
+  <div style="border-radius:12px;overflow:hidden;border:1px solid #E5E7EB;">
+    <table class="assump-table">
+      <thead>
+        <tr>
+          <th style="width:30%;">Input</th>
+          <th style="width:18%;">Value Used</th>
+          <th>Basis / Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Number of active brokers</td>
+          <td class="num" style="color:#0274BE;">63</td>
+          <td>Bradley Salesforce CRM record — confirmed active broker headcount</td>
+        </tr>
+        <tr>
+          <td>Hours saved per broker per week via AI</td>
+          <td class="num" style="color:#0274BE;">3 hrs</td>
+          <td>Conservative estimate; industry benchmark for CRE CRM + AI adoption is 2–5 hrs/week. Agentforce voice logging alone eliminates manual note entry after every meeting</td>
+        </tr>
+        <tr>
+          <td>Avg broker hourly productivity value</td>
+          <td class="num" style="color:#0274BE;">$75 / hr</td>
+          <td>Conservative proxy for CRE broker blended value (activity time, not commission); aligns with mid-market brokerage benchmarks</td>
+        </tr>
+        <tr>
+          <td>Hours / week on manual reporting (DLAS + Yardi)</td>
+          <td class="num" style="color:#7C3AED;">8 hrs</td>
+          <td>Directly named by Bradley's team — Brianna's ops team spends 6–8 hrs/week building the executive reporting package manually</td>
+        </tr>
+        <tr>
+          <td>Operations staff performing manual reports</td>
+          <td class="num" style="color:#7C3AED;">2</td>
+          <td>Brianna's core reporting team (Brokerage Operations & Support)</td>
+        </tr>
+        <tr>
+          <td>Hours / week re-keying DLAS ↔ Yardi</td>
+          <td class="num" style="color:#FF6900;">10 hrs</td>
+          <td>Estimated from process description: closed deal → email → Yardi entry → payment back to DLAS for payroll. Occurs weekly across multiple deals</td>
+        </tr>
+        <tr>
+          <td>Active deal pipeline</td>
+          <td class="num" style="color:#059669;">$15M</td>
+          <td>Conservative estimate; 2 open Salesforce opportunities total $101K — $15M reflects full active brokerage pipeline across all brokers</td>
+        </tr>
+        <tr>
+          <td>Win rate lift from Salesforce / Agentforce</td>
+          <td class="num" style="color:#059669;">8%</td>
+          <td>CRE-specific industry benchmark range: 6–12%. Uses mid-range. Source: Fortimize CRE brokerage implementation data</td>
+        </tr>
+        <tr>
+          <td>Avg CRE commission rate</td>
+          <td class="num" style="color:#059669;">4%</td>
+          <td>Standard commercial real estate brokerage blended commission rate (investment sales + leasing)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── IMPLEMENTATION TIMELINE ── -->
+  <div class="sec-head">90-Day Value Realization Path</div>
+  <div class="timeline">
+    <div class="phase" style="border-top:3px solid var(--blue);">
+      <div class="phase-hd" style="color:var(--blue);">Now → October 2026</div>
+      <h4>Phase 1 — Architecture & Scoping</h4>
+      <p>DLAS + Yardi integration architecture confirmed. Fortimize CRE accelerator configured to Bradley's tenant rep and investment sales workflows. Pilot broker group of 5–6 selected from John's team.</p>
+    </div>
+    <div class="phase" style="border-top:3px solid var(--green);">
+      <div class="phase-hd" style="color:var(--green);">Oct → Nov 2026</div>
+      <h4>Phase 2 — Pilot with Broker Feedback</h4>
+      <p>Mobile Agentforce live for pilot group. Bi-weekly sprints with broker feedback built in. Outlook sync active. Tableau executive dashboard live for John and Brianna.</p>
+    </div>
+    <div class="phase" style="border-top:3px solid var(--orange);">
+      <div class="phase-hd" style="color:var(--orange);">Dec 2026 → Q1 2027</div>
+      <h4>Phase 3 — Full Brokerage Rollout</h4>
+      <p>All 63 brokers live on the platform they helped shape. DLAS ↔ Yardi integration fully automated. Board-ready Tableau dashboards. Full $881K annual value achievable.</p>
+    </div>
+  </div>
+
+  <!-- ── CTA ── -->
+  <div class="cta-box">
+    <img src="https://www.bradleyco.com/wp-content/uploads/2021/03/Asset-2733.svg" alt="Bradley Company" style="height:24px;margin-bottom:12px;opacity:0.4;" onerror="this.style.display='none'"/>
+    <h3 style="font-size:1rem;font-weight:800;color:#0B2545;margin-bottom:6px;">Ready to confirm the Q4 2026 architecture review?</h3>
+    <p style="font-size:0.82rem;color:#64748B;line-height:1.65;max-width:480px;margin:0 auto;">The next step is confirming the DLAS + Yardi integration architecture and selecting the pilot broker group. Reach out to any member of the Salesforce team.</p>
+    <div class="cta-contacts">
+      <a href="mailto:jearls@salesforce.com" class="cta-btn" style="background:linear-gradient(135deg,var(--navy),var(--blue));">Justin Earls — jearls@salesforce.com</a>
+      <a href="mailto:edalton@salesforce.com" class="cta-btn" style="background:linear-gradient(135deg,#15803D,#16A34A);">Eric Dalton — edalton@salesforce.com</a>
+      <a href="mailto:gstephens@salesforce.com" class="cta-btn" style="background:linear-gradient(135deg,#C44E00,var(--orange));">Grant Stephens — gstephens@salesforce.com</a>
+    </div>
+    <a href="index.html" style="display:inline-block;margin-top:14px;font-size:11.5px;font-weight:600;color:var(--blue);text-decoration:none;">← Back to Full Deck</a>
+  </div>
+
+  <!-- ── DISCLAIMER ── -->
+  <div class="disclaimer">
+    <p>This document is prepared exclusively for Bradley Company leadership. All projections are estimates based on industry benchmarks and inputs provided — they are not a formal commitment from Salesforce, Inc. Architecture and product details are presented as evaluation-stage for Q4 2026 review and are subject to Salesforce product roadmap confirmation. Salesforce, Einstein, Agentforce, Tableau, and Data Cloud are registered trademarks of Salesforce, Inc. © 2026 Salesforce, Inc. All rights reserved.</p>
+  </div>
+
+</div>
+</body>
+</html>
