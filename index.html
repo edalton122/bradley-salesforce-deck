@@ -1266,10 +1266,30 @@
 #slide-demo { overflow: hidden; }
 </style>
 
-<section id="slide-demo" class="slide" style="background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);padding:60px;">
+<section id="slide-demo" class="slide" style="background:linear-gradient(160deg,var(--brand-secondary) 0%,#011F3D 100%);padding:32px 60px 40px;">
   <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(2,116,190,0.05) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
 
-  <div style="position:relative;z-index:1;display:flex;align-items:center;gap:48px;max-width:1100px;margin:0 auto;height:100%;">
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;max-width:1100px;margin:0 auto;height:100%;">
+
+    <!-- ── FULL-WIDTH INTERACTIVE DEMO ANNOUNCEMENT ── -->
+    <div style="flex-shrink:0;margin-bottom:20px;display:flex;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,105,0,0.4);border-radius:16px;padding:13px 32px;box-shadow:0 0 0 1px rgba(255,105,0,0.08),0 8px 40px rgba(255,105,0,0.15),0 2px 12px rgba(0,0,0,0.3);">
+        <!-- Pulsing live dot + label -->
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--brand-accent);box-shadow:0 0 14px var(--brand-accent);animation:pulseSlow 1s ease-in-out infinite;"></span>
+          <span style="font-size:14px;font-weight:900;color:var(--brand-accent);letter-spacing:0.08em;text-transform:uppercase;">Interactive Demo</span>
+        </div>
+        <!-- Divider -->
+        <div style="width:1px;height:22px;background:rgba(255,255,255,0.15);flex-shrink:0;"></div>
+        <!-- Description -->
+        <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.72);letter-spacing:0.01em;">Walk through a real Agentforce broker day — tap the phone screen to begin</span>
+        <!-- Animated tap cue -->
+        <span style="font-size:18px;flex-shrink:0;animation:bounce 1.3s ease-in-out infinite;">👆</span>
+      </div>
+    </div>
+
+    <!-- Two-column layout -->
+    <div style="flex:1;min-height:0;display:flex;align-items:center;gap:48px;">
 
     <!-- Left: Context copy -->
     <div style="flex:1;min-width:0;">
@@ -1303,13 +1323,10 @@
     <!-- Right: Phone simulator -->
     <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
 
-      <!-- ── Interactive invitation badge ── -->
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:6px 16px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);border-radius:30px;">
-        <span style="width:8px;height:8px;border-radius:50%;background:var(--brand-accent);flex-shrink:0;animation:pulseSlow 1.2s ease-in-out infinite;box-shadow:0 0 8px var(--brand-accent);"></span>
-        <span style="font-size:10px;font-weight:800;color:white;letter-spacing:0.04em;">Interactive Demo</span>
-        <span style="width:1px;height:12px;background:rgba(255,255,255,0.2);"></span>
-        <span style="font-size:10px;color:rgba(255,255,255,0.5);font-weight:600;">Tap the screen to begin the walkthrough</span>
-        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      <!-- Small label above phone — reinforces the header CTA -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:10px;opacity:0.6;">
+        <span style="font-size:9px;font-weight:700;color:white;letter-spacing:0.06em;text-transform:uppercase;">Tap anywhere on the screen</span>
+        <svg width="10" height="10" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
 
       <div id="phone-outer">
@@ -1881,7 +1898,8 @@
       </div><!-- /phone-outer -->
     </div><!-- /phone column -->
 
-  </div>
+    </div><!-- /two-column layout -->
+  </div><!-- /outer flex-column -->
 </section>
 
 
