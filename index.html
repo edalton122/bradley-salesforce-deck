@@ -1979,6 +1979,31 @@
   0%,100% { box-shadow: inset 0 0 0 1px rgba(114,191,68,0.2), 0 0 0 0 rgba(114,191,68,0); }
   50%      { box-shadow: inset 0 0 0 2px rgba(114,191,68,0.7), 0 0 18px 4px rgba(114,191,68,0.22); }
 }
+/* ── AR badge — appears when Dealius is absorbed into hub ── */
+#s5-hub-ar-badge {
+  position:absolute;
+  left:50%;
+  top:calc(50% + 50px);
+  transform:translateX(-50%) translateY(10px);
+  background:linear-gradient(135deg,rgba(2,116,190,0.3),rgba(114,191,68,0.2));
+  border:1.5px solid rgba(114,191,68,0.55);
+  border-radius:10px;
+  padding:6px 11px;
+  text-align:center;
+  white-space:nowrap;
+  font-size:7.5px;
+  font-weight:800;
+  color:rgba(255,255,255,0.92);
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  line-height:1.55;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.55s ease, transform 0.55s ease;
+  z-index:4;
+  box-shadow:0 4px 14px rgba(2,116,190,0.25);
+}
+
 /* subtle hint text element — shown only when before */
 #s5-click-hint {
   text-align: center;
@@ -2068,25 +2093,31 @@
           <!-- ── CLEAN CONVERGENCE (after) — all roads lead to Salesforce ── -->
           <!-- Outlook → SF center -->
           <line class="s5-clean" x1="172" y1="68" x2="368" y2="116" stroke="#72BF44" stroke-width="2" opacity="0.85"/>
-          <!-- Dealius → SF center -->
-          <line class="s5-clean" x1="628" y1="68" x2="432" y2="116" stroke="#72BF44" stroke-width="2" opacity="0.85"/>
+          <!-- Dealius → SF center (fades out when absorbed) -->
+          <line id="s5-ln-dealius" class="s5-clean" x1="628" y1="68" x2="432" y2="116" stroke="#72BF44" stroke-width="2" opacity="0.85"/>
           <!-- ClickUp → SF center -->
           <line class="s5-clean" x1="172" y1="182" x2="368" y2="140" stroke="#72BF44" stroke-width="2" opacity="0.85"/>
-          <!-- Yardi → SF center -->
-          <line class="s5-clean" x1="628" y1="182" x2="432" y2="140" stroke="#72BF44" stroke-width="2" opacity="0.85"/>
+          <!-- Yardi → SF center (bottom-right, fades when Yardi moves center) -->
+          <line id="s5-ln-yardi-br" class="s5-clean" x1="628" y1="182" x2="432" y2="140" stroke="#72BF44" stroke-width="2" opacity="0.85"/>
+          <!-- Yardi → SF center (centered, appears after absorption) -->
+          <line id="s5-ln-yardi-c" x1="628" y1="124" x2="432" y2="124" stroke="#72BF44" stroke-width="2" style="opacity:0;"/>
 
           <!-- Traveling dots along clean lines (after only) -->
           <circle class="s5-clean" r="4" fill="#72BF44" opacity="0.9">
             <animateMotion dur="1.8s" repeatCount="indefinite" path="M172,68 L368,116"/>
           </circle>
-          <circle class="s5-clean" r="4" fill="#72BF44" opacity="0.9">
+          <circle id="s5-dot-dealius" class="s5-clean" r="4" fill="#72BF44" opacity="0.9">
             <animateMotion dur="2.1s" repeatCount="indefinite" path="M628,68 L432,116"/>
           </circle>
           <circle class="s5-clean" r="4" fill="#72BF44" opacity="0.9">
             <animateMotion dur="1.6s" repeatCount="indefinite" path="M172,182 L368,140"/>
           </circle>
-          <circle class="s5-clean" r="4" fill="#72BF44" opacity="0.9">
+          <circle id="s5-dot-yardi-br" class="s5-clean" r="4" fill="#72BF44" opacity="0.9">
             <animateMotion dur="2.3s" repeatCount="indefinite" path="M628,182 L432,140"/>
+          </circle>
+          <!-- Yardi center dot (appears after absorption) -->
+          <circle id="s5-dot-yardi-c" r="4" fill="#72BF44" style="opacity:0;">
+            <animateMotion dur="1.9s" repeatCount="indefinite" path="M628,124 L432,124"/>
           </circle>
         </svg>
 
@@ -2094,6 +2125,10 @@
         <div class="s5-sfhub">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M13 10V3L4 14h7v7l9-11h-7z" fill="white" opacity="0.95"/></svg>
           <div style="font-size:7px;font-weight:900;color:rgba(255,255,255,0.85);letter-spacing:.05em;margin-top:3px;">SALESFORCE</div>
+        </div>
+        <!-- AR capabilities badge — appears after Dealius is absorbed -->
+        <div id="s5-hub-ar-badge">
+          Commission Tracking<br/>Invoice Gen · AR Aging
         </div>
 
         <!-- System node cards (positioned at corners matching SVG coords ≈ percentages) -->
@@ -2108,13 +2143,12 @@
         </div>
 
         <!-- Top-right: Dealius -->
-        <div class="s5-node" style="right:0;top:0;width:165px;text-align:right;">
+        <div class="s5-node" id="s5-node-dealius" style="right:0;top:0;width:165px;text-align:right;">
           <div class="s5-node-name" style="flex-direction:row-reverse;">
             <svg width="13" height="13" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24" opacity=".8"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
             Dealius
           </div>
           <span class="s5-node-chip s5-chip-b">Manual weekly exports</span>
-          <span class="s5-node-chip s5-chip-a">AR consolidated in Salesforce</span>
         </div>
 
         <!-- Bottom-left: ClickUp -->
@@ -2128,7 +2162,7 @@
         </div>
 
         <!-- Bottom-right: Yardi -->
-        <div class="s5-node" style="right:0;bottom:0;width:165px;text-align:right;">
+        <div class="s5-node" id="s5-node-yardi" style="right:0;bottom:0;width:165px;text-align:right;">
           <div class="s5-node-name" style="flex-direction:row-reverse;">
             <svg width="13" height="13" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24" opacity=".8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             Yardi
@@ -3277,7 +3311,7 @@ window.setHubState = function(state) {
   const chkA      = document.getElementById('s5-chk-a');
 
   if (state === 'before') {
-    // Instant reset — kill transition temporarily so chaos group resets without animation
+    // Instant reset — kill transitions temporarily
     if (chaosGrp) {
       chaosGrp.style.transition = 'none';
       chaosGrp.classList.remove('s5-converging');
@@ -3288,16 +3322,37 @@ window.setHubState = function(state) {
     if (ba) { ba.classList.remove('s5-tp-active-a'); }
     if (chkB) chkB.textContent = '✕';
     if (chkA) chkA.textContent = '○';
+
+    // Reset Dealius node
+    const dn = document.getElementById('s5-node-dealius');
+    if (dn) { dn.style.transition = 'none'; dn.style.transform = ''; dn.style.opacity = ''; dn.style.pointerEvents = ''; dn.style.zIndex = ''; requestAnimationFrame(() => { dn.style.transition = ''; }); }
+    // Reset Yardi node
+    const yn = document.getElementById('s5-node-yardi');
+    if (yn) { yn.style.transition = 'none'; yn.style.transform = ''; requestAnimationFrame(() => { yn.style.transition = ''; }); }
+    // Reset AR badge
+    const badge = document.getElementById('s5-hub-ar-badge');
+    if (badge) { badge.style.transition = 'none'; badge.style.opacity = '0'; badge.style.transform = 'translateX(-50%) translateY(10px)'; }
+    // Reset SVG lines
+    const lnD = document.getElementById('s5-ln-dealius');
+    const dotD = document.getElementById('s5-dot-dealius');
+    const lnYBR = document.getElementById('s5-ln-yardi-br');
+    const dotYBR = document.getElementById('s5-dot-yardi-br');
+    const lnYC = document.getElementById('s5-ln-yardi-c');
+    const dotYC = document.getElementById('s5-dot-yardi-c');
+    if (lnD)   { lnD.style.opacity = ''; }
+    if (dotD)  { dotD.style.opacity = ''; }
+    if (lnYBR) { lnYBR.style.opacity = ''; }
+    if (dotYBR){ dotYBR.style.opacity = ''; }
+    if (lnYC)  { lnYC.style.opacity = '0'; }
+    if (dotYC) { dotYC.style.opacity = '0'; }
     return;
   }
 
-  // ── "After" click: 2-phase transition ──
+  // ── "After" click: multi-phase transition ──
   s5Transitioning = true;
 
   // Phase 1: chaos lines converge to Salesforce hub
   if (chaosGrp) chaosGrp.classList.add('s5-converging');
-
-  // Dim the "before" button during transition
   if (bb) bb.style.opacity = '0.4';
 
   setTimeout(() => {
@@ -3308,7 +3363,65 @@ window.setHubState = function(state) {
     if (chkB) chkB.textContent = '○';
     if (chkA) chkA.textContent = '✓';
     s5Transitioning = false;
-  }, 680); // matches CSS transition duration
+
+    // Phase 3: Dealius absorbed into hub + Yardi repositions (slight delay so clean lines render first)
+    setTimeout(() => {
+      const mapWrap = document.querySelector('.s5-map-wrap');
+      const dealiusNode = document.getElementById('s5-node-dealius');
+      const yardiNode   = document.getElementById('s5-node-yardi');
+      const sfHub       = document.querySelector('.s5-sfhub');
+
+      // Absorb Dealius: fly it to the SF hub center
+      if (dealiusNode && sfHub) {
+        const nr = dealiusNode.getBoundingClientRect();
+        const hr = sfHub.getBoundingClientRect();
+        const dx = (hr.left + hr.width  / 2) - (nr.left + nr.width  / 2);
+        const dy = (hr.top  + hr.height / 2) - (nr.top  + nr.height / 2);
+        dealiusNode.style.transition = 'transform 0.65s cubic-bezier(0.42,0,0.58,1), opacity 0.55s ease';
+        dealiusNode.style.transform  = `translate(${dx}px,${dy}px) scale(0.08)`;
+        dealiusNode.style.opacity    = '0';
+        dealiusNode.style.pointerEvents = 'none';
+        dealiusNode.style.zIndex    = '10';
+
+        // Fade out Dealius SVG line + dot
+        const lnD  = document.getElementById('s5-ln-dealius');
+        const dotD = document.getElementById('s5-dot-dealius');
+        if (lnD)  { lnD.style.transition  = 'opacity 0.45s ease'; lnD.style.opacity  = '0'; }
+        if (dotD) { dotD.style.transition = 'opacity 0.45s ease'; dotD.style.opacity = '0'; }
+      }
+
+      // Reposition Yardi to center-right
+      if (yardiNode && mapWrap) {
+        const mr = mapWrap.getBoundingClientRect();
+        const yr = yardiNode.getBoundingClientRect();
+        const shift = (mr.top + mr.height / 2) - (yr.top + yr.height / 2);
+        yardiNode.style.transition = 'transform 0.65s cubic-bezier(0.42,0,0.58,1)';
+        yardiNode.style.transform  = `translateY(${shift}px)`;
+
+        // Swap Yardi SVG lines: hide bottom-right, show centered
+        const lnYBR  = document.getElementById('s5-ln-yardi-br');
+        const dotYBR = document.getElementById('s5-dot-yardi-br');
+        const lnYC   = document.getElementById('s5-ln-yardi-c');
+        const dotYC  = document.getElementById('s5-dot-yardi-c');
+        if (lnYBR)  { lnYBR.style.transition  = 'opacity 0.4s ease'; lnYBR.style.opacity  = '0'; }
+        if (dotYBR) { dotYBR.style.transition = 'opacity 0.4s ease'; dotYBR.style.opacity = '0'; }
+        if (lnYC)   { lnYC.style.transition   = 'opacity 0.5s ease 0.35s'; lnYC.style.opacity   = '0.85'; }
+        if (dotYC)  { dotYC.style.transition  = 'opacity 0.5s ease 0.35s'; dotYC.style.opacity  = '0.9'; }
+      }
+
+      // Phase 4: AR badge appears once Dealius lands inside hub
+      setTimeout(() => {
+        const badge = document.getElementById('s5-hub-ar-badge');
+        if (badge) {
+          badge.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+          badge.style.opacity    = '1';
+          badge.style.transform  = 'translateX(-50%) translateY(0)';
+        }
+      }, 650);
+
+    }, 200); // short delay after clean lines appear
+
+  }, 680);
 };
 
 /* ── Detail drawer ── */
