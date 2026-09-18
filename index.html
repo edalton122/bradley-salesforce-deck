@@ -202,6 +202,17 @@
     .bvc-out-card:hover { box-shadow:0 4px 18px rgba(2,116,190,0.1); border-color:var(--brand-primary); }
     .bvc-out-icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-bottom:2px; }
     .bvc-out-label { font-size:10px; font-weight:700; color:#6B7280; text-transform:uppercase; letter-spacing:0.06em; line-height:1.4; }
+
+    /* Gantt interactivity */
+    .gantt-row { cursor:pointer; border-radius:8px; padding:7px 8px 7px 0; margin-right:-8px; transition:background 0.15s ease; display:flex; align-items:center; }
+    .gantt-row:hover { background:rgba(255,255,255,0.05); }
+    .gantt-row.gantt-active { background:rgba(255,255,255,0.07); }
+    .gantt-row:hover .gantt-bar, .gantt-row.gantt-active .gantt-bar { filter:brightness(1.25) saturate(1.15); }
+    .gantt-row:hover .gantt-label, .gantt-row.gantt-active .gantt-label { color:white; }
+    .gantt-row:hover::after { content:'click for details'; font-size:8px; color:rgba(255,255,255,0.3); position:absolute; right:10px; font-style:italic; pointer-events:none; }
+    .gantt-row { position:relative; }
+    .gantt-detail-panel { overflow:hidden; max-height:0; opacity:0; transition:max-height 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.28s ease, margin 0.3s ease; margin-top:0; }
+    .gantt-detail-panel.open { max-height:480px; opacity:1; margin-top:14px; }
     .bvc-out-val { font-size:1.45rem; font-weight:900; color:var(--brand-secondary); letter-spacing:-0.025em; transition:color 0.3s; line-height:1.1; }
     .bvc-out-sub { font-size:10px; color:#9CA3AF; line-height:1.45; margin-top:2px; }
 
@@ -3197,84 +3208,87 @@
       </div>
 
       <!-- Gantt rows -->
-      <div style="display:flex;flex-direction:column;gap:11px;">
-
-        <!-- Row helper structure: label (168px fixed) + bar area (flex:1) -->
+      <div style="display:flex;flex-direction:column;gap:3px;">
 
         <!-- CRM -->
-        <div style="display:flex;align-items:center;">
-          <div style="width:168px;flex-shrink:0;font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.65);padding-right:14px;">CRM</div>
-          <div style="flex:1;position:relative;height:10px;">
-            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:5px;"></div>
-            <div style="position:absolute;left:66.4%;top:-3px;bottom:-3px;width:1px;background:rgba(114,191,68,0.35);"></div>
-            <div style="position:absolute;right:0;top:-3px;bottom:-3px;width:1px;background:rgba(255,105,0,0.25);"></div>
-            <div style="position:absolute;left:0;width:40%;height:100%;background:linear-gradient(90deg,#16a34a,#22c55e);border-radius:5px;"></div>
+        <div class="gantt-row" data-track="crm" onclick="openGanttDetail('crm')">
+          <div class="gantt-label" style="width:176px;flex-shrink:0;font-size:11px;font-weight:600;color:rgba(255,255,255,0.65);padding-right:14px;transition:color 0.15s;">CRM + Broker Command Center</div>
+          <div style="flex:1;position:relative;height:13px;">
+            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:6px;"></div>
+            <div style="position:absolute;left:66.4%;top:-5px;bottom:-5px;width:1px;background:rgba(114,191,68,0.35);"></div>
+            <div style="position:absolute;right:0;top:-5px;bottom:-5px;width:1px;background:rgba(255,105,0,0.25);"></div>
+            <div class="gantt-bar" style="position:absolute;left:0;width:40%;height:100%;background:linear-gradient(90deg,#16a34a,#22c55e);border-radius:6px;transition:filter 0.15s;"></div>
           </div>
         </div>
 
         <!-- Deal Flow -->
-        <div style="display:flex;align-items:center;">
-          <div style="width:168px;flex-shrink:0;font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.65);padding-right:14px;">Deal Flow</div>
-          <div style="flex:1;position:relative;height:10px;">
-            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:5px;"></div>
-            <div style="position:absolute;left:66.4%;top:-3px;bottom:-3px;width:1px;background:rgba(114,191,68,0.35);"></div>
-            <div style="position:absolute;right:0;top:-3px;bottom:-3px;width:1px;background:rgba(255,105,0,0.25);"></div>
-            <div style="position:absolute;left:0;width:58%;height:100%;background:linear-gradient(90deg,#22c55e,#4ade80);border-radius:5px;"></div>
+        <div class="gantt-row" data-track="dealflow" onclick="openGanttDetail('dealflow')">
+          <div class="gantt-label" style="width:176px;flex-shrink:0;font-size:11px;font-weight:600;color:rgba(255,255,255,0.65);padding-right:14px;transition:color 0.15s;">Brokerage Deal Workflows</div>
+          <div style="flex:1;position:relative;height:13px;">
+            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:6px;"></div>
+            <div style="position:absolute;left:66.4%;top:-5px;bottom:-5px;width:1px;background:rgba(114,191,68,0.35);"></div>
+            <div style="position:absolute;right:0;top:-5px;bottom:-5px;width:1px;background:rgba(255,105,0,0.25);"></div>
+            <div class="gantt-bar" style="position:absolute;left:0;width:58%;height:100%;background:linear-gradient(90deg,#22c55e,#4ade80);border-radius:6px;transition:filter 0.15s;"></div>
           </div>
         </div>
 
         <!-- Reporting / AR Functionality -->
-        <div style="display:flex;align-items:center;">
-          <div style="width:168px;flex-shrink:0;padding-right:14px;">
-            <div style="font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.65);">Reporting</div>
-            <div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:1px;">→ AR Functionality &amp; Training</div>
+        <div class="gantt-row" data-track="ar" onclick="openGanttDetail('ar')">
+          <div class="gantt-label" style="width:176px;flex-shrink:0;padding-right:14px;transition:color 0.15s;">
+            <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.65);">Reporting</div>
+            <div style="font-size:8px;color:rgba(255,255,255,0.28);margin-top:1px;">→ AR Functionality &amp; Training</div>
           </div>
-          <div style="flex:1;position:relative;height:10px;">
-            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:5px;"></div>
-            <div style="position:absolute;left:66.4%;top:-3px;bottom:-3px;width:1px;background:rgba(114,191,68,0.35);"></div>
-            <div style="position:absolute;right:0;top:-3px;bottom:-3px;width:1px;background:rgba(255,105,0,0.25);"></div>
-            <div style="position:absolute;left:46%;width:21%;height:100%;background:#86efac;border-radius:5px 0 0 5px;"></div>
-            <div style="position:absolute;left:67%;width:33%;height:100%;background:rgba(134,239,172,0.28);border:1px solid rgba(134,239,172,0.35);border-left:none;border-radius:0 5px 5px 0;"></div>
+          <div style="flex:1;position:relative;height:13px;">
+            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:6px;"></div>
+            <div style="position:absolute;left:66.4%;top:-5px;bottom:-5px;width:1px;background:rgba(114,191,68,0.35);"></div>
+            <div style="position:absolute;right:0;top:-5px;bottom:-5px;width:1px;background:rgba(255,105,0,0.25);"></div>
+            <div class="gantt-bar" style="position:absolute;left:46%;width:21%;height:100%;background:#86efac;border-radius:6px 0 0 6px;transition:filter 0.15s;"></div>
+            <div class="gantt-bar" style="position:absolute;left:67%;width:33%;height:100%;background:rgba(134,239,172,0.28);border:1px solid rgba(134,239,172,0.35);border-left:none;border-radius:0 6px 6px 0;transition:filter 0.15s;"></div>
           </div>
         </div>
 
         <!-- Data Migration / Full Yardi -->
-        <div style="display:flex;align-items:center;">
-          <div style="width:168px;flex-shrink:0;padding-right:14px;">
-            <div style="font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.65);">Data Migration, Outlook &amp; Yardi</div>
-            <div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:1px;">→ Full Bi-directional AR with Yardi</div>
+        <div class="gantt-row" data-track="yardi" onclick="openGanttDetail('yardi')">
+          <div class="gantt-label" style="width:176px;flex-shrink:0;padding-right:14px;transition:color 0.15s;">
+            <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.65);">Data Migration, Outlook &amp; Yardi</div>
+            <div style="font-size:8px;color:rgba(255,255,255,0.28);margin-top:1px;">→ Full Bi-directional AR with Yardi</div>
           </div>
-          <div style="flex:1;position:relative;height:10px;">
-            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:5px;"></div>
-            <div style="position:absolute;left:66.4%;top:-3px;bottom:-3px;width:1px;background:rgba(114,191,68,0.35);"></div>
-            <div style="position:absolute;right:0;top:-3px;bottom:-3px;width:1px;background:rgba(255,105,0,0.25);"></div>
-            <div style="position:absolute;left:0;width:67%;height:100%;background:linear-gradient(90deg,#ca8a04,#eab308);border-radius:5px 0 0 5px;"></div>
-            <div style="position:absolute;left:67%;width:33%;height:100%;background:rgba(234,179,8,0.3);border:1px solid rgba(234,179,8,0.4);border-left:none;border-radius:0 5px 5px 0;"></div>
+          <div style="flex:1;position:relative;height:13px;">
+            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:6px;"></div>
+            <div style="position:absolute;left:66.4%;top:-5px;bottom:-5px;width:1px;background:rgba(114,191,68,0.35);"></div>
+            <div style="position:absolute;right:0;top:-5px;bottom:-5px;width:1px;background:rgba(255,105,0,0.25);"></div>
+            <div class="gantt-bar" style="position:absolute;left:0;width:67%;height:100%;background:linear-gradient(90deg,#ca8a04,#eab308);border-radius:6px 0 0 6px;transition:filter 0.15s;"></div>
+            <div class="gantt-bar" style="position:absolute;left:67%;width:33%;height:100%;background:rgba(234,179,8,0.3);border:1px solid rgba(234,179,8,0.4);border-left:none;border-radius:0 6px 6px 0;transition:filter 0.15s;"></div>
           </div>
         </div>
 
         <!-- User Testing & Feedback -->
-        <div style="display:flex;align-items:center;">
-          <div style="width:168px;flex-shrink:0;font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.65);padding-right:14px;">User Testing &amp; Feedback</div>
-          <div style="flex:1;position:relative;height:10px;">
-            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:5px;"></div>
-            <div style="position:absolute;left:66.4%;top:-3px;bottom:-3px;width:1px;background:rgba(114,191,68,0.35);"></div>
-            <div style="position:absolute;right:0;top:-3px;bottom:-3px;width:1px;background:rgba(255,105,0,0.25);"></div>
-            <div style="position:absolute;left:0;width:100%;height:100%;background:linear-gradient(90deg,#b91c1c,#ef4444);border-radius:5px;opacity:0.85;"></div>
+        <div class="gantt-row" data-track="testing" onclick="openGanttDetail('testing')">
+          <div class="gantt-label" style="width:176px;flex-shrink:0;font-size:11px;font-weight:600;color:rgba(255,255,255,0.65);padding-right:14px;transition:color 0.15s;">User Testing &amp; Feedback</div>
+          <div style="flex:1;position:relative;height:13px;">
+            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:6px;"></div>
+            <div style="position:absolute;left:66.4%;top:-5px;bottom:-5px;width:1px;background:rgba(114,191,68,0.35);"></div>
+            <div style="position:absolute;right:0;top:-5px;bottom:-5px;width:1px;background:rgba(255,105,0,0.25);"></div>
+            <div class="gantt-bar" style="position:absolute;left:0;width:100%;height:100%;background:linear-gradient(90deg,#b91c1c,#ef4444);border-radius:6px;opacity:0.85;transition:filter 0.15s;"></div>
           </div>
         </div>
 
         <!-- Change Management -->
-        <div style="display:flex;align-items:center;">
-          <div style="width:168px;flex-shrink:0;font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.65);padding-right:14px;">Change Management</div>
-          <div style="flex:1;position:relative;height:10px;">
-            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:5px;"></div>
-            <div style="position:absolute;left:66.4%;top:-3px;bottom:-3px;width:1px;background:rgba(114,191,68,0.35);"></div>
-            <div style="position:absolute;right:0;top:-3px;bottom:-3px;width:1px;background:rgba(255,105,0,0.25);"></div>
-            <div style="position:absolute;left:0;width:100%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6);border-radius:5px;opacity:0.85;"></div>
+        <div class="gantt-row" data-track="change" onclick="openGanttDetail('change')">
+          <div class="gantt-label" style="width:176px;flex-shrink:0;font-size:11px;font-weight:600;color:rgba(255,255,255,0.65);padding-right:14px;transition:color 0.15s;">Change Management</div>
+          <div style="flex:1;position:relative;height:13px;">
+            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.04);border-radius:6px;"></div>
+            <div style="position:absolute;left:66.4%;top:-5px;bottom:-5px;width:1px;background:rgba(114,191,68,0.35);"></div>
+            <div style="position:absolute;right:0;top:-5px;bottom:-5px;width:1px;background:rgba(255,105,0,0.25);"></div>
+            <div class="gantt-bar" style="position:absolute;left:0;width:100%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6);border-radius:6px;opacity:0.85;transition:filter 0.15s;"></div>
           </div>
         </div>
 
+      </div>
+
+      <!-- Gantt detail panel -->
+      <div class="gantt-detail-panel" id="gantt-detail" data-track="">
+        <div id="gantt-detail-content" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden;"></div>
       </div>
 
       <!-- Month axis -->
@@ -3849,6 +3863,157 @@ function calcTab(n) {
     tabTotals[4] = annual;
   }
   updateGrandTotal();
+}
+
+/* ══ Gantt Interactivity ══ */
+const ganttData = {
+  crm: {
+    title: 'CRM + Broker Command Center',
+    color: '#22c55e',
+    phase: 'Build — Month 1 through Month 4',
+    scope: [
+      'Centralized account, contact, and lead management for all brokers across South Bend, Fort Wayne, and Grand Rapids',
+      'Bi-directional Outlook sync for email, calendar, and tasks so brokers work where they already live',
+      'Broker Command Center home screen with real-time pipeline, activity tracking, and deal velocity by producer',
+      'Leadership dashboards with market-by-market rollup, replacing the 6–8 hours of weekly manual reporting',
+      'Agentforce broker assistant for contact summaries, email drafting, and daily prioritization via natural language'
+    ],
+    outcomes: [
+      'One place for pipeline, tasks, contacts, and communications — no more Excel, PipeDrive, or sticky notes',
+      'Market leaders and CEO get a real-time view across all regions without manual data assembly',
+      'Brokers reclaim admin hours for business development'
+    ]
+  },
+  dealflow: {
+    title: 'Brokerage Deal Workflows',
+    color: '#4ade80',
+    phase: 'Build — Month 1 through Month 4',
+    scope: [
+      'Deal tracking from initial prospect through LOI, negotiation, and close — with task checklists auto-assigned at each stage',
+      'Capture of all deal economics by transaction type: commission splits, close dates, lease terms, cap rates, and critical dates',
+      'Agentforce-powered comp queries, renewal alerts, and expiration summaries via natural language prompt'
+    ],
+    outcomes: [
+      'Execute deals faster with less manual handoff',
+      'Capture full deal economics without adding headcount',
+      'Surface comps and critical dates on demand'
+    ]
+  },
+  ar: {
+    title: 'Reporting → AR Functionality & Additional Training',
+    color: '#86efac',
+    phase: 'Reporting builds Month 3–4 · AR Functionality expands in Month 4–6',
+    scope: [
+      'Commission tracking with deal-level AR detail: invoice number, due date, amount, open balance, customer, deal, property, and broker',
+      'Automatic invoice generation from closed deals',
+      'Broker payable split logic to allocate received commissions across multiple brokers on a deal',
+      'AR aging reports and dashboards (current, 1–30, 31–60, 61–90 past due) with cross-office allocation',
+      'Broker self-service earnings reports: year-to-date totals, office and company ranking, paid and upcoming payments, with email notifications for payment status updates'
+    ],
+    outcomes: [
+      'Deal-level AR visibility in real-time dashboards',
+      'Allocate cross-office deals accurately',
+      'Brokers have visibility into payment status without asking accounting'
+    ]
+  },
+  yardi: {
+    title: 'Data Migration, Outlook Connection & Yardi Integration',
+    color: '#eab308',
+    phase: 'Initial integration Month 1–4 · Full bi-directional AR with Yardi Month 4–6',
+    scope: [
+      'At deal close in Salesforce, key economics push to Yardi automatically — eliminating the manual email handoff to accounting',
+      'Bi-directional sync of AR and payment data between Salesforce and Yardi, replacing the daily cash journal re-keying and application process',
+      'Establish Salesforce as the CRM, deal execution, and commission platform; Yardi remains the financial system of record'
+    ],
+    outcomes: [
+      'Eliminate daily re-keying and monthly GL reconciliation',
+      'Accounting gets what they need automatically',
+      'Sunset Dealius — Salesforce handles deal flow with Yardi as the ledger'
+    ]
+  },
+  testing: {
+    title: 'User Testing & Feedback · System Integration Testing',
+    color: '#ef4444',
+    phase: 'Continuous — Kickoff through Go-Live #2 (Month 6)',
+    scope: [
+      'Structured UAT sessions with the target broker feedback group throughout every sprint',
+      'System integration testing at each milestone to validate Yardi data flows and commission calculations',
+      'Bi-weekly sprint demos with John, Brianna, and the feedback group — issues surface before go-live, not after'
+    ],
+    outcomes: [
+      'Brokers help shape the system they will actually use',
+      'Issues caught before go-live, not after rollout',
+      'Confidence in data accuracy before any production use'
+    ]
+  },
+  change: {
+    title: 'Change Management',
+    color: '#3b82f6',
+    phase: 'Continuous — Kickoff through Go-Live #2 (Month 6)',
+    scope: [
+      'Role-based onboarding materials and training tailored to Bradley brokers and operations staff',
+      'Executive alignment sessions with leadership to model desired behaviors and demonstrate ROI',
+      'Post go-live adoption monitoring with Fortimize support through Month 6'
+    ],
+    outcomes: [
+      'Brokers actually use the platform — adoption is tracked, not assumed',
+      'Leadership has a clear picture of usage and value from day one',
+      'Transition is managed, not mandated — the build process creates buy-in'
+    ]
+  }
+};
+
+function openGanttDetail(track) {
+  const panel = document.getElementById('gantt-detail');
+  const content = document.getElementById('gantt-detail-content');
+  const d = ganttData[track];
+  const isOpen = panel.classList.contains('open') && panel.dataset.track === track;
+
+  document.querySelectorAll('.gantt-row').forEach(r => r.classList.remove('gantt-active'));
+
+  if (isOpen) {
+    panel.classList.remove('open');
+    panel.dataset.track = '';
+    return;
+  }
+
+  document.querySelector(`.gantt-row[data-track="${track}"]`).classList.add('gantt-active');
+
+  content.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div style="width:12px;height:12px;border-radius:50%;background:${d.color};flex-shrink:0;box-shadow:0 0 8px ${d.color}55;"></div>
+      <div style="flex:1;">
+        <div style="font-size:11.5px;font-weight:800;color:white;margin-bottom:1px;">${d.title}</div>
+        <div style="font-size:8.5px;color:rgba(255,255,255,0.35);font-style:italic;">${d.phase}</div>
+      </div>
+      <button onclick="closeGanttDetail()" style="background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.5);width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
+      <div style="padding:16px 20px;border-right:1px solid rgba(255,255,255,0.06);">
+        <div style="font-size:9px;font-weight:800;color:${d.color};text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Scope &amp; Deliverables</div>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;">
+          ${d.scope.map(s => `<li style="display:flex;gap:8px;"><span style="color:${d.color};flex-shrink:0;margin-top:1px;font-size:10px;">›</span><span style="font-size:11px;color:rgba(255,255,255,0.7);line-height:1.55;">${s}</span></li>`).join('')}
+        </ul>
+      </div>
+      <div style="padding:16px 20px;">
+        <div style="font-size:9px;font-weight:800;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Business Outcomes</div>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;">
+          ${d.outcomes.map(o => `<li style="display:flex;gap:8px;align-items:flex-start;"><span style="color:#72BF44;flex-shrink:0;font-size:10px;margin-top:1px;">✓</span><span style="font-size:11px;color:rgba(255,255,255,0.7);line-height:1.55;">${o}</span></li>`).join('')}
+        </ul>
+      </div>
+    </div>
+  `;
+
+  panel.dataset.track = track;
+  panel.classList.add('open');
+  setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'nearest' }), 50);
+}
+
+function closeGanttDetail() {
+  const panel = document.getElementById('gantt-detail');
+  panel.classList.remove('open');
+  panel.dataset.track = '';
+  document.querySelectorAll('.gantt-row').forEach(r => r.classList.remove('gantt-active'));
 }
 
 function updateGrandTotal() {
