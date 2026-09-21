@@ -4125,6 +4125,43 @@ function generateBvcPDF() {
       doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(C.gray);
       doc.text(`${Math.round(pct2*100)}% of total combined value`,M,py); py+=5;
       drawBar(M,py,barW,5,pct2,TAB_COLORS[ti],'#E2E8F0'); py+=12;
+      // Systems Integration: show re-entry + leakage breakdown
+      if (ti === 2) {
+        const reentryVal = parseMoney(document.getElementById('o-reentry')?.textContent||'0');
+        const leakageVal = parseMoney(document.getElementById('o-leakage')?.textContent||'0');
+        const errFrom    = document.getElementById('o-err-from')?.textContent || '1.0%';
+        const arRev      = document.getElementById('v-ar-rev')?.textContent || '$200M';
+
+        py += 6;
+        doc.setFillColor('#FFF7ED'); doc.setDrawColor('#FED7AA');
+        doc.roundedRect(M, py, CW, 48, 3, 3, 'FD');
+        doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(C.dark);
+        doc.text('BREAKDOWN — Two Components', M+5, py+7);
+
+        // Re-entry labor row
+        doc.setFillColor('#FFEDD5'); doc.roundedRect(M+5, py+11, CW-10, 14, 2, 2, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(TAB_COLORS[ti]);
+        doc.text('Re-Entry Labor Cost Eliminated', M+9, py+19);
+        doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(C.dark);
+        doc.text(fmtKN(reentryVal), W-M-5, py+19, {align:'right'});
+        doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(C.gray);
+        const reentryHrs = document.getElementById('v-rekey-hrs')?.textContent || '10 hrs';
+        const reentryStaff = document.getElementById('v-rekey-staff')?.textContent || '3';
+        const reentryRate = document.getElementById('v-rekey-rate')?.textContent || '$35';
+        doc.text(`${reentryHrs}/wk × ${reentryStaff} staff × ${reentryRate}/hr × 52 weeks`, M+9, py+23.5);
+
+        // Revenue leakage row
+        doc.setFillColor('#F5F3FF'); doc.roundedRect(M+5, py+27, CW-10, 14, 2, 2, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor('#7C3AED');
+        doc.text('Revenue Leakage Prevented', M+9, py+35);
+        doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(C.dark);
+        doc.text(fmtKN(leakageVal), W-M-5, py+35, {align:'right'});
+        doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(C.gray);
+        doc.text(`${arRev} AR revenue × (${errFrom} manual − 0.1% automated) error rate  ·  Justin Earls benchmark`, M+9, py+39.5);
+
+        py += 56;
+      }
+
       doc.setFontSize(7); doc.setTextColor(C.muted);
       doc.text('Bradley Company × Salesforce · Prepared '+now,M,py);
       addFooter(ti+2,1+TAB_NAMES.length);
